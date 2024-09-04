@@ -19,6 +19,10 @@ type Account struct {
 	Created   pq.NullTime `json:"created" gorm:"column:created"`
 }
 
+type RefreshToken struct {
+	RefreshToken string `json:"refreshToken"`
+}
+
 // CreateAccountDB inserts a new account into the database.
 func CreateAccountDB(acc *Account) error {
 	acc.Created = pq.NullTime{Time: time.Now(), Valid: true}

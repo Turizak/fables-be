@@ -12,10 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type RefreshToken struct {
-	RefreshToken string `json:"refreshToken"`
-}
-
 func CreateAccount(c *gin.Context) {
 	var acc Account
 	if err := c.BindJSON(&acc); err != nil {
@@ -87,6 +83,7 @@ func ValidateAuthToken(c *gin.Context) {
 	authToken := c.GetHeader("Authorization")
 	_, validToken := utilities.ValidateAuthToken(c, authToken)
 	if !validToken {
+		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
 		return
 	}
 	utilities.ResponseMessage(c, "Token is valid.", http.StatusOK, nil)
@@ -99,6 +96,7 @@ func RefreshAuthToken(c *gin.Context) {
 	}
 	_, validRefToken := utilities.ValidateRefreshAuthentication(c, refreshToken.RefreshToken)
 	if !validRefToken {
+		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
 		return
 	}
 	claims, err := token.ParseRefreshToken(refreshToken.RefreshToken)
