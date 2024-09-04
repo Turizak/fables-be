@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "fables",
+  "name": "Fables",
   "type": "collection",
   "ignore": [
     "node_modules",

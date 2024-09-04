@@ -19,7 +19,7 @@ type Account struct {
 	Created   pq.NullTime `json:"created" gorm:"column:created"`
 }
 
-// CreateAccountInDB inserts a new account into the database.
+// CreateAccountDB inserts a new account into the database.
 func CreateAccountDB(acc *Account) error {
 	acc.Created = pq.NullTime{Time: time.Now(), Valid: true}
 	acc.UUID = uuid.NewString()

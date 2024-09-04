@@ -5,81 +5,119 @@ import (
 	"net/mail"
 	"strings"
 
+	"github.com/Turizak/fables-be/database"
+	"github.com/Turizak/fables-be/token"
 	"github.com/Turizak/fables-be/utilities"
 
 	"github.com/gin-gonic/gin"
 )
 
+type RefreshToken struct {
+	RefreshToken string `json:"refreshToken"`
+}
+
 func CreateAccount(c *gin.Context) {
 	var acc Account
-
-	// Bind the request body to the Account struct
 	if err := c.BindJSON(&acc); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message":    "Could not create account. Please try again.",
-			"status":     http.StatusBadRequest,
-			"statusText": http.StatusText(http.StatusBadRequest),
-		})
+		utilities.ResponseMessage(c, "Could not create account. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-
-	// Validate the email address
 	addr, err := mail.ParseAddress(strings.ToLower(acc.Email))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message":    "Could not create account. Please try again.",
-			"status":     http.StatusBadRequest,
-			"statusText": http.StatusText(http.StatusBadRequest),
-		})
+		utilities.ResponseMessage(c, "Could not create account. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-
-	// Validate the password
 	validPass := utilities.ValidatePasswordComplexity(acc.Password)
 	if !validPass {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message":    "Could not create account. Please try again.",
-			"status":     http.StatusBadRequest,
-			"statusText": http.StatusText(http.StatusBadRequest),
-		})
+		utilities.ResponseMessage(c, "Could not create account. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-
-	// Hash the password
 	hashedPassword, err := utilities.HashPassword(acc.Password)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message":    "Could not create account. Please try again.",
-			"status":     http.StatusBadRequest,
-			"statusText": http.StatusText(http.StatusBadRequest),
-		})
+		utilities.ResponseMessage(c, "Could not create account. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-
-	// Set the email address and password
 	acc.Email = strings.ToLower(addr.Address)
 	acc.Password = hashedPassword
-
-	// Create the account
 	if err := CreateAccountDB(&acc); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message":    "Could not create account. Please try again.",
-			"status":     http.StatusBadRequest,
-			"statusText": http.StatusText(http.StatusBadRequest),
-		})
+		utilities.ResponseMessage(c, "Could not create account. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-
-	// Return the account
-	c.JSON(http.StatusCreated, gin.H{
-		"message":    "Account created successfully.",
-		"status":     http.StatusCreated,
-		"statusText": http.StatusText(http.StatusCreated),
+	utilities.ResponseMessage(c, "Account created successfully.", http.StatusCreated, gin.H{
 		"account": gin.H{
 			"uuid":      acc.UUID,
 			"email":     acc.Email,
 			"firstName": acc.FirstName,
 			"lastName":  acc.LastName,
 		},
+	})
+}
+
+func AccountLogin(c *gin.Context) {
+	var acc Account
+	var account Account
+	if err := c.BindJSON(&acc); err != nil {
+		return
+	}
+	if result := database.DB.Where("email = ?", strings.ToLower(acc.Email)).First(&account); result.Error != nil {
+		utilities.ResponseMessage(c, "Login Failed. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	if !utilities.DoPasswordsMatch(account.Password, acc.Password) {
+		utilities.ResponseMessage(c, "Login Failed. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	authToken, err := token.CreateToken(account.Email, account.UUID)
+	if err != nil {
+		utilities.ResponseMessage(c, "Login Failed. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	refreshToken, err := token.CreateRefreshToken(account.Email, account.UUID)
+	if err != nil {
+		utilities.ResponseMessage(c, "Login Failed. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	utilities.ResponseMessage(c, "Login Successful.", http.StatusOK, gin.H{
+		"token":        authToken,
+		"refreshToken": refreshToken,
+	})
+}
+
+func ValidateAuthToken(c *gin.Context) {
+	authToken := c.GetHeader("Authorization")
+	_, validToken := utilities.ValidateAuthToken(c, authToken)
+	if !validToken {
+		return
+	}
+	utilities.ResponseMessage(c, "Token is valid.", http.StatusOK, nil)
+}
+
+func RefreshAuthToken(c *gin.Context) {
+	var refreshToken RefreshToken
+	if err := c.BindJSON(&refreshToken); err != nil {
+		return
+	}
+	_, validRefToken := utilities.ValidateRefreshAuthentication(c, refreshToken.RefreshToken)
+	if !validRefToken {
+		return
+	}
+	claims, err := token.ParseRefreshToken(refreshToken.RefreshToken)
+	if err != nil {
+		utilities.ResponseMessage(c, "An error occurred parsing the refresh token. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	authToken, err := token.CreateToken(claims.Email, claims.UUID)
+	if err != nil {
+		utilities.ResponseMessage(c, "An error occurred creating the token. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	refToken, err := token.CreateRefreshToken(claims.Email, claims.UUID)
+	if err != nil {
+		utilities.ResponseMessage(c, "An error occurred creating the refresh token. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	utilities.ResponseMessage(c, "Token refreshed successfully.", http.StatusOK, gin.H{
+		"token":        authToken,
+		"refreshToken": refToken,
 	})
 }
