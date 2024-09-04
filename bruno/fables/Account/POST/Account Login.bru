@@ -1,0 +1,24 @@
+meta {
+  name: Account Login
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/account/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "kaz.brah@gmail.com",
+    "password": "{{password}}"
+  }
+}
+
+script:post-response {
+  const response = res.body;
+  bru.setEnvVar('token',response.data.token)
+  bru.setEnvVar('refreshToken',response.data.refreshToken)
+}
