@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func ValidateAuthToken(c *gin.Context, authToken string) (*token.UserClaim, bool) {
+func ValidateAuthenticationToken(c *gin.Context, authToken string) (*token.UserClaim, bool) {
 	validToken := CheckToken(c, authToken)
 	expire := CheckTokenNotExpired(c, authToken)
 
@@ -24,7 +24,7 @@ func ValidateAuthToken(c *gin.Context, authToken string) (*token.UserClaim, bool
 	return claims, true
 }
 
-func ValidateRefreshAuthentication(c *gin.Context, refreshToken string) (*token.RefreshUserClaim, bool) {
+func ValidateRefreshToken(c *gin.Context, refreshToken string) (*token.RefreshUserClaim, bool) {
 	validToken := CheckRefreshToken(c, refreshToken)
 	expire := CheckRefreshTokenNotExpired(c, refreshToken)
 
