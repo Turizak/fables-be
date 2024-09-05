@@ -13,4 +13,7 @@ func Routes(router *gin.Engine) {
 	router.POST("/account/token/refresh", account.RefreshAuthToken)
 	// GET
 	router.GET("/account/token/validate", account.ValidateAuthToken)
+	router.GET("/account", account.GetAccount)
+	// PATCH
+	router.PATCH("/account/change-password", account.ChangePassword)
 }
