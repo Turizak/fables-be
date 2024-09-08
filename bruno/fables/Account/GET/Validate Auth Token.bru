@@ -7,9 +7,9 @@ meta {
 get {
   url: {{base_url}}/account/token/validate
   body: none
-  auth: none
+  auth: bearer
 }
 
-headers {
-  Authorization: Bearer {{token}}
+auth:bearer {
+  token: {{token}}
 }

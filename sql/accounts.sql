@@ -8,5 +8,6 @@ CREATE TABLE IF NOT EXISTS accounts (
     password character varying NOT NULL,
     first_name character varying NOT NULL,
     last_name character varying NOT NULL,
-    created timestamp with time zone NOT NULL
+    created timestamp with time zone NOT NULL,
+    last_updated timestamp with time zone
 );

@@ -1,0 +1,24 @@
+meta {
+  name: Campaign
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/campaign/create
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "The Flaming Ballsack of the Illiad",
+    "partyUuids":[],
+    "ruleset": "5e",
+    "maxPlayers": 4
+  }
+}

@@ -39,7 +39,7 @@ func CreateAccount(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not create account. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	var responseAccount = AccountResponse{
+	responseAccount := AccountResponse{
 		Username:  account.Username,
 		Email:     account.Email,
 		UUID:      account.UUID,
@@ -119,7 +119,7 @@ func RefreshAuthToken(c *gin.Context) {
 		utilities.ResponseMessage(c, "An error occurred creating the refresh token. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	var tokenResponse = LoginResponse{
+	tokenResponse := LoginResponse{
 		AccessToken:  authToken,
 		RefreshToken: refreshToken,
 	}
