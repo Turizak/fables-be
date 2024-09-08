@@ -17,10 +17,9 @@ func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
 	config := sloggin.Config{
-		WithRequestBody:  true,
-		WithResponseBody: true,
-		Filters:          []sloggin.Filter{sloggin.IgnoreStatus(401), sloggin.IgnoreStatus(404)},
-	}
+		Filters: []sloggin.Filter{
+			sloggin.IgnoreStatus(401),
+			sloggin.IgnoreStatus(404)}}
 
 	router := gin.New()
 	router.Use(sloggin.NewWithConfig(logger, config))
