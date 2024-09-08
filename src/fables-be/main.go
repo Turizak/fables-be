@@ -19,7 +19,13 @@ func main() {
 	config := sloggin.Config{
 		WithRequestBody:  true,
 		WithResponseBody: true,
-		Filters:          []sloggin.Filter{sloggin.IgnoreStatus(401), sloggin.IgnoreStatus(404)},
+		Filters: []sloggin.Filter{
+			sloggin.IgnoreStatus(401),
+			sloggin.IgnoreStatus(404),
+			sloggin.IgnorePath("/account/login"),
+			sloggin.IgnorePath("/account/token/refresh"),
+			sloggin.IgnorePath("/account/create"),
+			sloggin.IgnorePath("/account/change-password")},
 	}
 
 	router := gin.New()
