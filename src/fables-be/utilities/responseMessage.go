@@ -26,5 +26,5 @@ func ResponseMessage(c *gin.Context, message string, status int, data gin.H) {
 
 // GetTimestamp returns the current timestamp
 func GetTimestamp() string {
-	return time.Now().Format(time.RFC3339)
+	return time.Now().Format(time.RFC3339Nano)
 }
