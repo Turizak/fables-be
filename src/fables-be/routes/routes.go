@@ -21,4 +21,7 @@ func Routes(router *gin.Engine) {
 	//Campaigns
 	// POST
 	router.POST("/campaign/create", campaigns.CreateCampaign)
+	// GET
+	router.GET("/campaign/:uuid", campaigns.GetCampaignByUuid)
+	router.GET("/campaigns", campaigns.GetCampaignsByCreatorUuid)
 }

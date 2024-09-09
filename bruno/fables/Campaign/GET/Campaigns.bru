@@ -1,0 +1,19 @@
+meta {
+  name: Campaigns
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/campaign/:uuid
+  body: none
+  auth: bearer
+}
+
+params:path {
+  uuid: ae705cc5-9e40-4923-b74a-3e605cb1278f
+}
+
+auth:bearer {
+  token: {{token}}
+}
