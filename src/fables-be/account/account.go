@@ -86,6 +86,10 @@ func AccountLogin(c *gin.Context) {
 
 func ValidateAuthToken(c *gin.Context) {
 	authToken := c.GetHeader("Authorization")
+	if authToken == "" {
+		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+		return
+	}
 	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
 	if !validToken {
 		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
@@ -128,6 +132,10 @@ func RefreshAuthToken(c *gin.Context) {
 
 func GetAccount(c *gin.Context) {
 	authToken := c.GetHeader("Authorization")
+	if authToken == "" {
+		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+		return
+	}
 	claims, validToken := utilities.ValidateAuthenticationToken(c, authToken)
 	if !validToken {
 		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
@@ -151,6 +159,10 @@ func GetAccount(c *gin.Context) {
 
 func ChangePassword(c *gin.Context) {
 	authToken := c.GetHeader("Authorization")
+	if authToken == "" {
+		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+		return
+	}
 	claims, validToken := utilities.ValidateAuthenticationToken(c, authToken)
 	if !validToken {
 		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)

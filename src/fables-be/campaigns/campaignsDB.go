@@ -48,3 +48,19 @@ func CreateCampaignDB(campaign *Campaign) error {
 	}
 	return nil
 }
+
+func GetCampaignByUuidDB(uuid string) (*Campaign, error) {
+	campaign := new(Campaign)
+	if result := database.DB.Where("uuid = ?", uuid).First(campaign); result.Error != nil {
+		return nil, result.Error
+	}
+	return campaign, nil
+}
+
+func GetCampaignsByCreatorUuidDB(creatorUUID string) ([]Campaign, error) {
+	campaigns := []Campaign{}
+	if result := database.DB.Where("creator_uuid = ?", creatorUUID).Find(&campaigns); result.Error != nil {
+		return nil, result.Error
+	}
+	return campaigns, nil
+}
