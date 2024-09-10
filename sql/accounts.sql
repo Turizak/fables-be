@@ -9,5 +9,6 @@ CREATE TABLE IF NOT EXISTS accounts (
     first_name character varying NOT NULL,
     last_name character varying NOT NULL,
     created timestamp with time zone NOT NULL,
-    last_updated timestamp with time zone
+    last_updated timestamp with time zone,
+    deleted boolean DEFAULT false
 );

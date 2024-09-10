@@ -12,6 +12,7 @@ type Account struct {
 	LastName    string             `json:"lastName" gorm:"column:last_name"`
 	Created     utilities.NullTime `json:"created" gorm:"column:created"`
 	LastUpdated utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated"`
+	Deleted     bool               `json:"deleted" gorm:"column:deleted"`
 }
 
 type AccountResponse struct {

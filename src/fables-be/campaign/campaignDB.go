@@ -15,6 +15,7 @@ func CreateCampaignDB(campaign *Campaign) error {
 	campaign.Created = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
 	campaign.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Time{}, Valid: false})
 	campaign.UUID = uuid.NewString()
+	campaign.Deleted = false
 	if result := database.DB.Create(campaign); result.Error != nil {
 		return result.Error
 	}

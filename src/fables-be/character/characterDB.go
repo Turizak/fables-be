@@ -15,6 +15,7 @@ func CreateCharacterDB(character *campaign.Character, campaignUuid string) error
 	character.Created = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
 	character.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Time{}, Valid: false})
 	character.UUID = uuid.NewString()
+	character.Deleted = false
 	campaign, err := campaign.GetCampaignByUuidDB(campaignUuid)
 	if err != nil {
 		return err

@@ -15,6 +15,7 @@ func CreateAccountDB(acc *Account) error {
 	acc.Created = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
 	acc.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Time{}, Valid: false})
 	acc.UUID = uuid.NewString()
+	acc.Deleted = false
 	if result := database.DB.Create(acc); result.Error != nil {
 		return result.Error
 	}
