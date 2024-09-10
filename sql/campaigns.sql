@@ -13,5 +13,6 @@ CREATE TABLE IF NOT EXISTS campaigns (
     ruleset character varying NOT NULL,
     max_players integer NOT NULL,
     created timestamp with time zone NOT NULL,
-    last_updated timestamp with time zone
+    last_updated timestamp with time zone,
+    deleted boolean DEFAULT false
 );

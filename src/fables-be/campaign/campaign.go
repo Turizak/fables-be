@@ -59,6 +59,7 @@ func CreateCampaign(c *gin.Context) {
 		Ruleset:     campaign.Ruleset,
 		MaxPlayers:  campaign.MaxPlayers,
 		Created:     campaign.Created,
+		LastUpdated: campaign.LastUpdated,
 	}
 
 	utilities.ResponseMessage(c, "Campaign created successfully.", http.StatusCreated, gin.H{"campaign": responseCampaign})

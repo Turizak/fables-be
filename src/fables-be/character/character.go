@@ -33,7 +33,7 @@ func CreateCharacter(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not create character. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	responseCharacter := campaign.CharacterResponse{
+	responseCharacter := CharacterResponse{
 		UUID:         character.UUID,
 		CampaignUUID: character.CampaignUUID,
 		CreatorUUID:  character.CreatorUUID,
@@ -77,7 +77,7 @@ func GetCharacterByUuid(c *gin.Context) {
 		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
 		return
 	}
-	responseCharacter := campaign.CharacterResponse{
+	responseCharacter := CharacterResponse{
 		UUID:         character.UUID,
 		CampaignUUID: character.CampaignUUID,
 		CreatorUUID:  character.CreatorUUID,
@@ -115,9 +115,9 @@ func GetCharactersByCreatorUuid(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not retrieve characters. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	responseCharacters := make([]campaign.CharacterResponse, 0)
+	responseCharacters := make([]CharacterResponse, 0)
 	for _, character := range characters {
-		responseCharacter := campaign.CharacterResponse{
+		responseCharacter := CharacterResponse{
 			UUID:         character.UUID,
 			CampaignUUID: character.CampaignUUID,
 			CreatorUUID:  character.CreatorUUID,
@@ -157,9 +157,9 @@ func GetCharactersByOwnerUuid(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not retrieve characters. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	responseCharacters := make([]campaign.CharacterResponse, 0)
+	responseCharacters := make([]CharacterResponse, 0)
 	for _, character := range characters {
-		responseCharacter := campaign.CharacterResponse{
+		responseCharacter := CharacterResponse{
 			UUID:         character.UUID,
 			CampaignUUID: character.CampaignUUID,
 			CreatorUUID:  character.CreatorUUID,

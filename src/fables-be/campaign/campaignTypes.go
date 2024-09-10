@@ -19,6 +19,7 @@ type Campaign struct {
 	MaxPlayers  int                `json:"maxPlayers" gorm:"column:max_players;not null"`
 	Created     utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
 	LastUpdated utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
+	Deleted     bool               `json:"deleted" gorm:"column:deleted"`
 }
 
 type CampaignResponse struct {
@@ -54,24 +55,5 @@ type Character struct {
 	Ruleset      string             `json:"ruleset" gorm:"column:ruleset;type:varchar;not null"`
 	Created      utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
 	LastUpdated  utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
-}
-
-type CharacterResponse struct {
-	UUID         string             `json:"uuid"`
-	CampaignUUID string             `json:"campaignUuid"`
-	CreatorUUID  string             `json:"creatorUuid"`
-	OwnerUUID    string             `json:"ownerUuid"`
-	FirstName    string             `json:"firstName"`
-	LastName     string             `json:"lastName"`
-	Race         string             `json:"race"`
-	Class        string             `json:"class"`
-	Age          int                `json:"age"`
-	Height       int                `json:"height"`
-	Weight       int                `json:"weight"`
-	EyeColor     string             `json:"eyeColor"`
-	SkinColor    string             `json:"skinColor"`
-	HairColor    string             `json:"hairColor"`
-	Ruleset      string             `json:"ruleset"`
-	Created      utilities.NullTime `json:"created"`
-	LastUpdated  utilities.NullTime `json:"lastUpdated"`
+	Deleted      bool               `json:"deleted" gorm:"column:deleted"`
 }
