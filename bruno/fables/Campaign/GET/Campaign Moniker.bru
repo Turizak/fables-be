@@ -1,0 +1,19 @@
+meta {
+  name: Campaign Moniker
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/campaign/:uuid/moniker
+  body: none
+  auth: bearer
+}
+
+params:path {
+  uuid: 8335f613-ff58-496c-868d-3ab850ee949f
+}
+
+auth:bearer {
+  token: {{token}}
+}

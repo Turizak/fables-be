@@ -1,0 +1,20 @@
+meta {
+  name: Get Campaign Character
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/campaign/:uuid/character/:characterUuid
+  body: none
+  auth: bearer
+}
+
+params:path {
+  uuid: 506bdf8b-4906-48ea-ad18-4e65a8a02e59
+  characterUuid: 31a7df78-611d-40f2-9ceb-76008acfadda
+}
+
+auth:bearer {
+  token: {{token}}
+}

@@ -1,13 +1,22 @@
-package campaigns
+package campaign
 
 import (
 	"net/http"
 
 	"github.com/Turizak/fables-be/account"
+	"github.com/Turizak/fables-be/database"
 	"github.com/Turizak/fables-be/utilities"
 
 	"github.com/gin-gonic/gin"
 )
+
+func GetAllMonikers() ([]string, error) {
+	var monikers []string
+	if result := database.DB.Model(&Campaign{}).Select("moniker").Find(&monikers); result.Error != nil {
+		return nil, result.Error
+	}
+	return monikers, nil
+}
 
 func CreateCampaign(c *gin.Context) {
 	var campaign Campaign
@@ -51,6 +60,7 @@ func CreateCampaign(c *gin.Context) {
 		MaxPlayers:  campaign.MaxPlayers,
 		Created:     campaign.Created,
 	}
+
 	utilities.ResponseMessage(c, "Campaign created successfully.", http.StatusCreated, gin.H{"campaign": responseCampaign})
 }
 
@@ -130,4 +140,14 @@ func GetCampaignsByCreatorUuid(c *gin.Context) {
 		return
 	}
 	utilities.ResponseMessage(c, "Campaigns retrieved successfully.", http.StatusOK, gin.H{"campaigns": responseCampaigns})
+}
+
+func GetCampaignMonikerByUuid(c *gin.Context) {
+	uuid := c.Param("uuid")
+	campaign, err := GetCampaignByUuidDB(uuid)
+	if err != nil {
+		utilities.ResponseMessage(c, "Could not retrieve campaign. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	utilities.ResponseMessage(c, "Campaign moniker retrieved successfully.", http.StatusOK, gin.H{"moniker": campaign.Moniker})
 }
