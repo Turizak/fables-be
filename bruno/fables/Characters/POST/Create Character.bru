@@ -1,0 +1,34 @@
+meta {
+  name: Create Character
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/campaign/:uuid/character/create
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: 506bdf8b-4906-48ea-ad18-4e65a8a02e59
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "firstName": "Nina",
+    "lastName": "Sky",
+    "race": "Elf",
+    "class": "Monk",
+    "age": 19,
+    "height": 60,
+    "weight": 120,
+    "eyeColor": "Blue",
+    "skinColor": "Tan",
+    "hairColor": "Blonde"
+  }
+}
