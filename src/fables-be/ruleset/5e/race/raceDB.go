@@ -1,4 +1,4 @@
-package ruleset
+package race
 
 import "github.com/Turizak/fables-be/database"
 

@@ -1,4 +1,4 @@
-package ruleset
+package race
 
 import (
 	"net/http"
