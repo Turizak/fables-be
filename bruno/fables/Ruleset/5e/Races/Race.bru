@@ -1,0 +1,15 @@
+meta {
+  name: Race
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/ruleset/5e/races
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
