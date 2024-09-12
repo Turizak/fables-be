@@ -120,14 +120,34 @@ CREATE TABLE public.damage_types (
 ALTER TABLE public.damage_types OWNER TO postgres;
 
 --
+-- Name: language; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.language (
+    index character varying NOT NULL,
+    name character varying,
+    description text,
+    type character varying,
+    typical_speakers jsonb,
+    script character varying,
+    url character varying
+);
+
+
+ALTER TABLE public.language OWNER TO postgres;
+
+--
 -- Name: proficiencies; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.proficiencies (
-    class_index character varying,
-    proficiency_index character varying,
-    proficiency_name character varying,
-    proficiency_url character varying
+    proficiency_index character varying NOT NULL,
+    type character varying,
+    name character varying,
+    classes jsonb,
+    races jsonb,
+    url character varying,
+    reference jsonb
 );
 
 
@@ -149,6 +169,33 @@ CREATE TABLE public.proficiency_choices (
 ALTER TABLE public.proficiency_choices OWNER TO postgres;
 
 --
+-- Name: race; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.race (
+    index character varying NOT NULL,
+    name character varying,
+    speed integer,
+    ability_bonuses jsonb,
+    ability_bonus_options jsonb,
+    alignment text,
+    age text,
+    size character varying,
+    size_description text,
+    starting_proficiencies jsonb,
+    starting_proficiency_options jsonb,
+    languages jsonb,
+    language_desc text,
+    language_options jsonb,
+    traits jsonb,
+    subraces jsonb,
+    url character varying
+);
+
+
+ALTER TABLE public.race OWNER TO postgres;
+
+--
 -- Name: saving_throws; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -167,10 +214,11 @@ ALTER TABLE public.saving_throws OWNER TO postgres;
 --
 
 CREATE TABLE public.skills (
-    skill_index character varying NOT NULL,
-    skill_name character varying,
-    ability_index character varying,
-    url character varying
+    skill_index text NOT NULL,
+    name text NOT NULL,
+    description text[] NOT NULL,
+    ability_score jsonb NOT NULL,
+    url text NOT NULL
 );
 
 
@@ -205,6 +253,25 @@ CREATE TABLE public.starting_equipment_options (
 
 
 ALTER TABLE public.starting_equipment_options OWNER TO postgres;
+
+--
+-- Name: traits; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.traits (
+    trait_index character varying NOT NULL,
+    name character varying NOT NULL,
+    description jsonb NOT NULL,
+    races jsonb NOT NULL,
+    subraces jsonb NOT NULL,
+    proficiencies jsonb,
+    proficiency_choices jsonb,
+    trait_specific jsonb,
+    url character varying NOT NULL
+);
+
+
+ALTER TABLE public.traits OWNER TO postgres;
 
 --
 -- Name: ability_scores ability_scores_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -247,11 +314,43 @@ ALTER TABLE ONLY public.damage_types
 
 
 --
+-- Name: language language_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.language
+    ADD CONSTRAINT language_pkey PRIMARY KEY (index);
+
+
+--
+-- Name: proficiencies proficiencies_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.proficiencies
+    ADD CONSTRAINT proficiencies_pkey PRIMARY KEY (proficiency_index);
+
+
+--
+-- Name: race race_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.race
+    ADD CONSTRAINT race_pkey PRIMARY KEY (index);
+
+
+--
 -- Name: skills skills_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.skills
     ADD CONSTRAINT skills_pkey PRIMARY KEY (skill_index);
+
+
+--
+-- Name: traits traits_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.traits
+    ADD CONSTRAINT traits_pkey PRIMARY KEY (trait_index);
 
 
 --
@@ -271,14 +370,6 @@ ALTER TABLE ONLY public.damage_type_descriptions
 
 
 --
--- Name: proficiencies proficiencies_class_index_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.proficiencies
-    ADD CONSTRAINT proficiencies_class_index_fkey FOREIGN KEY (class_index) REFERENCES public.classes(index);
-
-
---
 -- Name: proficiency_choices proficiency_choices_class_index_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -292,14 +383,6 @@ ALTER TABLE ONLY public.proficiency_choices
 
 ALTER TABLE ONLY public.saving_throws
     ADD CONSTRAINT saving_throws_class_index_fkey FOREIGN KEY (class_index) REFERENCES public.classes(index);
-
-
---
--- Name: skills skills_ability_index_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.skills
-    ADD CONSTRAINT skills_ability_index_fkey FOREIGN KEY (ability_index) REFERENCES public.ability_scores(ability_index);
 
 
 --
