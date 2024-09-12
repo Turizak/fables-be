@@ -1,0 +1,19 @@
+meta {
+  name: Trait
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/ruleset/5e/traits/:index
+  body: none
+  auth: bearer
+}
+
+params:path {
+  index: darkvision
+}
+
+auth:bearer {
+  token: {{token}}
+}

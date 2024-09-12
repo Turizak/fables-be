@@ -12,19 +12,19 @@ type Race struct {
 	Index                      string         `gorm:"primaryKey;column:index" json:"index"`
 	Name                       string         `gorm:"column:name" json:"name"`
 	Speed                      int            `gorm:"column:speed" json:"speed"`
-	AbilityBonuses             datatypes.JSON `gorm:"column:ability_bonuses" json:"ability_bonuses"`             // JSONB field
-	AbilityBonusOptions        datatypes.JSON `gorm:"column:ability_bonus_options" json:"ability_bonus_options"` // JSONB field
+	AbilityBonuses             datatypes.JSON `gorm:"column:ability_bonuses" json:"ability_bonuses"`
+	AbilityBonusOptions        datatypes.JSON `gorm:"column:ability_bonus_options" json:"ability_bonus_options"`
 	Alignment                  string         `gorm:"column:alignment" json:"alignment"`
 	Age                        string         `gorm:"column:age" json:"age"`
 	Size                       string         `gorm:"column:size" json:"size"`
 	SizeDescription            string         `gorm:"column:size_description" json:"size_description"`
-	StartingProficiencies      datatypes.JSON `gorm:"column:starting_proficiencies" json:"starting_proficiencies"`             // JSONB field
-	StartingProficiencyOptions datatypes.JSON `gorm:"column:starting_proficiency_options" json:"starting_proficiency_options"` // JSONB field
-	Languages                  datatypes.JSON `gorm:"column:languages" json:"languages"`                                       // JSONB field
+	StartingProficiencies      datatypes.JSON `gorm:"column:starting_proficiencies" json:"starting_proficiencies"`
+	StartingProficiencyOptions datatypes.JSON `gorm:"column:starting_proficiency_options" json:"starting_proficiency_options"`
+	Languages                  datatypes.JSON `gorm:"column:languages" json:"languages"`
 	LanguageDesc               string         `gorm:"column:language_desc" json:"language_desc"`
-	LanguageOptions            datatypes.JSON `gorm:"column:language_options" json:"language_options"` // JSONB field
-	Traits                     datatypes.JSON `gorm:"column:traits" json:"traits"`                     // JSONB field
-	Subraces                   datatypes.JSON `gorm:"column:subraces" json:"subraces"`                 // JSONB field
+	LanguageOptions            datatypes.JSON `gorm:"column:language_options" json:"language_options"`
+	Traits                     datatypes.JSON `gorm:"column:traits" json:"traits"`
+	Subraces                   datatypes.JSON `gorm:"column:subraces" json:"subraces"`
 	URL                        string         `gorm:"column:url" json:"url"`
 }
 

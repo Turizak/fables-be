@@ -6,6 +6,8 @@ import (
 	"github.com/Turizak/fables-be/character"
 	"github.com/Turizak/fables-be/ruleset/5e/language"
 	"github.com/Turizak/fables-be/ruleset/5e/race"
+	"github.com/Turizak/fables-be/ruleset/5e/skill"
+	"github.com/Turizak/fables-be/ruleset/5e/trait"
 	"github.com/gin-gonic/gin"
 )
 
@@ -46,4 +48,10 @@ func Routes(router *gin.Engine) {
 	// Languages
 	router.GET("/api/ruleset/5e/languages", language.GetAllLanguages5e)
 	router.GET("/api/ruleset/5e/languages/:index", language.GetLanguageByIndex5e)
+	// Traits
+	router.GET("/api/ruleset/5e/traits", trait.GetAllTraits5e)
+	router.GET("/api/ruleset/5e/traits/:index", trait.GetTraitByIndex5e)
+	// Skills
+	router.GET("/api/ruleset/5e/skills", skill.GetAllSkills5e)
+	router.GET("/api/ruleset/5e/skills/:index", skill.GetSkillByIndex5e)
 }

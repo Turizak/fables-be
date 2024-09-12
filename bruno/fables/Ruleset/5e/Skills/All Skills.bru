@@ -1,0 +1,15 @@
+meta {
+  name: All Skills
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/ruleset/5e/skills
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
