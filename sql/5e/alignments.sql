@@ -1,14 +1,14 @@
 DROP TABLE IF EXISTS alignments;
 
 CREATE TABLE alignments (
-    alignment_index VARCHAR PRIMARY KEY,
+    index VARCHAR PRIMARY KEY,
     alignment_name VARCHAR,
     abbreviation VARCHAR,
     description TEXT,
     url VARCHAR
 );
 
-INSERT INTO alignments (alignment_index, alignment_name, abbreviation, description, url) 
+INSERT INTO alignments (index, alignment_name, abbreviation, description, url) 
 VALUES
 ('lawful-good', 'Lawful Good', 'LG', 'Lawful good (LG) creatures can be counted on to do the right thing as expected by society. Gold dragons, paladins, and most dwarves are lawful good.', '/api/alignments/lawful-good'),
 ('neutral-good', 'Neutral Good', 'NG', 'Neutral good (NG) folk do the best they can to help others according to their needs. Many celestials, some cloud giants, and most gnomes are neutral good.', '/api/alignments/neutral-good'),
