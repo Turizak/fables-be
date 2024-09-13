@@ -1,0 +1,19 @@
+meta {
+  name: All Classes
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/ruleset/5e/classes
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~details: true
+}
+
+auth:bearer {
+  token: {{token}}
+}
