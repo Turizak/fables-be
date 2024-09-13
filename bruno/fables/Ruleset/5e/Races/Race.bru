@@ -5,9 +5,13 @@ meta {
 }
 
 get {
-  url: {{base_url}}/ruleset/5e/races
+  url: {{base_url}}/ruleset/5e/races/:index
   body: none
   auth: bearer
+}
+
+params:path {
+  index: tiefling
 }
 
 auth:bearer {

@@ -5,6 +5,7 @@ import (
 	"github.com/Turizak/fables-be/campaign"
 	"github.com/Turizak/fables-be/character"
 	abilityscore "github.com/Turizak/fables-be/ruleset/5e/ability-score"
+	"github.com/Turizak/fables-be/ruleset/5e/alignment"
 	damagetype "github.com/Turizak/fables-be/ruleset/5e/damage-type"
 	"github.com/Turizak/fables-be/ruleset/5e/language"
 	"github.com/Turizak/fables-be/ruleset/5e/proficiencies"
@@ -66,4 +67,7 @@ func Routes(router *gin.Engine) {
 	// Ability Scores
 	router.GET("/api/ruleset/5e/ability-scores", abilityscore.GetAllAbilityScores5e)
 	router.GET("/api/ruleset/5e/ability-scores/:index", abilityscore.GetAbilityScoreByIndex5e)
+	// Alignment
+	router.GET("/api/ruleset/5e/alignments", alignment.GetAllAlignments5e)
+	router.GET("/api/ruleset/5e/alignments/:index", alignment.GetAlignmentByIndex5e)
 }
