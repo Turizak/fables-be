@@ -1,0 +1,23 @@
+meta {
+  name: Class
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/ruleset/5e/classes/:index
+  body: none
+  auth: bearer
+}
+
+params:query {
+  ~details: true
+}
+
+params:path {
+  index: barbarian
+}
+
+auth:bearer {
+  token: {{token}}
+}

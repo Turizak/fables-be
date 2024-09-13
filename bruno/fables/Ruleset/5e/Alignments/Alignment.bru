@@ -1,0 +1,19 @@
+meta {
+  name: Alignment
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/ruleset/5e/alignments/:index
+  body: none
+  auth: bearer
+}
+
+params:path {
+  index: lawful-good
+}
+
+auth:bearer {
+  token: {{token}}
+}

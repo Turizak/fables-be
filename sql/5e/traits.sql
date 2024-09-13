@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS traits;
 
 CREATE TABLE traits (
-    trait_index VARCHAR PRIMARY KEY,
+    index VARCHAR PRIMARY KEY,
     name VARCHAR NOT NULL,
     description JSONB NOT NULL,
     races JSONB NOT NULL,
@@ -14,7 +14,7 @@ CREATE TABLE traits (
 
 INSERT INTO
     traits (
-        trait_index,
+        index,
         name,
         description,
         races,
@@ -29,417 +29,417 @@ VALUES
         'darkvision',
         'Darkvision',
         '[{"description":"You have superior vision in dark and dim conditions. You can see in dim light within 60 feet of you as if it were bright light, and in darkness as if it were dim light. You cannot discern color in darkness, only shades of gray."}]',
-        '[{"index": "dwarf", "name": "Dwarf", "url": "/api/races/dwarf"},{"index": "elf", "name": "Elf", "url": "/api/races/elf"},{"index": "gnome", "name": "Gnome", "url": "/api/races/gnome"},{"index": "half-elf", "name": "Half-Elf", "url": "/api/races/half-elf"},{"index": "half-orc", "name": "Half-Orc", "url": "/api/races/half-orc"},{"index": "tiefling", "name": "Tiefling", "url": "/api/races/tiefling"}]',
+        '[{"index": "dwarf", "name": "Dwarf", "url": "/api/ruleset/5e/races/dwarf"},{"index": "elf", "name": "Elf", "url": "/api/ruleset/5e/races/elf"},{"index": "gnome", "name": "Gnome", "url": "/api/ruleset/5e/races/gnome"},{"index": "half-elf", "name": "Half-Elf", "url": "/api/ruleset/5e/races/half-elf"},{"index": "half-orc", "name": "Half-Orc", "url": "/api/ruleset/5e/races/half-orc"},{"index": "tiefling", "name": "Tiefling", "url": "/api/ruleset/5e/races/tiefling"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/darkvision'
+        '/api/ruleset/5e/traits/darkvision'
     ),
     (
         'dwarven-resilience',
         'Dwarven Resilience',
         '[{"description":"You have advantage on saving throws against poison, and you have resistance against poison damage."}]',
-        '[{"index": "dwarf", "name": "Dwarf", "url": "/api/races/dwarf"}]',
+        '[{"index": "dwarf", "name": "Dwarf", "url": "/api/ruleset/5e/races/dwarf"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/dwarven-resilience'
+        '/api/ruleset/5e/traits/dwarven-resilience'
     ),
     (
         'dwarven-combat-training',
         'Dwarven Combat Training',
         '[{"description":"You have proficiency with the battleaxe, handaxe, light hammer, and warhammer."}]',
-        '[{"index": "dwarf", "name": "Dwarf", "url": "/api/races/dwarf"}]',
+        '[{"index": "dwarf", "name": "Dwarf", "url": "/api/ruleset/5e/races/dwarf"}]',
         '[]',
-        '[{"index": "battleaxes", "name": "Battleaxes", "url": "/api/proficiencies/battleaxes"},{"index": "handaxes", "name": "Handaxes", "url": "/api/proficiencies/handaxes"},{"index": "light-hammers", "name": "Light hammers", "url": "/api/proficiencies/light-hammers"},{"index": "warhammers", "name": "Warhammers", "url": "/api/proficiencies/warhammers"}]',
+        '[{"index": "battleaxes", "name": "Battleaxes", "url": "/api/ruleset/5e/proficiencies/battleaxes"},{"index": "handaxes", "name": "Handaxes", "url": "/api/ruleset/5e/proficiencies/handaxes"},{"index": "light-hammers", "name": "Light hammers", "url": "/api/ruleset/5e/proficiencies/light-hammers"},{"index": "warhammers", "name": "Warhammers", "url": "/api/ruleset/5e/proficiencies/warhammers"}]',
         NULL,
         NULL,
-        '/api/traits/dwarven-combat-training'
+        '/api/ruleset/5e/traits/dwarven-combat-training'
     ),
     (
         'tool-proficiency',
         'Tool Proficiency',
         '[{"description":"You gain proficiency with the artisan’s tools of your choice: smith’s tools, brewer’s supplies, or mason’s tools."}]',
-        '[{"index": "dwarf", "name": "Dwarf", "url": "/api/races/dwarf"}]',
+        '[{"index": "dwarf", "name": "Dwarf", "url": "/api/ruleset/5e/races/dwarf"}]',
         '[]',
         '[]',
-        '{"choose": 1, "type": "proficiencies", "from": {"option_set_type": "options_array", "options": [{"option_type": "reference", "item": {"index": "smiths-tools", "name": "Smith’s Tools", "url": "/api/proficiencies/smiths-tools"}},{"option_type": "reference", "item": {"index": "brewers-supplies", "name": "Brewer’s Supplies", "url": "/api/proficiencies/brewers-supplies"}},{"option_type": "reference", "item": {"index": "masons-tools", "name": "Mason’s Tools", "url": "/api/proficiencies/masons-tools"}}]}}',
+        '{"choose": 1, "type": "proficiencies", "from": {"option_set_type": "options_array", "options": [{"option_type": "reference", "item": {"index": "smiths-tools", "name": "Smith’s Tools", "url": "/api/ruleset/5e/proficiencies/smiths-tools"}},{"option_type": "reference", "item": {"index": "brewers-supplies", "name": "Brewer’s Supplies", "url": "/api/ruleset/5e/proficiencies/brewers-supplies"}},{"option_type": "reference", "item": {"index": "masons-tools", "name": "Mason’s Tools", "url": "/api/ruleset/5e/proficiencies/masons-tools"}}]}}',
         NULL,
-        '/api/traits/tool-proficiency'
+        '/api/ruleset/5e/traits/tool-proficiency'
     ),
     (
         'stonecunning',
         'Stonecunning',
         '[{"description":"Whenever you make an Intelligence (History) check related to the origin of stonework, you are considered proficient in the History skill and add double your proficiency bonus to the check, instead of your normal proficiency bonus."}]',
-        '[{"index": "dwarf", "name": "Dwarf", "url": "/api/races/dwarf"}]',
+        '[{"index": "dwarf", "name": "Dwarf", "url": "/api/ruleset/5e/races/dwarf"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/stonecunning'
+        '/api/ruleset/5e/traits/stonecunning'
     ),
     (
         'dwarven-toughness',
         'Dwarven Toughness',
         '[{"description":"Your hit point maximum increases by 1, and it increases by 1 every time you gain a level."}]',
         '[]',
-        '[{"index": "hill-dwarf", "name": "Hill Dwarf", "url": "/api/subraces/hill-dwarf"}]',
+        '[{"index": "hill-dwarf", "name": "Hill Dwarf", "url": "/api/ruleset/5e/subraces/hill-dwarf"}]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/dwarven-toughness'
+        '/api/ruleset/5e/traits/dwarven-toughness'
     ),
     (
         'keen-senses',
         'Keen Senses',
         '[{"description":"You have proficiency in the Perception skill."}]',
-        '[{"index": "elf", "name": "Elf", "url": "/api/races/elf"}]',
+        '[{"index": "elf", "name": "Elf", "url": "/api/ruleset/5e/races/elf"}]',
         '[]',
-        '[{"index": "skill-perception", "name": "Skill: Perception", "url": "/api/proficiencies/skill-perception"}]',
+        '[{"index": "skill-perception", "name": "Skill: Perception", "url": "/api/ruleset/5e/proficiencies/skill-perception"}]',
         NULL,
         NULL,
-        '/api/traits/keen-senses'
+        '/api/ruleset/5e/traits/keen-senses'
     ),
     (
         'fey-ancestry',
         'Fey Ancestry',
         '[{"description":"You have advantage on saving throws against being charmed, and magic cannot put you to sleep."}]',
-        '[{"index": "elf", "name": "Elf", "url": "/api/races/elf"},{"index": "half-elf", "name": "Half-Elf", "url": "/api/races/half-elf"}]',
+        '[{"index": "elf", "name": "Elf", "url": "/api/ruleset/5e/races/elf"},{"index": "half-elf", "name": "Half-Elf", "url": "/api/ruleset/5e/races/half-elf"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/fey-ancestry'
+        '/api/ruleset/5e/traits/fey-ancestry'
     ),
     (
         'trance',
         'Trance',
         '[{"description":"Elves do not need to sleep. Instead, they meditate deeply, remaining semiconscious, for 4 hours a day. (The Common word for such meditation is \"trance.\") While meditating, you can dream after a fashion; such dreams are actually mental exercises that have become reflexive through years of practice. After resting this way, you gain the same benefit that a human does from 8 hours of sleep."}]',
-        '[{"index": "elf", "name": "Elf", "url": "/api/races/elf"}]',
+        '[{"index": "elf", "name": "Elf", "url": "/api/ruleset/5e/races/elf"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/trance'
+        '/api/ruleset/5e/traits/trance'
     ),
     (
         'elf-weapon-training',
         'Elf Weapon Training',
         '[{"description":"You have proficiency with the longsword, shortsword, shortbow, and longbow."}]',
         '[]',
-        '[{"index": "high-elf", "name": "High Elf", "url": "/api/subraces/high-elf"}]',
-        '[{"index": "longswords", "name": "Longswords", "url": "/api/proficiencies/longswords"},{"index": "shortswords", "name": "Shortswords", "url": "/api/proficiencies/shortswords"},{"index": "shortbows", "name": "Shortbows", "url": "/api/proficiencies/shortbows"},{"index": "longbows", "name": "Longbows", "url": "/api/proficiencies/longbows"}]',
+        '[{"index": "high-elf", "name": "High Elf", "url": "/api/ruleset/5e/subraces/high-elf"}]',
+        '[{"index": "longswords", "name": "Longswords", "url": "/api/ruleset/5e/proficiencies/longswords"},{"index": "shortswords", "name": "Shortswords", "url": "/api/ruleset/5e/proficiencies/shortswords"},{"index": "shortbows", "name": "Shortbows", "url": "/api/ruleset/5e/proficiencies/shortbows"},{"index": "longbows", "name": "Longbows", "url": "/api/ruleset/5e/proficiencies/longbows"}]',
         NULL,
         NULL,
-        '/api/traits/elf-weapon-training'
+        '/api/ruleset/5e/traits/elf-weapon-training'
     ),
     (
         'high-elf-cantrip',
         'High Elf Cantrip',
         '[{"description":"You know one cantrip of your choice from the wizard spell list. Intelligence is your spellcasting ability for it."}]',
         '[]',
-        '[{"index": "high-elf", "name": "High Elf", "url": "/api/subraces/high-elf"}]',
+        '[{"index": "high-elf", "name": "High Elf", "url": "/api/ruleset/5e/subraces/high-elf"}]',
         '[]',
-        '{"spell_options": {"choose": 1, "from": {"option_set_type": "options_array", "options": [{"option_type": "reference", "item": {"index": "light", "name": "Light", "url": "/api/spells/light"}},{"option_type": "reference", "item": {"index": "mage-hand", "name": "Mage Hand", "url": "/api/spells/mage-hand"}},{"option_type": "reference", "item": {"index": "mending", "name": "Mending", "url": "/api/spells/mending"}},{"option_type": "reference", "item": {"index": "message", "name": "Message", "url": "/api/spells/message"}},{"option_type": "reference", "item": {"index": "minor-illusion", "name": "Minor Illusion", "url": "/api/spells/minor-illusion"}},{"option_type": "reference", "item": {"index": "acid-splash", "name": "Acid Splash", "url": "/api/spells/acid-splash"}},{"option_type": "reference", "item": {"index": "prestidigitation", "name": "Prestidigitation", "url": "/api/spells/prestidigitation"}},{"option_type": "reference", "item": {"index": "ray-of-frost", "name": "Ray of Frost", "url": "/api/spells/ray-of-frost"}},{"option_type": "reference", "item": {"index": "shocking-grasp", "name": "Shocking Grasp", "url": "/api/spells/shocking-grasp"}},{"option_type": "reference", "item": {"index": "true-strike", "name": "True Strike", "url": "/api/spells/true-strike"}},{"option_type": "reference", "item": {"index": "chill-touch", "name": "Chill Touch", "url": "/api/spells/chill-touch"}},{"option_type": "reference", "item": {"index": "dancing-lights", "name": "Dancing Lights", "url": "/api/spells/dancing-lights"}},{"option_type": "reference", "item": {"index": "fire-bolt", "name": "Fire Bolt", "url": "/api/spells/fire-bolt"}},{"option_type": "reference", "item": {"index": "poison-spray", "name": "Poison Spray", "url": "/api/spells/poison-spray"}}]}}}',
+        '{"spell_options": {"choose": 1, "from": {"option_set_type": "options_array", "options": [{"option_type": "reference", "item": {"index": "light", "name": "Light", "url": "/api/ruleset/5e/spells/light"}},{"option_type": "reference", "item": {"index": "mage-hand", "name": "Mage Hand", "url": "/api/ruleset/5e/spells/mage-hand"}},{"option_type": "reference", "item": {"index": "mending", "name": "Mending", "url": "/api/ruleset/5e/spells/mending"}},{"option_type": "reference", "item": {"index": "message", "name": "Message", "url": "/api/ruleset/5e/spells/message"}},{"option_type": "reference", "item": {"index": "minor-illusion", "name": "Minor Illusion", "url": "/api/ruleset/5e/spells/minor-illusion"}},{"option_type": "reference", "item": {"index": "acid-splash", "name": "Acid Splash", "url": "/api/ruleset/5e/spells/acid-splash"}},{"option_type": "reference", "item": {"index": "prestidigitation", "name": "Prestidigitation", "url": "/api/ruleset/5e/spells/prestidigitation"}},{"option_type": "reference", "item": {"index": "ray-of-frost", "name": "Ray of Frost", "url": "/api/ruleset/5e/spells/ray-of-frost"}},{"option_type": "reference", "item": {"index": "shocking-grasp", "name": "Shocking Grasp", "url": "/api/ruleset/5e/spells/shocking-grasp"}},{"option_type": "reference", "item": {"index": "true-strike", "name": "True Strike", "url": "/api/ruleset/5e/spells/true-strike"}},{"option_type": "reference", "item": {"index": "chill-touch", "name": "Chill Touch", "url": "/api/ruleset/5e/spells/chill-touch"}},{"option_type": "reference", "item": {"index": "dancing-lights", "name": "Dancing Lights", "url": "/api/ruleset/5e/spells/dancing-lights"}},{"option_type": "reference", "item": {"index": "fire-bolt", "name": "Fire Bolt", "url": "/api/ruleset/5e/spells/fire-bolt"}},{"option_type": "reference", "item": {"index": "poison-spray", "name": "Poison Spray", "url": "/api/ruleset/5e/spells/poison-spray"}}]}}}',
         NULL,
-        '/api/traits/high-elf-cantrip'
+        '/api/ruleset/5e/traits/high-elf-cantrip'
     ),
     (
         'extra-language',
         'Extra Language',
         '[{"description":"You can speak, read, and write one extra language of your choice."}]',
         '[]',
-        '[{"index": "high-elf", "name": "High Elf", "url": "/api/subraces/high-elf"}]',
+        '[{"index": "high-elf", "name": "High Elf", "url": "/api/ruleset/5e/subraces/high-elf"}]',
         '[]',
-        '{"language_options": {"choose": 1, "type": "languages", "from": {"option_set_type": "options_array", "options": [{"option_type": "reference", "item": {"index": "dwarvish", "name": "Dwarvish", "url": "/api/languages/dwarvish"}},{"option_type": "reference", "item": {"index": "giant", "name": "Giant", "url": "/api/languages/giant"}},{"option_type": "reference", "item": {"index": "gnomish", "name": "Gnomish", "url": "/api/languages/gnomish"}},{"option_type": "reference", "item": {"index": "goblin", "name": "Goblin", "url": "/api/languages/goblin"}},{"option_type": "reference", "item": {"index": "halfling", "name": "Halfling", "url": "/api/languages/halfling"}},{"option_type": "reference", "item": {"index": "orc", "name": "Orc", "url": "/api/languages/orc"}},{"option_type": "reference", "item": {"index": "abyssal", "name": "Abyssal", "url": "/api/languages/abyssal"}},{"option_type": "reference", "item": {"index": "celestial", "name": "Celestial", "url": "/api/languages/celestial"}},{"option_type": "reference", "item": {"index": "draconic", "name": "Draconic", "url": "/api/languages/draconic"}},{"option_type": "reference", "item": {"index": "deep-speech", "name": "Deep Speech", "url": "/api/languages/deep-speech"}},{"option_type": "reference", "item": {"index": "infernal", "name": "Infernal", "url": "/api/languages/infernal"}},{"option_type": "reference", "item": {"index": "primordial", "name": "Primordial", "url": "/api/languages/primordial"}},{"option_type": "reference", "item": {"index": "sylvan", "name": "Sylvan", "url": "/api/languages/sylvan"}},{"option_type": "reference", "item": {"index": "undercommon", "name": "Undercommon", "url": "/api/languages/undercommon"}}]}}}',
+        '{"language_options": {"choose": 1, "type": "languages", "from": {"option_set_type": "options_array", "options": [{"option_type": "reference", "item": {"index": "dwarvish", "name": "Dwarvish", "url": "/api/ruleset/5e/languages/dwarvish"}},{"option_type": "reference", "item": {"index": "giant", "name": "Giant", "url": "/api/ruleset/5e/languages/giant"}},{"option_type": "reference", "item": {"index": "gnomish", "name": "Gnomish", "url": "/api/ruleset/5e/languages/gnomish"}},{"option_type": "reference", "item": {"index": "goblin", "name": "Goblin", "url": "/api/ruleset/5e/languages/goblin"}},{"option_type": "reference", "item": {"index": "halfling", "name": "Halfling", "url": "/api/ruleset/5e/languages/halfling"}},{"option_type": "reference", "item": {"index": "orc", "name": "Orc", "url": "/api/ruleset/5e/languages/orc"}},{"option_type": "reference", "item": {"index": "abyssal", "name": "Abyssal", "url": "/api/ruleset/5e/languages/abyssal"}},{"option_type": "reference", "item": {"index": "celestial", "name": "Celestial", "url": "/api/ruleset/5e/languages/celestial"}},{"option_type": "reference", "item": {"index": "draconic", "name": "Draconic", "url": "/api/ruleset/5e/languages/draconic"}},{"option_type": "reference", "item": {"index": "deep-speech", "name": "Deep Speech", "url": "/api/ruleset/5e/languages/deep-speech"}},{"option_type": "reference", "item": {"index": "infernal", "name": "Infernal", "url": "/api/ruleset/5e/languages/infernal"}},{"option_type": "reference", "item": {"index": "primordial", "name": "Primordial", "url": "/api/ruleset/5e/languages/primordial"}},{"option_type": "reference", "item": {"index": "sylvan", "name": "Sylvan", "url": "/api/ruleset/5e/languages/sylvan"}},{"option_type": "reference", "item": {"index": "undercommon", "name": "Undercommon", "url": "/api/ruleset/5e/languages/undercommon"}}]}}}',
         NULL,
-        '/api/traits/extra-language'
+        '/api/ruleset/5e/traits/extra-language'
     ),
     (
         'lucky',
         'Lucky',
         '[{"description":"When you roll a 1 on the d20 for an attack roll, ability check, or saving throw, you can reroll the die and must use the new roll."}]',
-        '[{"index": "halfling", "name": "Halfling", "url": "/api/races/halfling"}]',
+        '[{"index": "halfling", "name": "Halfling", "url": "/api/ruleset/5e/races/halfling"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/lucky'
+        '/api/ruleset/5e/traits/lucky'
     ),
     (
         'brave',
         'Brave',
         '[{"description":"You have advantage on saving throw against being frightened."}]',
-        '[{"index": "halfling", "name": "Halfling", "url": "/api/races/halfling"}]',
+        '[{"index": "halfling", "name": "Halfling", "url": "/api/ruleset/5e/races/halfling"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/brave'
+        '/api/ruleset/5e/traits/brave'
     ),
     (
         'halfling-nimbleness',
         'Halfling Nimbleness',
         '[{"description":"You can move through the space of any creature that is of a size larger than yours."}]',
-        '[{"index": "halfling", "name": "Halfling", "url": "/api/races/halfling"}]',
+        '[{"index": "halfling", "name": "Halfling", "url": "/api/ruleset/5e/races/halfling"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/halfling-nimbleness'
+        '/api/ruleset/5e/traits/halfling-nimbleness'
     ),
     (
         'naturally-stealthy',
         'Naturally Stealthy',
         '[{"description":"You can attempt to hide even when you are obscured only by a creature that is at least one size larger than you."}]',
         '[]',
-        '[{"index": "lightfoot-halfling", "name": "Lightfoot Halfling", "url": "/api/subraces/lightfoot-halfling"}]',
+        '[{"index": "lightfoot-halfling", "name": "Lightfoot Halfling", "url": "/api/ruleset/5e/subraces/lightfoot-halfling"}]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/naturally-stealthy'
+        '/api/ruleset/5e/traits/naturally-stealthy'
     ),
     (
         'breath-weapon',
         'Breath Weapon',
         '[{"description":"You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. After you use your breath weapon, you cannot use it again until you complete a short or long rest."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/breath-weapon'
+        '/api/ruleset/5e/traits/breath-weapon'
     ),
     (
         'damage-resistance',
         'Damage Resistance',
         '[{"description":"You have resistance to the damage type associated with your draconic ancestry."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/damage-resistance'
+        '/api/ruleset/5e/traits/damage-resistance'
     ),
     (
         'draconic-ancestry',
         'Draconic Ancestry',
         '[{"description":{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
-        '{"subtrait_options": {"choose": 1, "from": {"option_set_type": "options_array", "options": [{"option_type": "reference", "item": {"index": "draconic-ancestry-black", "name": "Draconic Ancestry (Black)", "url": "/api/traits/draconic-ancestry-black"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-blue", "name": "Draconic Ancestry (Blue)", "url": "/api/traits/draconic-ancestry-blue"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-brass", "name": "Draconic Ancestry (Brass)", "url": "/api/traits/draconic-ancestry-brass"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-bronze", "name": "Draconic Ancestry (Bronze)", "url": "/api/traits/draconic-ancestry-bronze"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-copper", "name": "Draconic Ancestry (Copper)", "url": "/api/traits/draconic-ancestry-copper"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-gold", "name": "Draconic Ancestry (Gold)", "url": "/api/traits/draconic-ancestry-gold"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-green", "name": "Draconic Ancestry (Green)", "url": "/api/traits/draconic-ancestry-green"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-red", "name": "Draconic Ancestry (Red)", "url": "/api/traits/draconic-ancestry-red"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-silver", "name": "Draconic Ancestry (Silver)", "url": "/api/traits/draconic-ancestry-silver"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-white", "name": "Draconic Ancestry (White)", "url": "/api/traits/draconic-ancestry-white"}}]}, "type": "trait"}}',
+        '{"subtrait_options": {"choose": 1, "from": {"option_set_type": "options_array", "options": [{"option_type": "reference", "item": {"index": "draconic-ancestry-black", "name": "Draconic Ancestry (Black)", "url": "/api/ruleset/5e/traits/draconic-ancestry-black"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-blue", "name": "Draconic Ancestry (Blue)", "url": "/api/ruleset/5e/traits/draconic-ancestry-blue"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-brass", "name": "Draconic Ancestry (Brass)", "url": "/api/ruleset/5e/traits/draconic-ancestry-brass"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-bronze", "name": "Draconic Ancestry (Bronze)", "url": "/api/ruleset/5e/traits/draconic-ancestry-bronze"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-copper", "name": "Draconic Ancestry (Copper)", "url": "/api/ruleset/5e/traits/draconic-ancestry-copper"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-gold", "name": "Draconic Ancestry (Gold)", "url": "/api/ruleset/5e/traits/draconic-ancestry-gold"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-green", "name": "Draconic Ancestry (Green)", "url": "/api/ruleset/5e/traits/draconic-ancestry-green"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-red", "name": "Draconic Ancestry (Red)", "url": "/api/ruleset/5e/traits/draconic-ancestry-red"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-silver", "name": "Draconic Ancestry (Silver)", "url": "/api/ruleset/5e/traits/draconic-ancestry-silver"}},{"option_type": "reference", "item": {"index": "draconic-ancestry-white", "name": "Draconic Ancestry (White)", "url": "/api/ruleset/5e/traits/draconic-ancestry-white"}}]}, "type": "trait"}}',
         NULL,
-        '/api/traits/draconic-ancestry'
+        '/api/ruleset/5e/traits/draconic-ancestry'
     ),
     (
         'draconic-ancestry-black',
         'Draconic Ancestry (Black)',
         '[{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
-        '{"damage_type": {"index": "acid", "name": "Acid", "url": "/api/damage-types/acid"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 30, "type": "line"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "acid", "name": "Acid", "url": "/api/damage-types/acid"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
-        '/api/traits/draconic-ancestry-black'
+        '{"damage_type": {"index": "acid", "name": "Acid", "url": "/api/ruleset/5e/damage-types/acid"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 30, "type": "line"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ruleset/5e/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "acid", "name": "Acid", "url": "/api/ruleset/5e/damage-types/acid"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
+        '/api/ruleset/5e/traits/draconic-ancestry-black'
     ),
     (
         'draconic-ancestry-blue',
         'Draconic Ancestry (Blue)',
         '[{"description":{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
-        '{"damage_type": {"index": "lightning", "name": "Lightning", "url": "/api/damage-types/lightning"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 30, "type": "line"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "lightning", "name": "Lightning", "url": "/api/damage-types/lightning"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
-        '/api/traits/draconic-ancestry-blue'
+        '{"damage_type": {"index": "lightning", "name": "Lightning", "url": "/api/ruleset/5e/damage-types/lightning"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 30, "type": "line"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ruleset/5e/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "lightning", "name": "Lightning", "url": "/api/ruleset/5e/damage-types/lightning"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
+        '/api/ruleset/5e/traits/draconic-ancestry-blue'
     ),
     (
         'draconic-ancestry-brass',
         'Draconic Ancestry (Brass)',
         '[{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
-        '{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/damage-types/fire"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 30, "type": "line"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/damage-types/fire"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
-        '/api/traits/draconic-ancestry-brass'
+        '{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/ruleset/5e/damage-types/fire"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 30, "type": "line"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ruleset/5e/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/ruleset/5e/damage-types/fire"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
+        '/api/ruleset/5e/traits/draconic-ancestry-brass'
     ),
     (
         'draconic-ancestry-bronze',
         'Draconic Ancestry (Bronze)',
         '[{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
-        '{"damage_type": {"index": "lightning", "name": "Lightning", "url": "/api/damage-types/lightning"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 30, "type": "line"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "lightning", "name": "Lightning", "url": "/api/damage-types/lightning"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
-        '/api/traits/draconic-ancestry-bronze'
+        '{"damage_type": {"index": "lightning", "name": "Lightning", "url": "/api/ruleset/5e/damage-types/lightning"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 30, "type": "line"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ruleset/5e/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "lightning", "name": "Lightning", "url": "/api/ruleset/5e/damage-types/lightning"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
+        '/api/ruleset/5e/traits/draconic-ancestry-bronze'
     ),
     (
         'draconic-ancestry-copper',
         'Draconic Ancestry (Copper)',
         '[{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
-        '{"damage_type": {"index": "acid", "name": "Acid", "url": "/api/damage-types/acid"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 30, "type": "line"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "acid", "name": "Acid", "url": "/api/damage-types/acid"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
-        '/api/traits/draconic-ancestry-copper'
+        '{"damage_type": {"index": "acid", "name": "Acid", "url": "/api/ruleset/5e/damage-types/acid"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 30, "type": "line"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ruleset/5e/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "acid", "name": "Acid", "url": "/api/ruleset/5e/damage-types/acid"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
+        '/api/ruleset/5e/traits/draconic-ancestry-copper'
     ),
     (
         'draconic-ancestry-gold',
         'Draconic Ancestry (Gold)',
         '[{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
-        '{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/damage-types/fire"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 15, "type": "cone"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/damage-types/fire"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
-        '/api/traits/draconic-ancestry-gold'
+        '{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/ruleset/5e/damage-types/fire"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 15, "type": "cone"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ruleset/5e/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/ruleset/5e/damage-types/fire"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
+        '/api/ruleset/5e/traits/draconic-ancestry-gold'
     ),
     (
         'draconic-ancestry-green',
         'Draconic Ancestry (Green)',
         '[{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
-        '{"damage_type": {"index": "poison", "name": "Poison", "url": "/api/damage-types/poison"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 15, "type": "cone"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "con", "name": "CON", "url": "/api/ability-scores/con"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "poison", "name": "Poison", "url": "/api/damage-types/poison"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
-        '/api/traits/draconic-ancestry-green'
+        '{"damage_type": {"index": "poison", "name": "Poison", "url": "/api/ruleset/5e/damage-types/poison"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 15, "type": "cone"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "con", "name": "CON", "url": "/api/ruleset/5e/ability-scores/con"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "poison", "name": "Poison", "url": "/api/ruleset/5e/damage-types/poison"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
+        '/api/ruleset/5e/traits/draconic-ancestry-green'
     ),
     (
         'draconic-ancestry-red',
         'Draconic Ancestry (Red)',
         '[{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
-        '{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/damage-types/fire"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 15, "type": "cone"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/damage-types/fire"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
-        '/api/traits/draconic-ancestry-red'
+        '{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/ruleset/5e/damage-types/fire"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 15, "type": "cone"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "dex", "name": "DEX", "url": "/api/ruleset/5e/ability-scores/dex"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "fire", "name": "Fire", "url": "/api/ruleset/5e/damage-types/fire"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
+        '/api/ruleset/5e/traits/draconic-ancestry-red'
     ),
     (
         'draconic-ancestry-silver',
         'Draconic Ancestry (Silver)',
         '[{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
-        '{"damage_type": {"index": "cold", "name": "Cold", "url": "/api/damage-types/cold"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 15, "type": "cone"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "con", "name": "CON", "url": "/api/ability-scores/con"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "cold", "name": "Cold", "url": "/api/damage-types/cold"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
-        '/api/traits/draconic-ancestry-silver'
+        '{"damage_type": {"index": "cold", "name": "Cold", "url": "/api/ruleset/5e/damage-types/cold"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 15, "type": "cone"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "con", "name": "CON", "url": "/api/ruleset/5e/ability-scores/con"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "cold", "name": "Cold", "url": "/api/ruleset/5e/damage-types/cold"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
+        '/api/ruleset/5e/traits/draconic-ancestry-silver'
     ),
     (
         'draconic-ancestry-white',
         'Draconic Ancestry (White)',
         '[{"description":"You have draconic ancestry. Choose one type of dragon from the Draconic Ancestry table. Your breath weapon and damage resistance are determined by the dragon type, as shown in the table."}]',
-        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/races/dragonborn"}]',
+        '[{"index": "dragonborn", "name": "Dragonborn", "url": "/api/ruleset/5e/races/dragonborn"}]',
         '[]',
         '[]',
         NULL,
-        '{"damage_type": {"index": "cold", "name": "Cold", "url": "/api/damage-types/cold"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 15, "type": "cone"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "con", "name": "CON", "url": "/api/ability-scores/con"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "cold", "name": "Cold", "url": "/api/damage-types/cold"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
-        '/api/traits/draconic-ancestry-white'
+        '{"damage_type": {"index": "cold", "name": "Cold", "url": "/api/ruleset/5e/damage-types/cold"}, "breath_weapon": {"name": "Breath Weapon", "desc": "You can use your action to exhale destructive energy. Your draconic ancestry determines the size, shape, and damage type of the exhalation. When you use your breath weapon, each creature in the area of the exhalation must make a saving throw, the type of which is determined by your draconic ancestry. The DC for this saving throw equals 8 + your Constitution modifier + your proficiency bonus. A creature takes 2d6 damage on a failed save, and half as much damage on a successful one. The damage increases to 3d6 at 6th level, 4d6 at 11th level, and 5d6 at 16th level. After you use your breath weapon, you can’t use it again until you complete a short or long rest.", "area_of_effect": {"size": 15, "type": "cone"}, "usage": {"type": "per rest", "times": 1}, "dc": {"dc_type": {"index": "con", "name": "CON", "url": "/api/ruleset/5e/ability-scores/con"}, "success_type": "half"}, "damage": [{"damage_type": {"index": "cold", "name": "Cold", "url": "/api/ruleset/5e/damage-types/cold"}, "damage_at_character_level": {"1": "2d6", "6": "3d6", "11": "4d6", "16": "5d6"}}]}}',
+        '/api/ruleset/5e/traits/draconic-ancestry-white'
     ),
     (
         'gnome-cunning',
         'Gnome Cunning',
         '[{"description":"You have advantage on all Intelligence, Wisdom, and Charisma saving throws against magic."}]',
-        '[{"index": "gnome", "name": "Gnome", "url": "/api/races/gnome"}]',
+        '[{"index": "gnome", "name": "Gnome", "url": "/api/ruleset/5e/races/gnome"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/gnome-cunning'
+        '/api/ruleset/5e/traits/gnome-cunning'
     ),
     (
         'artificers-lore',
         'Artificer’s Lore',
         '[{"description":"Whenever you make an Intelligence (History) check related to magic items, alchemical objects, or technological devices, you can add twice your proficiency bonus, instead of any proficiency bonus you normally apply."}]',
         '[]',
-        '[{"index": "rock-gnome", "name": "Rock Gnome", "url": "/api/subraces/rock-gnome"}]',
+        '[{"index": "rock-gnome", "name": "Rock Gnome", "url": "/api/ruleset/5e/subraces/rock-gnome"}]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/artificers-lore'
+        '/api/ruleset/5e/traits/artificers-lore'
     ),
     (
         'tinker',
         'Tinker',
         '[{"description":"You have proficiency with artisan’s tools (tinker’s tools). Using those tools, you can spend 1 hour and 10 gp worth of materials to construct a Tiny clockwork device (AC 5, 1 hp)."}]',
         '[]',
-        '[{"index": "rock-gnome", "name": "Rock Gnome", "url": "/api/subraces/rock-gnome"}]',
-        '[{"index": "tinkers-tools", "name": "Tinker’s Tools", "url": "/api/proficiencies/tinkers-tools"}]',
+        '[{"index": "rock-gnome", "name": "Rock Gnome", "url": "/api/ruleset/5e/subraces/rock-gnome"}]',
+        '[{"index": "tinkers-tools", "name": "Tinker’s Tools", "url": "/api/ruleset/5e/proficiencies/tinkers-tools"}]',
         NULL,
         NULL,
-        '/api/traits/tinker'
+        '/api/ruleset/5e/traits/tinker'
     ),
     (
         'skill-versatility',
         'Skill Versatility',
         '[{"description":"You gain proficiency in two skills of your choice."}]',
-        '[{"index": "half-elf", "name": "Half-Elf", "url": "/api/races/half-elf"}]',
+        '[{"index": "half-elf", "name": "Half-Elf", "url": "/api/ruleset/5e/races/half-elf"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/skill-versatility'
+        '/api/ruleset/5e/traits/skill-versatility'
     ),
     (
         'menacing',
         'Menacing',
         '[{"description":"You gain proficiency in the Intimidation skill."}]',
-        '[{"index": "half-orc", "name": "Half-Orc", "url": "/api/races/half-orc"}]',
+        '[{"index": "half-orc", "name": "Half-Orc", "url": "/api/ruleset/5e/races/half-orc"}]',
         '[]',
-        '[{"index": "skill-intimidation", "name": "Skill: Intimidation", "url": "/api/proficiencies/skill-intimidation"}]',
+        '[{"index": "skill-intimidation", "name": "Skill: Intimidation", "url": "/api/ruleset/5e/proficiencies/skill-intimidation"}]',
         NULL,
         NULL,
-        '/api/traits/menacing'
+        '/api/ruleset/5e/traits/menacing'
     ),
     (
         'relentless-endurance',
         'Relentless Endurance',
         '[{"description":"When you are reduced to 0 hit points but not killed outright, you can drop to 1 hit point instead. You cannot use this feature again until you finish a long rest."}]',
-        '[{"index": "half-orc", "name": "Half-Orc", "url": "/api/races/half-orc"}]',
+        '[{"index": "half-orc", "name": "Half-Orc", "url": "/api/ruleset/5e/races/half-orc"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/relentless-endurance'
+        '/api/ruleset/5e/traits/relentless-endurance'
     ),
     (
         'savage-attacks',
         'Savage Attacks',
         '[{"description":"When you score a critical hit with a melee weapon attack, you can roll one of the weapon’s damage dice one additional time and add it to the extra damage of the critical hit."}]',
-        '[{"index": "half-orc", "name": "Half-Orc", "url": "/api/races/half-orc"}]',
+        '[{"index": "half-orc", "name": "Half-Orc", "url": "/api/ruleset/5e/races/half-orc"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/savage-attacks'
+        '/api/ruleset/5e/traits/savage-attacks'
     ),
     (
         'hellish-resistance',
         'Hellish Resistance',
         '[{"description":"You have resistance to fire damage."}]',
-        '[{"index": "tiefling", "name": "Tiefling", "url": "/api/races/tiefling"}]',
+        '[{"index": "tiefling", "name": "Tiefling", "url": "/api/ruleset/5e/races/tiefling"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/hellish-resistance'
+        '/api/ruleset/5e/traits/hellish-resistance'
     ),
     (
         'infernal-legacy',
         'Infernal Legacy',
         '[{"description":"You know the thaumaturgy cantrip. When you reach 3rd level, you can cast the hellish rebuke spell as a 2nd-level spell once with this trait and regain the ability to do so when you finish a long rest."}]',
-        '[{"index": "tiefling", "name": "Tiefling", "url": "/api/races/tiefling"}]',
+        '[{"index": "tiefling", "name": "Tiefling", "url": "/api/ruleset/5e/races/tiefling"}]',
         '[]',
         '[]',
         NULL,
         NULL,
-        '/api/traits/infernal-legacy'
+        '/api/ruleset/5e/traits/infernal-legacy'
     );

@@ -4,33 +4,34 @@ DROP TABLE IF EXISTS conditions;
 CREATE TABLE conditions (
     index VARCHAR PRIMARY KEY,
     name VARCHAR,
+    description TEXT,
     url VARCHAR
 );
 
 CREATE TABLE condition_descriptions (
-    condition_index VARCHAR REFERENCES conditions(index),
+    index VARCHAR REFERENCES conditions(index),
     description TEXT
 );
 
 INSERT INTO conditions (index, name, url) 
 VALUES
-('blinded', 'Blinded', '/api/conditions/blinded'),
-('charmed', 'Charmed', '/api/conditions/charmed'),
-('deafened', 'Deafened', '/api/conditions/deafened'),
-('frightened', 'Frightened', '/api/conditions/frightened'),
-('grappled', 'Grappled', '/api/conditions/grappled'),
-('incapacitated', 'Incapacitated', '/api/conditions/incapacitated'),
-('invisible', 'Invisible', '/api/conditions/invisible'),
-('paralyzed', 'Paralyzed', '/api/conditions/paralyzed'),
-('petrified', 'Petrified', '/api/conditions/petrified'),
-('poisoned', 'Poisoned', '/api/conditions/poisoned'),
-('prone', 'Prone', '/api/conditions/prone'),
-('restrained', 'Restrained', '/api/conditions/restrained'),
-('stunned', 'Stunned', '/api/conditions/stunned'),
-('unconscious', 'Unconscious', '/api/conditions/unconscious'),
-('exhaustion', 'Exhaustion', '/api/conditions/exhaustion');
+('blinded', 'Blinded', '/api/ruleset/5e/conditions/blinded'),
+('charmed', 'Charmed', '/api/ruleset/5e/conditions/charmed'),
+('deafened', 'Deafened', '/api/ruleset/5e/conditions/deafened'),
+('frightened', 'Frightened', '/api/ruleset/5e/conditions/frightened'),
+('grappled', 'Grappled', '/api/ruleset/5e/conditions/grappled'),
+('incapacitated', 'Incapacitated', '/api/ruleset/5e/conditions/incapacitated'),
+('invisible', 'Invisible', '/api/ruleset/5e/conditions/invisible'),
+('paralyzed', 'Paralyzed', '/api/ruleset/5e/conditions/paralyzed'),
+('petrified', 'Petrified', '/api/ruleset/5e/conditions/petrified'),
+('poisoned', 'Poisoned', '/api/ruleset/5e/conditions/poisoned'),
+('prone', 'Prone', '/api/ruleset/5e/conditions/prone'),
+('restrained', 'Restrained', '/api/ruleset/5e/conditions/restrained'),
+('stunned', 'Stunned', '/api/ruleset/5e/conditions/stunned'),
+('unconscious', 'Unconscious', '/api/ruleset/5e/conditions/unconscious'),
+('exhaustion', 'Exhaustion', '/api/ruleset/5e/conditions/exhaustion');
 
-INSERT INTO condition_descriptions (condition_index, description) 
+INSERT INTO condition_descriptions (index, description) 
 VALUES
 ('blinded', '- A blinded creature can''t see and automatically fails any ability check that requires sight.'),
 ('blinded', '- Attack rolls against the creature have advantage, and the creature''s attack rolls have disadvantage.'),

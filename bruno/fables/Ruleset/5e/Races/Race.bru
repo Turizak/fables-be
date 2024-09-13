@@ -1,0 +1,19 @@
+meta {
+  name: Race
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{base_url}}/ruleset/5e/races/:index
+  body: none
+  auth: bearer
+}
+
+params:path {
+  index: tiefling
+}
+
+auth:bearer {
+  token: {{token}}
+}

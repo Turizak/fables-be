@@ -1,0 +1,15 @@
+meta {
+  name: All Ability Scores
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/ruleset/5e/ability-scores
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
