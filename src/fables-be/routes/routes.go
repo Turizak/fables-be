@@ -13,6 +13,7 @@ import (
 	"github.com/Turizak/fables-be/ruleset/5e/proficiencies"
 	"github.com/Turizak/fables-be/ruleset/5e/race"
 	"github.com/Turizak/fables-be/ruleset/5e/skill"
+	"github.com/Turizak/fables-be/ruleset/5e/subrace"
 	"github.com/Turizak/fables-be/ruleset/5e/trait"
 	"github.com/gin-gonic/gin"
 )
@@ -78,4 +79,7 @@ func Routes(router *gin.Engine) {
 	// Classes
 	router.GET("/api/ruleset/5e/classes", class.GetAllClasses5e)
 	router.GET("/api/ruleset/5e/classes/:index", class.GetClassByIndex5e)
+	// Subraces
+	router.GET("/api/ruleset/5e/subraces", subrace.GetAllSubraces5e)
+	router.GET("/api/ruleset/5e/subraces/:index", subrace.GetSubraceByIndex5e)
 }
