@@ -31,7 +31,7 @@ VALUES
 ('unconscious', 'Unconscious', '/api/conditions/unconscious'),
 ('exhaustion', 'Exhaustion', '/api/conditions/exhaustion');
 
-INSERT INTO condition_descriptions (condition_index, description) 
+INSERT INTO condition_descriptions (index, description) 
 VALUES
 ('blinded', '- A blinded creature can''t see and automatically fails any ability check that requires sight.'),
 ('blinded', '- Attack rolls against the creature have advantage, and the creature''s attack rolls have disadvantage.'),
