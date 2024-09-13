@@ -4,11 +4,12 @@ DROP TABLE IF EXISTS conditions;
 CREATE TABLE conditions (
     index VARCHAR PRIMARY KEY,
     name VARCHAR,
+    description TEXT,
     url VARCHAR
 );
 
 CREATE TABLE condition_descriptions (
-    condition_index VARCHAR REFERENCES conditions(index),
+    index VARCHAR REFERENCES conditions(index),
     description TEXT
 );
 
