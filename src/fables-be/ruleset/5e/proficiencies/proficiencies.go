@@ -8,7 +8,7 @@ import (
 	"gorm.io/datatypes"
 )
 
-type Proficiency struct {
+type Proficiencie struct {
 	Index     string         `gorm:"primaryKey;type:varchar" json:"index"`
 	Type      string         `gorm:"type:varchar" json:"type"`
 	Name      string         `gorm:"type:varchar" json:"name"`
@@ -34,9 +34,9 @@ func GetAllProficiencies5e(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not retrieve proficiencies. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	responseProficiencies := []Proficiency{}
+	responseProficiencies := []Proficiencie{}
 	for _, proficiency := range proficiencies {
-		responseProficiency := Proficiency{
+		responseProficiency := Proficiencie{
 			Index:     proficiency.Index,
 			Type:      proficiency.Type,
 			Name:      proficiency.Name,
@@ -67,7 +67,7 @@ func GetProficiencyByIndex5e(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not retrieve proficiency. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	responseProficiency := Proficiency{
+	responseProficiency := Proficiencie{
 		Index:     proficiency.Index,
 		Type:      proficiency.Type,
 		Name:      proficiency.Name,
