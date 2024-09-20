@@ -46,12 +46,13 @@ type Character struct {
 	LastName     string             `json:"lastName" gorm:"column:last_name;type:varchar;not null"`
 	Race         string             `json:"race" gorm:"column:race;type:varchar;not null"`
 	Class        string             `json:"class" gorm:"column:class;type:varchar;not null"`
-	Age          int                `json:"age" gorm:"column:age;not null"`
-	Height       int                `json:"height" gorm:"column:height;not null"`
-	Weight       int                `json:"weight" gorm:"column:weight;not null"`
-	EyeColor     string             `json:"eyeColor" gorm:"column:eye_color;type:varchar;not null"`
-	SkinColor    string             `json:"skinColor" gorm:"column:skin_color;type:varchar;not null"`
-	HairColor    string             `json:"hairColor" gorm:"column:hair_color;type:varchar;not null"`
+	Age          int                `json:"age" gorm:"column:age"`
+	Height       int                `json:"height" gorm:"column:height"`
+	Weight       int                `json:"weight" gorm:"column:weight"`
+	EyeColor     string             `json:"eyeColor" gorm:"column:eye_color;type:varchar"`
+	SkinColor    string             `json:"skinColor" gorm:"column:skin_color;type:varchar"`
+	HairColor    string             `json:"hairColor" gorm:"column:hair_color;type:varchar"`
+	Gender       string             `json:"gender" gorm:"column:gender;type:varchar"`
 	Ruleset      string             `json:"ruleset" gorm:"column:ruleset;type:varchar;not null"`
 	Created      utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
 	LastUpdated  utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`

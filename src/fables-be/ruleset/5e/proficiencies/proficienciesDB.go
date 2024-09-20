@@ -4,18 +4,18 @@ import (
 	"github.com/Turizak/fables-be/database"
 )
 
-func GetAllProficiencies5eDB() ([]Proficiency, error) {
-	proficiencys := []Proficiency{}
-	if result := database.DB.Find(&proficiencys); result.Error != nil {
+func GetAllProficiencies5eDB() ([]Proficiencie, error) {
+	proficiencie := []Proficiencie{}
+	if result := database.DB.Find(&proficiencie); result.Error != nil {
 		return nil, result.Error
 	}
-	return proficiencys, nil
+	return proficiencie, nil
 }
 
-func GetProficiencyByIndex5eDB(index string) (*Proficiency, error) {
-	proficiency := new(Proficiency)
-	if result := database.DB.Where("index = ?", index).First(proficiency); result.Error != nil {
+func GetProficiencyByIndex5eDB(index string) (*Proficiencie, error) {
+	proficiencie := new(Proficiencie)
+	if result := database.DB.Where("class_index = ?", index).First(proficiencie); result.Error != nil {
 		return nil, result.Error
 	}
-	return proficiency, nil
+	return proficiencie, nil
 }
