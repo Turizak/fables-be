@@ -1,5 +1,4 @@
 DROP TABLE IF EXISTS proficiency_choices;
-DROP TABLE IF EXISTS proficiencies;
 DROP TABLE IF EXISTS saving_throws;
 DROP TABLE IF EXISTS starting_equipment;
 DROP TABLE IF EXISTS starting_equipment_options;
@@ -19,29 +18,22 @@ CREATE TABLE classes (
 );
 
 CREATE TABLE proficiency_choices (
-    class_index VARCHAR REFERENCES classes(index),
+    index VARCHAR REFERENCES classes(index),
     description VARCHAR,
     choose_number INT,
     proficiency_type VARCHAR,
     proficiency_options JSONB
 );
 
-CREATE TABLE proficiencies (
-    class_index VARCHAR REFERENCES classes(index),
-    proficiency_index VARCHAR,
-    proficiency_name VARCHAR,
-    proficiency_url VARCHAR
-);
-
 CREATE TABLE saving_throws (
-    class_index VARCHAR REFERENCES classes(index),
+    index VARCHAR REFERENCES classes(index),
     saving_throw_index VARCHAR,
     saving_throw_name VARCHAR,
     saving_throw_url VARCHAR
 );
 
 CREATE TABLE starting_equipment (
-    class_index VARCHAR REFERENCES classes(index),
+    index VARCHAR REFERENCES classes(index),
     equipment_index VARCHAR,
     equipment_name VARCHAR,
     equipment_url VARCHAR,
@@ -49,7 +41,7 @@ CREATE TABLE starting_equipment (
 );
 
 CREATE TABLE starting_equipment_options (
-    class_index VARCHAR REFERENCES classes(index),
+    index VARCHAR REFERENCES classes(index),
     description TEXT,
     choose INTEGER,
     equipment_type VARCHAR,
@@ -190,7 +182,7 @@ VALUES (
     '/api/ruleset/5e/classes/wizard'
 );
 
-INSERT INTO proficiency_choices (class_index, description, choose_number, proficiency_type, proficiency_options)
+INSERT INTO proficiency_choices (index, description, choose_number, proficiency_type, proficiency_options)
 VALUES 
 ('barbarian', 'Choose two from Animal Handling, Athletics, Intimidation, Nature, Perception, and Survival', 2, 'proficiencies', '[{"option_type":"reference","item":{"index":"skill-animal-handling","name":"Skill: Animal Handling","url":"/api/ruleset/5e/proficiencies/skill-animal-handling"}},{"option_type":"reference","item":{"index":"skill-athletics","name":"Skill: Athletics","url":"/api/ruleset/5e/proficiencies/skill-athletics"}},{"option_type":"reference","item":{"index":"skill-intimidation","name":"Skill: Intimidation","url":"/api/ruleset/5e/proficiencies/skill-intimidation"}},{"option_type":"reference","item":{"index":"skill-nature","name":"Skill: Nature","url":"/api/ruleset/5e/proficiencies/skill-nature"}},{"option_type":"reference","item":{"index":"skill-perception","name":"Skill: Perception","url":"/api/ruleset/5e/proficiencies/skill-perception"}},{"option_type":"reference","item":{"index":"skill-survival","name":"Skill: Survival","url":"/api/ruleset/5e/proficiencies/skill-survival"}}]'),
 ('bard', 'Choose any three', 3, 'proficiencies', '[{"option_type":"reference","item":{"index":"skill-acrobatics","name":"Skill: Acrobatics","url":"/api/ruleset/5e/proficiencies/skill-acrobatics"}},{"option_type":"reference","item":{"index":"skill-animal-handling","name":"Skill: Animal Handling","url":"/api/ruleset/5e/proficiencies/skill-animal-handling"}},{"option_type":"reference","item":{"index":"skill-arcana","name":"Skill: Arcana","url":"/api/ruleset/5e/proficiencies/skill-arcana"}},{"option_type":"reference","item":{"index":"skill-athletics","name":"Skill: Athletics","url":"/api/ruleset/5e/proficiencies/skill-athletics"}},{"option_type":"reference","item":{"index":"skill-deception","name":"Skill: Deception","url":"/api/ruleset/5e/proficiencies/skill-deception"}},{"option_type":"reference","item":{"index":"skill-history","name":"Skill: History","url":"/api/ruleset/5e/proficiencies/skill-history"}},{"option_type":"reference","item":{"index":"skill-insight","name":"Skill: Insight","url":"/api/ruleset/5e/proficiencies/skill-insight"}},{"option_type":"reference","item":{"index":"skill-intimidation","name":"Skill: Intimidation","url":"/api/ruleset/5e/proficiencies/skill-intimidation"}},{"option_type":"reference","item":{"index":"skill-investigation","name":"Skill: Investigation","url":"/api/ruleset/5e/proficiencies/skill-investigation"}},{"option_type":"reference","item":{"index":"skill-medicine","name":"Skill: Medicine","url":"/api/ruleset/5e/proficiencies/skill-medicine"}},{"option_type":"reference","item":{"index":"skill-nature","name":"Skill: Nature","url":"/api/ruleset/5e/proficiencies/skill-nature"}},{"option_type":"reference","item":{"index":"skill-perception","name":"Skill: Perception","url":"/api/ruleset/5e/proficiencies/skill-perception"}},{"option_type":"reference","item":{"index":"skill-performance","name":"Skill: Performance","url":"/api/ruleset/5e/proficiencies/skill-performance"}},{"option_type":"reference","item":{"index":"skill-persuasion","name":"Skill: Persuasion","url":"/api/ruleset/5e/proficiencies/skill-persuasion"}},{"option_type":"reference","item":{"index":"skill-religion","name":"Skill: Religion","url":"/api/ruleset/5e/proficiencies/skill-religion"}},{"option_type":"reference","item":{"index":"skill-sleight-of-hand","name":"Skill: Sleight of Hand","url":"/api/ruleset/5e/proficiencies/skill-sleight-of-hand"}},{"option_type":"reference","item":{"index":"skill-stealth","name":"Skill: Stealth","url":"/api/ruleset/5e/proficiencies/skill-stealth"}},{"option_type":"reference","item":{"index":"skill-survival","name":"Skill: Survival","url":"/api/ruleset/5e/proficiencies/skill-survival"}}]'),
@@ -207,97 +199,7 @@ VALUES
 ('warlock', 'Choose two skills from Arcana, Deception, History, Intimidation, Investigation, Nature, and Religion', 2, 'proficiencies', '[{"option_type":"reference","item":{"index":"skill-arcana","name":"Skill: Arcana","url":"/api/ruleset/5e/proficiencies/skill-arcana"}},{"option_type":"reference","item":{"index":"skill-deception","name":"Skill: Deception","url":"/api/ruleset/5e/proficiencies/skill-deception"}},{"option_type":"reference","item":{"index":"skill-history","name":"Skill: History","url":"/api/ruleset/5e/proficiencies/skill-history"}},{"option_type":"reference","item":{"index":"skill-intimidation","name":"Skill: Intimidation","url":"/api/ruleset/5e/proficiencies/skill-intimidation"}},{"option_type":"reference","item":{"index":"skill-investigation","name":"Skill: Investigation","url":"/api/ruleset/5e/proficiencies/skill-investigation"}},{"option_type":"reference","item":{"index":"skill-nature","name":"Skill: Nature","url":"/api/ruleset/5e/proficiencies/skill-nature"}},{"option_type":"reference","item":{"index":"skill-religion","name":"Skill: Religion","url":"/api/ruleset/5e/proficiencies/skill-religion"}}]'),
 ('wizard', 'Choose two from Arcana, History, Insight, Investigation, Medicine, and Religion', 2, 'proficiencies','[{"option_type": "reference", "item": {"index": "skill-arcana", "name": "Skill: Arcana", "url": "/api/ruleset/5e/proficiencies/skill-arcana"}},{"option_type": "reference", "item": {"index": "skill-history", "name": "Skill: History", "url": "/api/ruleset/5e/proficiencies/skill-history"}},{"option_type": "reference", "item": {"index": "skill-insight", "name": "Skill: Insight", "url": "/api/ruleset/5e/proficiencies/skill-insight"}},{"option_type": "reference", "item": {"index": "skill-investigation", "name": "Skill: Investigation", "url": "/api/ruleset/5e/proficiencies/skill-investigation"}},{"option_type": "reference", "item": {"index": "skill-medicine", "name": "Skill: Medicine", "url": "/api/ruleset/5e/proficiencies/skill-medicine"}},{"option_type": "reference", "item": {"index": "skill-religion", "name": "Skill: Religion", "url": "/api/ruleset/5e/proficiencies/skill-religion"}}]');
 
-INSERT INTO proficiencies (class_index, proficiency_index, proficiency_name, proficiency_url)
-VALUES
-('barbarian', 'light-armor', 'Light Armor', '/api/ruleset/5e/proficiencies/light-armor'),
-('barbarian', 'medium-armor', 'Medium Armor', '/api/ruleset/5e/proficiencies/medium-armor'),
-('barbarian', 'shields', 'Shields', '/api/ruleset/5e/proficiencies/shields'),
-('barbarian', 'simple-weapons', 'Simple Weapons', '/api/ruleset/5e/proficiencies/simple-weapons'),
-('barbarian', 'martial-weapons', 'Martial Weapons', '/api/ruleset/5e/proficiencies/martial-weapons'),
-('barbarian', 'saving-throw-str', 'Saving Throw: STR', '/api/ruleset/5e/proficiencies/saving-throw-str'),
-('barbarian', 'saving-throw-con', 'Saving Throw: CON', '/api/ruleset/5e/proficiencies/saving-throw-con'),
-('bard', 'light-armor', 'Light Armor', '/api/ruleset/5e/proficiencies/light-armor'),
-('bard', 'simple-weapons', 'Simple Weapons', '/api/ruleset/5e/proficiencies/simple-weapons'),
-('bard', 'longswords', 'Longswords', '/api/ruleset/5e/proficiencies/longswords'),
-('bard', 'rapiers', 'Rapiers', '/api/ruleset/5e/proficiencies/rapiers'),
-('bard', 'shortswords', 'Shortswords', '/api/ruleset/5e/proficiencies/shortswords'),
-('bard', 'hand-crossbows', 'Hand crossbows', '/api/ruleset/5e/proficiencies/hand-crossbows'),
-('bard', 'saving-throw-dex', 'Saving Throw: DEX', '/api/ruleset/5e/proficiencies/saving-throw-dex'),
-('bard', 'saving-throw-cha', 'Saving Throw: CHA', '/api/ruleset/5e/proficiencies/saving-throw-cha'),
-('cleric', 'light-armor', 'Light Armor', '/api/ruleset/5e/proficiencies/light-armor'),
-('cleric', 'medium-armor', 'Medium Armor', '/api/ruleset/5e/proficiencies/medium-armor'),
-('cleric', 'shields', 'Shields', '/api/ruleset/5e/proficiencies/shields'),
-('cleric', 'simple-weapons', 'Simple Weapons', '/api/ruleset/5e/proficiencies/simple-weapons'),
-('cleric', 'saving-throw-wis', 'Saving Throw: WIS', '/api/ruleset/5e/proficiencies/saving-throw-wis'),
-('cleric', 'saving-throw-cha', 'Saving Throw: CHA', '/api/ruleset/5e/proficiencies/saving-throw-cha'),
-('druid', 'light-armor', 'Light Armor', '/api/ruleset/5e/proficiencies/light-armor'),
-('druid', 'medium-armor', 'Medium Armor', '/api/ruleset/5e/proficiencies/medium-armor'),
-('druid', 'shields', 'Shields', '/api/ruleset/5e/proficiencies/shields'),
-('druid', 'clubs', 'Clubs', '/api/ruleset/5e/proficiencies/clubs'),
-('druid', 'daggers', 'Daggers', '/api/ruleset/5e/proficiencies/daggers'),
-('druid', 'javelins', 'Javelins', '/api/ruleset/5e/proficiencies/javelins'),
-('druid', 'maces', 'Maces', '/api/ruleset/5e/proficiencies/maces'),
-('druid', 'quarterstaffs', 'Quarterstaffs', '/api/ruleset/5e/proficiencies/quarterstaffs'),
-('druid', 'sickles', 'Sickles', '/api/ruleset/5e/proficiencies/sickles'),
-('druid', 'spears', 'Spears', '/api/ruleset/5e/proficiencies/spears'),
-('druid', 'darts', 'Darts', '/api/ruleset/5e/proficiencies/darts'),
-('druid', 'slings', 'Slings', '/api/ruleset/5e/proficiencies/slings'),
-('druid', 'scimitars', 'Scimitars', '/api/ruleset/5e/proficiencies/scimitars'),
-('druid', 'herbalism-kit', 'Herbalism Kit', '/api/ruleset/5e/proficiencies/herbalism-kit'),
-('druid', 'saving-throw-int', 'Saving Throw: INT', '/api/ruleset/5e/proficiencies/saving-throw-int'),
-('druid', 'saving-throw-wis', 'Saving Throw: WIS', '/api/ruleset/5e/proficiencies/saving-throw-wis'),
-('fighter', 'all-armor', 'All armor', '/api/ruleset/5e/proficiencies/all-armor'),
-('fighter', 'shields', 'Shields', '/api/ruleset/5e/proficiencies/shields'),
-('fighter', 'simple-weapons', 'Simple Weapons', '/api/ruleset/5e/proficiencies/simple-weapons'),
-('fighter', 'martial-weapons', 'Martial Weapons', '/api/ruleset/5e/proficiencies/martial-weapons'),
-('fighter', 'saving-throw-str', 'Saving Throw: STR', '/api/ruleset/5e/proficiencies/saving-throw-str'),
-('fighter', 'saving-throw-con', 'Saving Throw: CON', '/api/ruleset/5e/proficiencies/saving-throw-con'),
-('monk', 'simple-weapons', 'Simple Weapons', '/api/ruleset/5e/proficiencies/simple-weapons'),
-('monk', 'shortswords', 'Shortswords', '/api/ruleset/5e/proficiencies/shortswords'),
-('monk', 'saving-throw-dex', 'Saving Throw: DEX', '/api/ruleset/5e/proficiencies/saving-throw-dex'),
-('monk', 'saving-throw-str', 'Saving Throw: STR', '/api/ruleset/5e/proficiencies/saving-throw-str'),
-('paladin', 'all-armor', 'All armor', '/api/ruleset/5e/proficiencies/all-armor'),
-('paladin', 'shields', 'Shields', '/api/ruleset/5e/proficiencies/shields'),
-('paladin', 'simple-weapons', 'Simple Weapons', '/api/ruleset/5e/proficiencies/simple-weapons'),
-('paladin', 'martial-weapons', 'Martial Weapons', '/api/ruleset/5e/proficiencies/martial-weapons'),
-('paladin', 'saving-throw-wis', 'Saving Throw: WIS', '/api/ruleset/5e/proficiencies/saving-throw-wis'),
-('paladin', 'saving-throw-cha', 'Saving Throw: CHA', '/api/ruleset/5e/proficiencies/saving-throw-cha'),
-('ranger', 'light-armor', 'Light Armor', '/api/ruleset/5e/proficiencies/light-armor'),
-('ranger', 'medium-armor', 'Medium Armor', '/api/ruleset/5e/proficiencies/medium-armor'),
-('ranger', 'shields', 'Shields', '/api/ruleset/5e/proficiencies/shields'),
-('ranger', 'simple-weapons', 'Simple Weapons', '/api/ruleset/5e/proficiencies/simple-weapons'),
-('ranger', 'martial-weapons', 'Martial Weapons', '/api/ruleset/5e/proficiencies/martial-weapons'),
-('ranger', 'saving-throw-dex', 'Saving Throw: DEX', '/api/ruleset/5e/proficiencies/saving-throw-dex'),
-('ranger', 'saving-throw-str', 'Saving Throw: STR', '/api/ruleset/5e/proficiencies/saving-throw-str'),
-('rogue', 'light-armor', 'Light Armor', '/api/ruleset/5e/proficiencies/light-armor'),
-('rogue', 'simple-weapons', 'Simple Weapons', '/api/ruleset/5e/proficiencies/simple-weapons'),
-('rogue', 'longswords', 'Longswords', '/api/ruleset/5e/proficiencies/longswords'),
-('rogue', 'rapiers', 'Rapiers', '/api/ruleset/5e/proficiencies/rapiers'),
-('rogue', 'shortswords', 'Shortswords', '/api/ruleset/5e/proficiencies/shortswords'),
-('rogue', 'hand-crossbows', 'Hand crossbows', '/api/ruleset/5e/proficiencies/hand-crossbows'),
-('rogue', 'thieves-tools', 'Thieves’ Tools', '/api/ruleset/5e/proficiencies/thieves-tools'),
-('rogue', 'saving-throw-dex', 'Saving Throw: DEX', '/api/ruleset/5e/proficiencies/saving-throw-dex'),
-('rogue', 'saving-throw-int', 'Saving Throw: INT', '/api/ruleset/5e/proficiencies/saving-throw-int'),
-('sorcerer', 'daggers', 'Daggers', '/api/ruleset/5e/proficiencies/daggers'),
-('sorcerer', 'darts', 'Darts', '/api/ruleset/5e/proficiencies/darts'),
-('sorcerer', 'slings', 'Slings', '/api/ruleset/5e/proficiencies/slings'),
-('sorcerer', 'quarterstaffs', 'Quarterstaffs', '/api/ruleset/5e/proficiencies/quarterstaffs'),
-('sorcerer', 'crossbows-light', 'Crossbows, light', '/api/ruleset/5e/proficiencies/crossbows-light'),
-('sorcerer', 'saving-throw-con', 'Saving Throw: CON', '/api/ruleset/5e/proficiencies/saving-throw-con'),
-('sorcerer', 'saving-throw-cha', 'Saving Throw: CHA', '/api/ruleset/5e/proficiencies/saving-throw-cha'),
-('warlock', 'light-armor', 'Light Armor', '/api/ruleset/5e/proficiencies/light-armor'),
-('warlock', 'simple-weapons', 'Simple Weapons', '/api/ruleset/5e/proficiencies/simple-weapons'),
-('warlock', 'saving-throw-wis', 'Saving Throw: WIS', '/api/ruleset/5e/proficiencies/saving-throw-wis'),
-('warlock', 'saving-throw-cha', 'Saving Throw: CHA', '/api/ruleset/5e/proficiencies/saving-throw-cha'),
-('wizard', 'daggers', 'Daggers', '/api/ruleset/5e/proficiencies/daggers'),
-('wizard', 'darts', 'Darts', '/api/ruleset/5e/proficiencies/darts'),
-('wizard', 'slings', 'Slings', '/api/ruleset/5e/proficiencies/slings'),
-('wizard', 'quarterstaffs', 'Quarterstaffs', '/api/ruleset/5e/proficiencies/quarterstaffs'),
-('wizard', 'crossbows-light', 'Crossbows, light', '/api/ruleset/5e/proficiencies/crossbows-light'),
-('wizard', 'saving-throw-int', 'Saving Throw: INT', '/api/ruleset/5e/proficiencies/saving-throw-int'),
-('wizard', 'saving-throw-wis', 'Saving Throw: WIS', '/api/ruleset/5e/proficiencies/saving-throw-wis');
-
-INSERT INTO saving_throws (class_index, saving_throw_index, saving_throw_name, saving_throw_url)
+INSERT INTO saving_throws (index, saving_throw_index, saving_throw_name, saving_throw_url)
 VALUES 
 ('barbarian', 'str', 'STR', '/api/ruleset/5e/ability-scores/str'),
 ('barbarian', 'con', 'CON', '/api/ruleset/5e/ability-scores/con'),
@@ -324,7 +226,7 @@ VALUES
 ('wizard', 'int', 'INT', '/api/ruleset/5e/ability-scores/int'),
 ('wizard', 'wis', 'WIS', '/api/ruleset/5e/ability-scores/wis');
 
-INSERT INTO starting_equipment (class_index, equipment_index, equipment_name, equipment_url, quantity)
+INSERT INTO starting_equipment (index, equipment_index, equipment_name, equipment_url, quantity)
 VALUES
 ('barbarian', 'explorers-pack', 'Explorer''s Pack', '/api/ruleset/5e/equipment/explorers-pack', 1),
 ('barbarian', 'javelin', 'Javelin', '/api/ruleset/5e/equipment/javelin', 4),
@@ -345,7 +247,7 @@ VALUES
 ('warlock', 'leather-armor', 'Leather Armor', '/api/ruleset/5e/equipment/leather-armor', 1),
 ('wizard', 'spellbook', 'Spellbook', '/api/ruleset/5e/equipment/spellbook', 1);
 
-INSERT INTO starting_equipment_options (class_index, description, choose, equipment_type, equipment_options)
+INSERT INTO starting_equipment_options (index, description, choose, equipment_type, equipment_options)
 VALUES
 ('barbarian', '(a) a greataxe or (b) any martial melee weapon', 1, 'equipment', '[{"option_type":"counted_reference","count":1,"of":{"index":"greataxe","name":"Greataxe","url":"/api/ruleset/5e/equipment/greataxe"}},{"option_type":"choice","choice":{"desc":"any martial melee weapon","choose":1,"type":"equipment","from":{"option_set_type":"equipment_category","equipment_category":{"index":"martial-melee-weapons","name":"Martial Melee Weapons","url":"/api/ruleset/5e/equipment-categories/martial-melee-weapons"}}}}]'),
 ('barbarian', '(a) two handaxes or (b) any simple weapon', 1, 'equipment', '[{"option_type":"counted_reference","count":2,"of":{"index":"handaxe","name":"Handaxe","url":"/api/ruleset/5e/equipment/handaxe"}},{"option_type":"choice","choice":{"desc":"any simple weapon","choose":1,"type":"equipment","from":{"option_set_type":"equipment_category","equipment_category":{"index":"simple-weapons","name":"Simple Weapons","url":"/api/ruleset/5e/equipment-categories/simple-weapons"}}}}]'),

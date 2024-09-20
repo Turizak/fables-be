@@ -5,13 +5,13 @@ meta {
 }
 
 get {
-  url: {{base_url}}/ruleset/5e/classes/:index
+  url: {{base_url}}/ruleset/5e/classes/:index?details=true
   body: none
   auth: bearer
 }
 
 params:query {
-  ~details: true
+  details: true
 }
 
 params:path {

@@ -5,13 +5,13 @@ meta {
 }
 
 get {
-  url: {{base_url}}/ruleset/5e/classes?details=true
+  url: {{base_url}}/ruleset/5e/classes
   body: none
   auth: bearer
 }
 
 params:query {
-  details: true
+  ~details: true
 }
 
 auth:bearer {
