@@ -57,6 +57,7 @@ type Character struct {
 	Created      utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
 	LastUpdated  utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
 	Deleted      bool               `json:"deleted" gorm:"column:deleted"`
+	Public       bool               `json:"public" gorm:"column:is_public"`
 }
 
 type Location struct {

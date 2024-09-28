@@ -32,15 +32,7 @@ func CreateLocation(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not create location. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	responseLocation := LocationResponse{
-		UUID:         location.UUID,
-		CampaignUUID: location.CampaignUUID,
-		CreatorUUID:  location.CreatorUUID,
-		Name:         location.Name,
-		Description:  location.Description,
-		Created:      location.Created,
-		LastUpdated:  location.LastUpdated,
-	}
+	responseLocation := CreateLocationResponse(location)
 	utilities.ResponseMessage(c, "Location created successfully.", http.StatusCreated, gin.H{"location": responseLocation})
 }
 
@@ -62,15 +54,7 @@ func GetLocationByUuid(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not retrieve location. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	responseLocation := LocationResponse{
-		UUID:         location.UUID,
-		CampaignUUID: location.CampaignUUID,
-		CreatorUUID:  location.CreatorUUID,
-		Name:         location.Name,
-		Description:  location.Description,
-		Created:      location.Created,
-		LastUpdated:  location.LastUpdated,
-	}
+	responseLocation := CreateLocationResponse(*location)
 	utilities.ResponseMessage(c, "Location retrieved successfully.", http.StatusOK, gin.H{"location": responseLocation})
 }
 
@@ -93,15 +77,7 @@ func GetLocationsByCampaignUuid(c *gin.Context) {
 	}
 	responseLocations := make([]LocationResponse, 0)
 	for _, location := range locations {
-		responseLocation := LocationResponse{
-			UUID:         location.UUID,
-			CampaignUUID: location.CampaignUUID,
-			CreatorUUID:  location.CreatorUUID,
-			Name:         location.Name,
-			Description:  location.Description,
-			Created:      location.Created,
-			LastUpdated:  location.LastUpdated,
-		}
+		responseLocation := CreateLocationResponse(location)
 		responseLocations = append(responseLocations, responseLocation)
 	}
 	utilities.ResponseMessage(c, "Locations retrieved successfully.", http.StatusOK, gin.H{"locations": responseLocations})
@@ -125,16 +101,20 @@ func GetLocationsByCreatorUuid(c *gin.Context) {
 	}
 	responseLocations := make([]LocationResponse, 0)
 	for _, location := range locations {
-		responseLocation := LocationResponse{
-			UUID:         location.UUID,
-			CampaignUUID: location.CampaignUUID,
-			CreatorUUID:  location.CreatorUUID,
-			Name:         location.Name,
-			Description:  location.Description,
-			Created:      location.Created,
-			LastUpdated:  location.LastUpdated,
-		}
+		responseLocation := CreateLocationResponse(location)
 		responseLocations = append(responseLocations, responseLocation)
 	}
 	utilities.ResponseMessage(c, "Locations retrieved successfully.", http.StatusOK, gin.H{"locations": responseLocations})
+}
+
+func CreateLocationResponse(location campaign.Location) LocationResponse {
+	return LocationResponse{
+		UUID:         utilities.ToPointer(location.UUID),
+		CampaignUUID: utilities.ToPointer(location.CampaignUUID),
+		CreatorUUID:  utilities.ToPointer(location.CreatorUUID),
+		Name:         utilities.ToPointer(location.Name),
+		Description:  utilities.ToPointer(location.Description),
+		Created:      location.Created,
+		LastUpdated:  location.LastUpdated,
+	}
 }
