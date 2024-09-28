@@ -58,3 +58,14 @@ type Character struct {
 	LastUpdated  utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
 	Deleted      bool               `json:"deleted" gorm:"column:deleted"`
 }
+
+type Location struct {
+	ID           uint               `json:"id" gorm:"primary_key"`
+	CampaignUUID string             `json:"campaignUuid" gorm:"column:campaign_uuid;type:varchar;not null"`
+	UUID         string             `json:"uuid" gorm:"column:uuid;type:varchar;not null;unique"`
+	CreatorUUID  string             `json:"creatorUuid" gorm:"column:creator_uuid;type:varchar;not null"`
+	Name         string             `json:"name" gorm:"column:name;type:varchar;not null"`
+	Description  string             `json:"description" gorm:"column:description;type:varchar;not null"`
+	Created      utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
+	LastUpdated  utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
+}

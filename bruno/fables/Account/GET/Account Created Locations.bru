@@ -1,0 +1,15 @@
+meta {
+  name: Account Created Locations
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url}}/account/created-locations
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

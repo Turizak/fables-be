@@ -22,6 +22,9 @@ func CreateCampaignDB(campaign *Campaign) error {
 	if err := CreateMonikerCharacterTable(campaign.Moniker); err != nil {
 		return err
 	}
+	if err := CreateMonikerLocationTable(campaign.Moniker); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -44,5 +47,11 @@ func GetCampaignsByCreatorUuidDB(creatorUUID string) ([]Campaign, error) {
 func CreateMonikerCharacterTable(moniker string) error {
 	tableName := fmt.Sprintf("%s_characters", moniker)
 	err := database.DB.Table(tableName).AutoMigrate(&Character{})
+	return err
+}
+
+func CreateMonikerLocationTable(moniker string) error {
+	tableName := fmt.Sprintf("%s_locations", moniker)
+	err := database.DB.Table(tableName).AutoMigrate(&Location{})
 	return err
 }
