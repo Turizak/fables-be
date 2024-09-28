@@ -1,0 +1,20 @@
+meta {
+  name: Get Campaign Location
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/campaign/:uuid/location/:locationUuid
+  body: none
+  auth: bearer
+}
+
+params:path {
+  locationUuid: 644ed712-4772-4b79-9fb7-a1716d0c0c68
+  uuid: 506bdf8b-4906-48ea-ad18-4e65a8a02e59
+}
+
+auth:bearer {
+  token: {{token}}
+}
