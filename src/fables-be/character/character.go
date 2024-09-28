@@ -29,29 +29,13 @@ func CreateCharacter(c *gin.Context) {
 	character.CreatorUUID = claims.UUID
 	character.OwnerUUID = claims.UUID
 	character.CampaignUUID = campaignUuid
+	character.Public = true
+
 	if err := CreateCharacterDB(&character, character.CampaignUUID); err != nil {
 		utilities.ResponseMessage(c, "Could not create character. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	responseCharacter := CharacterResponse{
-		UUID:         character.UUID,
-		CampaignUUID: character.CampaignUUID,
-		CreatorUUID:  character.CreatorUUID,
-		OwnerUUID:    character.OwnerUUID,
-		FirstName:    character.FirstName,
-		LastName:     character.LastName,
-		Race:         character.Race,
-		Class:        character.Class,
-		Age:          character.Age,
-		Height:       character.Height,
-		Weight:       character.Weight,
-		EyeColor:     character.EyeColor,
-		SkinColor:    character.SkinColor,
-		HairColor:    character.HairColor,
-		Ruleset:      character.Ruleset,
-		Created:      character.Created,
-		LastUpdated:  character.LastUpdated,
-	}
+	responseCharacter := CreateCharacterResponse(character)
 	utilities.ResponseMessage(c, "Character created successfully.", http.StatusCreated, gin.H{"character": responseCharacter})
 }
 
@@ -77,25 +61,7 @@ func GetCharacterByUuid(c *gin.Context) {
 		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
 		return
 	}
-	responseCharacter := CharacterResponse{
-		UUID:         character.UUID,
-		CampaignUUID: character.CampaignUUID,
-		CreatorUUID:  character.CreatorUUID,
-		OwnerUUID:    character.OwnerUUID,
-		FirstName:    character.FirstName,
-		LastName:     character.LastName,
-		Race:         character.Race,
-		Class:        character.Class,
-		Age:          character.Age,
-		Height:       character.Height,
-		Weight:       character.Weight,
-		EyeColor:     character.EyeColor,
-		SkinColor:    character.SkinColor,
-		HairColor:    character.HairColor,
-		Ruleset:      character.Ruleset,
-		Created:      character.Created,
-		LastUpdated:  character.LastUpdated,
-	}
+	responseCharacter := CreateCharacterResponse(*character)
 	utilities.ResponseMessage(c, "Character retrieved successfully.", http.StatusOK, gin.H{"character": responseCharacter})
 }
 
@@ -117,25 +83,7 @@ func GetCharactersByCreatorUuid(c *gin.Context) {
 	}
 	responseCharacters := make([]CharacterResponse, 0)
 	for _, character := range characters {
-		responseCharacter := CharacterResponse{
-			UUID:         character.UUID,
-			CampaignUUID: character.CampaignUUID,
-			CreatorUUID:  character.CreatorUUID,
-			OwnerUUID:    character.OwnerUUID,
-			FirstName:    character.FirstName,
-			LastName:     character.LastName,
-			Race:         character.Race,
-			Class:        character.Class,
-			Age:          character.Age,
-			Height:       character.Height,
-			Weight:       character.Weight,
-			EyeColor:     character.EyeColor,
-			SkinColor:    character.SkinColor,
-			HairColor:    character.HairColor,
-			Ruleset:      character.Ruleset,
-			Created:      character.Created,
-			LastUpdated:  character.LastUpdated,
-		}
+		responseCharacter := CreateCharacterResponse(character)
 		responseCharacters = append(responseCharacters, responseCharacter)
 	}
 	utilities.ResponseMessage(c, "Characters retrieved successfully.", http.StatusOK, gin.H{"characters": responseCharacters})
@@ -159,26 +107,32 @@ func GetCharactersByOwnerUuid(c *gin.Context) {
 	}
 	responseCharacters := make([]CharacterResponse, 0)
 	for _, character := range characters {
-		responseCharacter := CharacterResponse{
-			UUID:         character.UUID,
-			CampaignUUID: character.CampaignUUID,
-			CreatorUUID:  character.CreatorUUID,
-			OwnerUUID:    character.OwnerUUID,
-			FirstName:    character.FirstName,
-			LastName:     character.LastName,
-			Race:         character.Race,
-			Class:        character.Class,
-			Age:          character.Age,
-			Height:       character.Height,
-			Weight:       character.Weight,
-			EyeColor:     character.EyeColor,
-			SkinColor:    character.SkinColor,
-			HairColor:    character.HairColor,
-			Ruleset:      character.Ruleset,
-			Created:      character.Created,
-			LastUpdated:  character.LastUpdated,
-		}
+		responseCharacter := CreateCharacterResponse(character)
 		responseCharacters = append(responseCharacters, responseCharacter)
 	}
 	utilities.ResponseMessage(c, "Characters retrieved successfully.", http.StatusOK, gin.H{"characters": responseCharacters})
+}
+
+func CreateCharacterResponse(character campaign.Character) CharacterResponse {
+	return CharacterResponse{
+		UUID:         utilities.ToPointer(character.UUID),
+		CampaignUUID: utilities.ToPointer(character.CampaignUUID),
+		CreatorUUID:  utilities.ToPointer(character.CreatorUUID),
+		OwnerUUID:    utilities.ToPointer(character.OwnerUUID),
+		FirstName:    utilities.ToPointer(character.FirstName),
+		LastName:     utilities.ToPointer(character.LastName),
+		Race:         utilities.ToPointer(character.Race),
+		Class:        utilities.ToPointer(character.Class),
+		Age:          character.Age,
+		Height:       character.Height,
+		Weight:       character.Weight,
+		EyeColor:     utilities.ToPointer(character.EyeColor),
+		SkinColor:    utilities.ToPointer(character.SkinColor),
+		HairColor:    utilities.ToPointer(character.HairColor),
+		Ruleset:      utilities.ToPointer(character.Ruleset),
+		Public:       character.Public,
+		Gender:       utilities.ToPointer(character.Gender),
+		Created:      character.Created,
+		LastUpdated:  character.LastUpdated,
+	}
 }
