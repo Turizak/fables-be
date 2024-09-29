@@ -1,0 +1,15 @@
+meta {
+  name: Account Created Npcs
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{base_url}}/account/created-npcs
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
