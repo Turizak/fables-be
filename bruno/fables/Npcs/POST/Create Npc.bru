@@ -1,0 +1,30 @@
+meta {
+  name: Create Npc
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/campaign/:uuid/npc/create
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: 8335f613-ff58-496c-868d-3ab850ee949f
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "firstName": "Conway",
+    "lastName": "Twitty",
+    "race": "human",
+    "class": "wizard",
+    "description": "a bitch.",
+    "isQuestBoss": true
+  }
+}
