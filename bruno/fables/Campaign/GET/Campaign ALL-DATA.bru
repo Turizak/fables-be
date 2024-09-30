@@ -1,0 +1,19 @@
+meta {
+  name: Campaign ALL-DATA
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{base_url}}/campaign/:uuid/all
+  body: none
+  auth: bearer
+}
+
+params:path {
+  uuid: 8335f613-ff58-496c-868d-3ab850ee949f
+}
+
+auth:bearer {
+  token: {{token}}
+}

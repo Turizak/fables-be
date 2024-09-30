@@ -41,6 +41,19 @@ func GetCharacterByUuidDB(uuid string, campaignUuid string) (*campaign.Character
 	return character, nil
 }
 
+func GetCharactersByCampaignUuidDB(campaignUuid string) ([]campaign.Character, error) {
+	camp, err := campaign.GetCampaignByUuidDB(campaignUuid)
+	if err != nil {
+		return nil, err
+	}
+	var characters []campaign.Character
+	tableName := fmt.Sprintf("%s_characters", camp.Moniker)
+	if result := database.DB.Table(tableName).Find(&characters); result.Error != nil {
+		return nil, result.Error
+	}
+	return characters, nil
+}
+
 func GetCharactersByCreatorUuidDB(creatorUuid string) ([]campaign.Character, error) {
 	var allCharacters []campaign.Character
 

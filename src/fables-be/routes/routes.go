@@ -4,6 +4,7 @@ import (
 	"github.com/Turizak/fables-be/account"
 	"github.com/Turizak/fables-be/campaign"
 	"github.com/Turizak/fables-be/character"
+	"github.com/Turizak/fables-be/collection"
 	"github.com/Turizak/fables-be/location"
 	"github.com/Turizak/fables-be/npc"
 	abilityscore "github.com/Turizak/fables-be/ruleset/5e/ability-score"
@@ -43,6 +44,7 @@ func Routes(router *gin.Engine) {
 	// GET
 	router.GET("/api/campaign/:uuid", campaign.GetCampaignByUuid)
 	router.GET("/api/campaign/:uuid/moniker", campaign.GetCampaignMonikerByUuid)
+	router.GET("/api/campaign/:uuid/all", collection.GetCampaignAllData)
 
 	// Campaign - Characters
 	// POST

@@ -48,19 +48,7 @@ func CreateCampaign(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not create campaign. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	responseCampaign := CampaignResponse{
-		UUID:        campaign.UUID,
-		Name:        campaign.Name,
-		CreatorUUID: campaign.CreatorUUID,
-		DmUUID:      campaign.DmUUID,
-		PartyUUIDs:  campaign.PartyUUIDs,
-		Completed:   campaign.Completed,
-		Active:      campaign.Active,
-		Ruleset:     campaign.Ruleset,
-		MaxPlayers:  campaign.MaxPlayers,
-		Created:     campaign.Created,
-		LastUpdated: campaign.LastUpdated,
-	}
+	responseCampaign := CreateCampaignResponse(campaign)
 
 	utilities.ResponseMessage(c, "Campaign created successfully.", http.StatusCreated, gin.H{"campaign": responseCampaign})
 }
@@ -82,19 +70,7 @@ func GetCampaignByUuid(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not retrieve campaign. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	responseCampaign := CampaignResponse{
-		UUID:        campaign.UUID,
-		Name:        campaign.Name,
-		CreatorUUID: campaign.CreatorUUID,
-		DmUUID:      campaign.DmUUID,
-		PartyUUIDs:  campaign.PartyUUIDs,
-		Completed:   campaign.Completed,
-		Active:      campaign.Active,
-		Ruleset:     campaign.Ruleset,
-		MaxPlayers:  campaign.MaxPlayers,
-		Created:     campaign.Created,
-		LastUpdated: campaign.LastUpdated,
-	}
+	responseCampaign := CreateCampaignResponse(*campaign)
 	utilities.ResponseMessage(c, "Campaign retrieved successfully.", http.StatusOK, gin.H{"campaign": responseCampaign})
 }
 
@@ -121,19 +97,7 @@ func GetCampaignsByCreatorUuid(c *gin.Context) {
 	}
 	responseCampaigns := []CampaignResponse{}
 	for _, campaign := range campaigns {
-		responseCampaign := CampaignResponse{
-			UUID:        campaign.UUID,
-			Name:        campaign.Name,
-			CreatorUUID: campaign.CreatorUUID,
-			DmUUID:      campaign.DmUUID,
-			PartyUUIDs:  campaign.PartyUUIDs,
-			Completed:   campaign.Completed,
-			Active:      campaign.Active,
-			Ruleset:     campaign.Ruleset,
-			MaxPlayers:  campaign.MaxPlayers,
-			Created:     campaign.Created,
-			LastUpdated: campaign.LastUpdated,
-		}
+		responseCampaign := CreateCampaignResponse(campaign)
 		responseCampaigns = append(responseCampaigns, responseCampaign)
 	}
 	if len(responseCampaigns) == 0 {
@@ -151,4 +115,20 @@ func GetCampaignMonikerByUuid(c *gin.Context) {
 		return
 	}
 	utilities.ResponseMessage(c, "Campaign moniker retrieved successfully.", http.StatusOK, gin.H{"moniker": campaign.Moniker})
+}
+
+func CreateCampaignResponse(campaign Campaign) CampaignResponse {
+	return CampaignResponse{
+		UUID:        campaign.UUID,
+		Name:        campaign.Name,
+		CreatorUUID: campaign.CreatorUUID,
+		DmUUID:      campaign.DmUUID,
+		PartyUUIDs:  campaign.PartyUUIDs,
+		Completed:   campaign.Completed,
+		Active:      campaign.Active,
+		Ruleset:     campaign.Ruleset,
+		MaxPlayers:  campaign.MaxPlayers,
+		Created:     campaign.Created,
+		LastUpdated: campaign.LastUpdated,
+	}
 }
