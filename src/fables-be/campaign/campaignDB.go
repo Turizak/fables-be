@@ -25,6 +25,9 @@ func CreateCampaignDB(campaign *Campaign) error {
 	if err := CreateMonikerLocationTable(campaign.Moniker); err != nil {
 		return err
 	}
+	if err := CreateCampaignNpcTable(campaign.Moniker); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -53,5 +56,11 @@ func CreateMonikerCharacterTable(moniker string) error {
 func CreateMonikerLocationTable(moniker string) error {
 	tableName := fmt.Sprintf("%s_locations", moniker)
 	err := database.DB.Table(tableName).AutoMigrate(&Location{})
+	return err
+}
+
+func CreateCampaignNpcTable(moniker string) error {
+	tableName := fmt.Sprintf("%s_npcs", moniker)
+	err := database.DB.Table(tableName).AutoMigrate(&Npc{})
 	return err
 }
