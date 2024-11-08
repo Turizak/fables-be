@@ -1,11 +1,11 @@
 meta {
-  name: Create Location
+  name: Create Session
   type: http
   seq: 1
 }
 
 post {
-  url: {{base_url}}/campaign/:uuid/location/create
+  url: {{base_url}}/campaign/:uuid/session/create
   body: json
   auth: bearer
 }
@@ -20,7 +20,7 @@ auth:bearer {
 
 body:json {
   {
-    "name": "Cauldern Lake",
-    "description": "It's not a lake, it's an ocean..."
+    "partyUuids":[],
+    "dateOccured": "2024-11-07T00:00:00Z"
   }
 }

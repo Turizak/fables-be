@@ -25,6 +25,25 @@ func (nt NullTime) MarshalJSON() ([]byte, error) {
 	})
 }
 
+// UnmarshalJSON handles JSON string format for NullTime
+func (nt *NullTime) UnmarshalJSON(data []byte) error {
+	var t string
+	if err := json.Unmarshal(data, &t); err != nil {
+		return err
+	}
+
+	// Try to parse the string into time.Time
+	parsedTime, err := time.Parse(time.RFC3339, t)
+	if err != nil {
+		nt.Valid = false
+		return nil // if parsing fails, set Valid to false
+	}
+
+	nt.Time = parsedTime
+	nt.Valid = true
+	return nil
+}
+
 // Convert pq.NullTime to custom NullTime
 func ToNullTime(pqTime pq.NullTime) NullTime {
 	return NullTime{
