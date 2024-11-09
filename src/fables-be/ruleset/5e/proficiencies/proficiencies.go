@@ -18,56 +18,50 @@ type Proficiencie struct {
 	Reference datatypes.JSON `gorm:"type:jsonb" json:"reference"`
 }
 
+// GetAllProficiencies5e retrieves all proficiencies for 5e
 func GetAllProficiencies5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	proficiencies, err := GetAllProficiencies5eDB()
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve proficiencies. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve proficiencies. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseProficiencies := []Proficiencie{}
-	for _, proficiency := range proficiencies {
-		responseProficiency := Proficiencie{
-			Index:     proficiency.Index,
-			Type:      proficiency.Type,
-			Name:      proficiency.Name,
-			Classes:   proficiency.Classes,
-			Races:     proficiency.Races,
-			URL:       proficiency.URL,
-			Reference: proficiency.Reference,
-		}
-		responseProficiencies = append(responseProficiencies, responseProficiency)
-	}
-	utilities.ResponseMessage(c, "Proficiencies retrieved successfully.", http.StatusOK, gin.H{"proficiencies": responseProficiencies})
+
+	utilities.ResponseMessage(c, "Proficiencies retrieved successfully.", http.StatusOK, gin.H{"proficiencies": mapProficienciesToResponse(proficiencies)})
 }
 
+// GetProficiencyByIndex5e retrieves a specific proficiency by index for 5e
 func GetProficiencyByIndex5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	index := c.Param("index")
 	proficiency, err := GetProficiencyByIndex5eDB(index)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve proficiency. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve proficiency. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseProficiency := Proficiencie{
+
+	utilities.ResponseMessage(c, "Proficiency retrieved successfully.", http.StatusOK, gin.H{"proficiency": mapProficiencyToResponse(*proficiency)})
+}
+
+// Helper functions to map proficiencies to their response formats
+func mapProficienciesToResponse(proficiencies []Proficiencie) []Proficiencie {
+	response := make([]Proficiencie, len(proficiencies))
+	for i, proficiency := range proficiencies {
+		response[i] = mapProficiencyToResponse(proficiency)
+	}
+	return response
+}
+
+func mapProficiencyToResponse(proficiency Proficiencie) Proficiencie {
+	return Proficiencie{
 		Index:     proficiency.Index,
 		Type:      proficiency.Type,
 		Name:      proficiency.Name,
@@ -76,5 +70,4 @@ func GetProficiencyByIndex5e(c *gin.Context) {
 		URL:       proficiency.URL,
 		Reference: proficiency.Reference,
 	}
-	utilities.ResponseMessage(c, "Proficiency retrieved successfully.", http.StatusOK, gin.H{"proficiency": responseProficiency})
 }

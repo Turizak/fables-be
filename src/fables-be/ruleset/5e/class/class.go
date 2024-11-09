@@ -38,20 +38,6 @@ type ClassDetailResponse struct {
 	ProficiencyChoices []ProficiencyChoice `json:"proficiency_choices"`
 	Proficiencies      []Proficiency       `json:"proficiencies"`
 	SavingThrows       []SavingThrow       `json:"saving_throws"`
-	// StartingEquipment        []StartingEquipment       `json:"starting_equipment"`
-	// StartingEquipmentOptions []StartingEquipmentOption `json:"starting_equipment_options"`
-}
-
-type ClassResponse struct {
-	Index         string         `json:"index"`
-	Name          string         `json:"name"`
-	HitDie        int            `json:"hit_die"`
-	ClassLevels   string         `json:"class_levels"`
-	MultiClassing datatypes.JSON `json:"multi_classing"`
-	Subclasses    datatypes.JSON `json:"subclasses"`
-	Spellcasting  datatypes.JSON `json:"spellcasting"`
-	Spells        string         `json:"spells"`
-	URL           string         `json:"url"`
 }
 
 type ProficiencyChoice struct {
@@ -92,147 +78,127 @@ type StartingEquipmentOption struct {
 	EquipmentOptions datatypes.JSON `json:"equipment_options" gorm:"type:jsonb"`
 }
 
+type ClassResponse struct {
+	Index         string         `json:"index"`
+	Name          string         `json:"name"`
+	HitDie        int            `json:"hit_die"`
+	ClassLevels   string         `json:"class_levels"`
+	MultiClassing datatypes.JSON `json:"multi_classing"`
+	Subclasses    datatypes.JSON `json:"subclasses"`
+	Spellcasting  datatypes.JSON `json:"spellcasting"`
+	Spells        string         `json:"spells"`
+	URL           string         `json:"url"`
+}
+
+// GetAllClasses5e retrieves all classes for 5e
 func GetAllClasses5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
 
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
-
-	// Get the "details" query parameter
-	details := c.Query("details")
+	details := c.Query("details") == "true"
 
 	var (
 		classes []Class
 		err     error
 	)
 
-	// If details=true, use GetAllClassesWithDetails function
-	if details == "true" {
+	if details {
 		classes, err = GetAllClassesWithDetails5eDB()
 	} else {
 		classes, err = GetAllClasses5eDB()
 	}
 
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve classes. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve classes. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
 
-	if details == "true" {
-		// Create slice of ClassDetailResponse
-		responseClasses := []ClassDetailResponse{}
-		for _, class := range classes {
-			responseClass := ClassDetailResponse{
-				Index:              class.Index,
-				Name:               class.Name,
-				HitDie:             class.HitDie,
-				ClassLevels:        class.ClassLevels,
-				MultiClassing:      class.MultiClassing,
-				Subclasses:         class.Subclasses,
-				Spellcasting:       class.Spellcasting,
-				Spells:             class.Spells,
-				URL:                class.URL,
-				ProficiencyChoices: class.ProficiencyChoices,
-				Proficiencies:      class.Proficiencies,
-				SavingThrows:       class.SavingThrows,
-			}
-			responseClasses = append(responseClasses, responseClass)
-		}
-		utilities.ResponseMessage(c, "Classes retrieved successfully.", http.StatusOK, gin.H{"classes": responseClasses})
+	if details {
+		utilities.ResponseMessage(c, "Classes retrieved successfully.", http.StatusOK, gin.H{"classes": mapClassesToDetailResponse(classes)})
 	} else {
-		// Create slice of ClassResponse
-		responseClasses := []ClassResponse{}
-		for _, class := range classes {
-			responseClass := ClassResponse{
-				Index:         class.Index,
-				Name:          class.Name,
-				HitDie:        class.HitDie,
-				ClassLevels:   class.ClassLevels,
-				MultiClassing: class.MultiClassing,
-				Subclasses:    class.Subclasses,
-				Spellcasting:  class.Spellcasting,
-				Spells:        class.Spells,
-				URL:           class.URL,
-			}
-			responseClasses = append(responseClasses, responseClass)
-		}
-		utilities.ResponseMessage(c, "Classes retrieved successfully.", http.StatusOK, gin.H{"classes": responseClasses})
+		utilities.ResponseMessage(c, "Classes retrieved successfully.", http.StatusOK, gin.H{"classes": mapClassesToResponse(classes)})
 	}
 }
 
+// GetClassByIndex5e retrieves a specific class by index for 5e
 func GetClassByIndex5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
-
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
 
 	index := c.Param("index")
-
-	// Get the "details" query parameter
-	details := c.Query("details")
+	details := c.Query("details") == "true"
 
 	var (
 		class *Class
 		err   error
 	)
 
-	// If details=true, use GetClassWithDetailsByIndex function
-	if details == "true" {
-		class, err = GetClassByIndexWithDetails5eDB(index) // Assuming the function exists
+	if details {
+		class, err = GetClassByIndexWithDetails5eDB(index)
 	} else {
 		class, err = GetClassByIndex5eDB(index)
 	}
 
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve class. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve class. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
 
-	if details == "true" {
-		responseClass := ClassDetailResponse{
-			Index:              class.Index,
-			Name:               class.Name,
-			HitDie:             class.HitDie,
-			ClassLevels:        class.ClassLevels,
-			MultiClassing:      class.MultiClassing,
-			Subclasses:         class.Subclasses,
-			Spellcasting:       class.Spellcasting,
-			Spells:             class.Spells,
-			URL:                class.URL,
-			ProficiencyChoices: class.ProficiencyChoices,
-			Proficiencies:      class.Proficiencies,
-			SavingThrows:       class.SavingThrows,
-		}
-
-		utilities.ResponseMessage(c, "Class retrieved successfully.", http.StatusOK, gin.H{"class": responseClass})
-
+	if details {
+		utilities.ResponseMessage(c, "Class retrieved successfully.", http.StatusOK, gin.H{"class": mapClassToDetailResponse(*class)})
 	} else {
-		responseClass := ClassResponse{
-			Index:         class.Index,
-			Name:          class.Name,
-			HitDie:        class.HitDie,
-			ClassLevels:   class.ClassLevels,
-			MultiClassing: class.MultiClassing,
-			Subclasses:    class.Subclasses,
-			Spellcasting:  class.Spellcasting,
-			Spells:        class.Spells,
-			URL:           class.URL,
-		}
+		utilities.ResponseMessage(c, "Class retrieved successfully.", http.StatusOK, gin.H{"class": mapClassToResponse(*class)})
+	}
+}
 
-		utilities.ResponseMessage(c, "Class retrieved successfully.", http.StatusOK, gin.H{"class": responseClass})
+// Helper functions to map classes to their respective response formats
+func mapClassesToDetailResponse(classes []Class) []ClassDetailResponse {
+	response := make([]ClassDetailResponse, len(classes))
+	for i, class := range classes {
+		response[i] = mapClassToDetailResponse(class)
+	}
+	return response
+}
+
+func mapClassesToResponse(classes []Class) []ClassResponse {
+	response := make([]ClassResponse, len(classes))
+	for i, class := range classes {
+		response[i] = mapClassToResponse(class)
+	}
+	return response
+}
+
+func mapClassToDetailResponse(class Class) ClassDetailResponse {
+	return ClassDetailResponse{
+		Index:              class.Index,
+		Name:               class.Name,
+		HitDie:             class.HitDie,
+		ClassLevels:        class.ClassLevels,
+		MultiClassing:      class.MultiClassing,
+		Subclasses:         class.Subclasses,
+		Spellcasting:       class.Spellcasting,
+		Spells:             class.Spells,
+		URL:                class.URL,
+		ProficiencyChoices: class.ProficiencyChoices,
+		Proficiencies:      class.Proficiencies,
+		SavingThrows:       class.SavingThrows,
+	}
+}
+
+func mapClassToResponse(class Class) ClassResponse {
+	return ClassResponse{
+		Index:         class.Index,
+		Name:          class.Name,
+		HitDie:        class.HitDie,
+		ClassLevels:   class.ClassLevels,
+		MultiClassing: class.MultiClassing,
+		Subclasses:    class.Subclasses,
+		Spellcasting:  class.Spellcasting,
+		Spells:        class.Spells,
+		URL:           class.URL,
 	}
 }

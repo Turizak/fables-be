@@ -20,58 +20,50 @@ type Trait struct {
 	URL                string         `gorm:"type:varchar;not null" json:"url"`
 }
 
+// GetAllTraits5e retrieves all traits for 5e
 func GetAllTraits5e(c *gin.Context) {
-	authHeader := c.GetHeader("Authorization")
-	if authHeader == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authHeader)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	traits, err := GetAllTraits5eDB()
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve traits. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve traits. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseTraits := []Trait{}
-	for _, trait := range traits {
-		responseTrait := Trait{
-			Index:              trait.Index,
-			Name:               trait.Name,
-			Description:        trait.Description,
-			Races:              trait.Races,
-			Subraces:           trait.Subraces,
-			Proficiencies:      trait.Proficiencies,
-			ProficiencyChoices: trait.ProficiencyChoices,
-			TraitSpecific:      trait.TraitSpecific,
-			URL:                trait.URL,
-		}
-		responseTraits = append(responseTraits, responseTrait)
-	}
-	utilities.ResponseMessage(c, "Traits retrieved successfully.", http.StatusOK, gin.H{"traits": responseTraits})
+
+	utilities.ResponseMessage(c, "Traits retrieved successfully.", http.StatusOK, gin.H{"traits": mapTraitsToResponse(traits)})
 }
 
+// GetTraitByIndex5e retrieves a specific trait by index for 5e
 func GetTraitByIndex5e(c *gin.Context) {
-	authHeader := c.GetHeader("Authorization")
-	if authHeader == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authHeader)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	traitIndex := c.Param("index")
 	trait, err := GetTraitByIndex5eDB(traitIndex)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve trait. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve trait. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseTrait := Trait{
+
+	utilities.ResponseMessage(c, "Trait retrieved successfully.", http.StatusOK, gin.H{"trait": mapTraitToResponse(*trait)})
+}
+
+// Helper functions to map traits to their response formats
+func mapTraitsToResponse(traits []Trait) []Trait {
+	response := make([]Trait, len(traits))
+	for i, trait := range traits {
+		response[i] = mapTraitToResponse(trait)
+	}
+	return response
+}
+
+func mapTraitToResponse(trait Trait) Trait {
+	return Trait{
 		Index:              trait.Index,
 		Name:               trait.Name,
 		Description:        trait.Description,
@@ -82,5 +74,4 @@ func GetTraitByIndex5e(c *gin.Context) {
 		TraitSpecific:      trait.TraitSpecific,
 		URL:                trait.URL,
 	}
-	utilities.ResponseMessage(c, "Trait retrieved successfully.", http.StatusOK, gin.H{"trait": responseTrait})
 }

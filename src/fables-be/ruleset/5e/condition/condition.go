@@ -20,59 +20,54 @@ type ConditionDescription struct {
 	Description    string `gorm:"column:description" json:"description"`
 }
 
+// GetAllConditionsWithDescriptions retrieves all conditions with descriptions
 func GetAllConditionsWithDescriptions(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	conditions, err := GetAllConditionsWithDescriptionsDB()
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve conditions. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve conditions. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseConditions := []Condition{}
-	for _, condition := range conditions {
-		responseCondition := Condition{
-			Index:        condition.Index,
-			Name:         condition.Name,
-			Description:  condition.Description,
-			URL:          condition.URL,
-			Descriptions: condition.Descriptions,
-		}
-		responseConditions = append(responseConditions, responseCondition)
-	}
-	utilities.ResponseMessage(c, "Conditions retrieved successfully.", http.StatusOK, gin.H{"conditions": responseConditions})
+
+	utilities.ResponseMessage(c, "Conditions retrieved successfully.", http.StatusOK, gin.H{"conditions": mapConditionsToResponse(conditions)})
 }
 
+// GetConditionByIndex retrieves a specific condition by index
 func GetConditionByIndex(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	index := c.Param("index")
 	condition, err := GetConditionByIndexDB(index)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve condition. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve condition. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseCondition := Condition{
+
+	utilities.ResponseMessage(c, "Condition retrieved successfully.", http.StatusOK, gin.H{"condition": mapConditionToResponse(condition)})
+}
+
+// Helper functions to map conditions to their response formats
+func mapConditionsToResponse(conditions []Condition) []Condition {
+	response := make([]Condition, len(conditions))
+	for i, condition := range conditions {
+		response[i] = mapConditionToResponse(condition)
+	}
+	return response
+}
+
+func mapConditionToResponse(condition Condition) Condition {
+	return Condition{
 		Index:        condition.Index,
 		Name:         condition.Name,
 		Description:  condition.Description,
 		URL:          condition.URL,
 		Descriptions: condition.Descriptions,
 	}
-	utilities.ResponseMessage(c, "Condition retrieved successfully.", http.StatusOK, gin.H{"condition": responseCondition})
 }

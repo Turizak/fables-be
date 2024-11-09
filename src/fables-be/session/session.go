@@ -5,108 +5,90 @@ import (
 
 	"github.com/Turizak/fables-be/campaign"
 	"github.com/Turizak/fables-be/utilities"
-
 	"github.com/gin-gonic/gin"
 )
 
+// CreateSession handles the creation of a new session
 func CreateSession(c *gin.Context) {
 	var session campaign.Session
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+
+	claims, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	campaignUuid := c.Param("uuid")
-	claims, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	if err := c.BindJSON(&session); err != nil {
 		utilities.ResponseMessage(c, "Could not create session. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
+
+	session.CampaignUUID = c.Param("uuid")
 	session.CreatorUUID = claims.UUID
-	session.CampaignUUID = campaignUuid
+
 	if err := CreateSessionDB(&session, session.CampaignUUID); err != nil {
-		utilities.ResponseMessage(c, "Could not create session. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not create session. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseSession := CreateSessionResponse(session)
-	utilities.ResponseMessage(c, "Session created successfully.", http.StatusCreated, gin.H{"session": responseSession})
+
+	utilities.ResponseMessage(c, "Session created successfully.", http.StatusCreated, gin.H{
+		"session": CreateSessionResponse(session),
+	})
 }
 
+// GetSessionByUuid retrieves a session by its UUID
 func GetSessionByUuid(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	campaignUuid := c.Param("uuid")
-	sessionUuid := c.Param("sessionUuid")
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
-	session, err := GetSessionByUuidDB(sessionUuid, campaignUuid)
+	session, err := GetSessionByUuidDB(c.Param("sessionUuid"), c.Param("uuid"))
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve session. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve session. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseSession := CreateSessionResponse(*session)
-	utilities.ResponseMessage(c, "Session retrieved successfully.", http.StatusOK, gin.H{"session": responseSession})
+
+	utilities.ResponseMessage(c, "Session retrieved successfully.", http.StatusOK, gin.H{
+		"session": CreateSessionResponse(*session),
+	})
 }
 
+// GetSessionsByCampaignUuid retrieves sessions by campaign UUID
 func GetSessionsByCampaignUuid(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	campaignUuid := c.Param("uuid")
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
-	sessions, err := GetSessionsByCampaignUuidDB(campaignUuid)
+
+	sessions, err := GetSessionsByCampaignUuidDB(c.Param("uuid"))
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve sessions. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve sessions. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseSessions := make([]SessionResponse, 0)
-	for _, ses := range sessions {
-		responseSession := CreateSessionResponse(ses)
-		responseSessions = append(responseSessions, responseSession)
-	}
-	utilities.ResponseMessage(c, "Sessions retrieved successfully.", http.StatusOK, gin.H{"sessions": responseSessions})
+
+	utilities.ResponseMessage(c, "Sessions retrieved successfully.", http.StatusOK, gin.H{
+		"sessions": mapSessionsToResponses(sessions),
+	})
 }
 
+// GetSessionsByCreatorUuid retrieves sessions by creator UUID
 func GetSessionsByCreatorUuid(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	claims, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	claims, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	sessions, err := GetSessionsByCreatorUuidDB(claims.UUID)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve sessions. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve sessions. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseSessions := make([]SessionResponse, 0)
-	for _, ses := range sessions {
-		responseSession := CreateSessionResponse(ses)
-		responseSessions = append(responseSessions, responseSession)
-	}
-	utilities.ResponseMessage(c, "Sessions retrieved successfully.", http.StatusOK, gin.H{"sessions": responseSessions})
+
+	utilities.ResponseMessage(c, "Sessions retrieved successfully.", http.StatusOK, gin.H{
+		"sessions": mapSessionsToResponses(sessions),
+	})
 }
 
+// CreateSessionResponse maps a session to a SessionResponse
 func CreateSessionResponse(session campaign.Session) SessionResponse {
 	return SessionResponse{
 		SessionID:    session.SessionID,
@@ -118,4 +100,13 @@ func CreateSessionResponse(session campaign.Session) SessionResponse {
 		Created:      session.Created,
 		LastUpdated:  session.LastUpdated,
 	}
+}
+
+// mapSessionsToResponses maps a slice of sessions to session responses
+func mapSessionsToResponses(sessions []campaign.Session) []SessionResponse {
+	responseSessions := make([]SessionResponse, len(sessions))
+	for i, session := range sessions {
+		responseSessions[i] = CreateSessionResponse(session)
+	}
+	return responseSessions
 }

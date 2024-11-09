@@ -1,7 +1,6 @@
 package language
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/Turizak/fables-be/utilities"
@@ -19,57 +18,50 @@ type Language struct {
 	URL             string         `gorm:"type:varchar" json:"url"`
 }
 
+// GetAllLanguages5e retrieves all languages for 5e
 func GetAllLanguages5e(c *gin.Context) {
-	authHeader := c.GetHeader("Authorization")
-	if authHeader == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authHeader)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	languages, err := GetAllLanguages5eDB()
-	fmt.Println(err)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve languages. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve languages. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseLanguages := []Language{}
-	for _, language := range languages {
-		responseLanguage := Language{
-			Index:           language.Index,
-			Name:            language.Name,
-			Description:     language.Description,
-			Type:            language.Type,
-			TypicalSpeakers: language.TypicalSpeakers,
-			Script:          language.Script,
-			URL:             language.URL,
-		}
-		responseLanguages = append(responseLanguages, responseLanguage)
-	}
-	utilities.ResponseMessage(c, "Languages retrieved successfully.", http.StatusOK, gin.H{"languages": responseLanguages})
+
+	utilities.ResponseMessage(c, "Languages retrieved successfully.", http.StatusOK, gin.H{"languages": mapLanguagesToResponse(languages)})
 }
 
+// GetLanguageByIndex5e retrieves a specific language by index for 5e
 func GetLanguageByIndex5e(c *gin.Context) {
-	authHeader := c.GetHeader("Authorization")
-	if authHeader == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authHeader)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	index := c.Param("index")
 	language, err := GetLanguageByIndex5eDB(index)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve language. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve language. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseLanguage := Language{
+
+	utilities.ResponseMessage(c, "Language retrieved successfully.", http.StatusOK, gin.H{"language": mapLanguageToResponse(*language)})
+}
+
+// Helper functions to map languages to their response formats
+func mapLanguagesToResponse(languages []Language) []Language {
+	response := make([]Language, len(languages))
+	for i, language := range languages {
+		response[i] = mapLanguageToResponse(language)
+	}
+	return response
+}
+
+func mapLanguageToResponse(language Language) Language {
+	return Language{
 		Index:           language.Index,
 		Name:            language.Name,
 		Description:     language.Description,
@@ -78,5 +70,4 @@ func GetLanguageByIndex5e(c *gin.Context) {
 		Script:          language.Script,
 		URL:             language.URL,
 	}
-	utilities.ResponseMessage(c, "Language retrieved successfully.", http.StatusOK, gin.H{"language": responseLanguage})
 }

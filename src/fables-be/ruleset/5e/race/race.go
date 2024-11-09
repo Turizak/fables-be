@@ -28,68 +28,71 @@ type Race struct {
 	URL                        string         `gorm:"column:url" json:"url"`
 }
 
+// GetAllRaces5e retrieves all races for 5e
 func GetAllRaces5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	races, err := GetAllRaces5eDB()
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve campaigns. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve races. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseRaces := []Race{}
-	for _, race := range races {
-		responseRace := Race{
-			Index:                      race.Index,
-			Name:                       race.Name,
-			Speed:                      race.Speed,
-			AbilityBonuses:             race.AbilityBonuses,
-			AbilityBonusOptions:        race.AbilityBonusOptions,
-			Alignment:                  race.Alignment,
-			Age:                        race.Age,
-			Size:                       race.Size,
-			SizeDescription:            race.SizeDescription,
-			StartingProficiencies:      race.StartingProficiencies,
-			StartingProficiencyOptions: race.StartingProficiencyOptions,
-			Languages:                  race.Languages,
-			LanguageDesc:               race.LanguageDesc,
-			LanguageOptions:            race.LanguageOptions,
-			Traits:                     race.Traits,
-			Subraces:                   race.Subraces,
-			URL:                        race.URL,
-		}
-		responseRaces = append(responseRaces, responseRace)
-	}
-	if len(responseRaces) == 0 {
+
+	if len(races) == 0 {
 		utilities.ResponseMessage(c, "No races found.", http.StatusOK, nil)
 		return
 	}
-	utilities.ResponseMessage(c, "Races retrieved successfully.", http.StatusOK, gin.H{"races": responseRaces})
+
+	utilities.ResponseMessage(c, "Races retrieved successfully.", http.StatusOK, gin.H{"races": mapRacesToResponse(races)})
 }
 
+// GetRaceByIndex5e retrieves a specific race by index for 5e
 func GetRaceByIndex5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	index := c.Param("index")
 	race, err := GetRaceByIndex5eDB(index)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve race. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve race. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	utilities.ResponseMessage(c, "Race retrieved successfully.", http.StatusOK, gin.H{"race": race})
+
+	utilities.ResponseMessage(c, "Race retrieved successfully.", http.StatusOK, gin.H{"race": mapRaceToResponse(*race)})
+}
+
+// Helper functions to map races to their response formats
+func mapRacesToResponse(races []Race) []Race {
+	response := make([]Race, len(races))
+	for i, race := range races {
+		response[i] = mapRaceToResponse(race)
+	}
+	return response
+}
+
+func mapRaceToResponse(race Race) Race {
+	return Race{
+		Index:                      race.Index,
+		Name:                       race.Name,
+		Speed:                      race.Speed,
+		AbilityBonuses:             race.AbilityBonuses,
+		AbilityBonusOptions:        race.AbilityBonusOptions,
+		Alignment:                  race.Alignment,
+		Age:                        race.Age,
+		Size:                       race.Size,
+		SizeDescription:            race.SizeDescription,
+		StartingProficiencies:      race.StartingProficiencies,
+		StartingProficiencyOptions: race.StartingProficiencyOptions,
+		Languages:                  race.Languages,
+		LanguageDesc:               race.LanguageDesc,
+		LanguageOptions:            race.LanguageOptions,
+		Traits:                     race.Traits,
+		Subraces:                   race.Subraces,
+		URL:                        race.URL,
+	}
 }
