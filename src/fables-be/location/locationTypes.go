@@ -16,4 +16,5 @@ type UpdateLocation struct {
 	Name         *string `json:"name"`
 	Description  *string `json:"description"`
 	CampaignUUID *string `json:"campaignUuid"`
+	Deleted      *bool   `json:"deleted"`
 }

@@ -24,4 +24,5 @@ type UpdateNpc struct {
 	Class        *string `json:"class"`
 	Description  *string `json:"description"`
 	IsQuestBoss  *bool   `json:"isQuestBoss"`
+	Deleted      *bool   `json:"deleted"`
 }

@@ -78,6 +78,7 @@ type Location struct {
 	Description  string             `json:"description" gorm:"column:description;type:varchar;not null"`
 	Created      utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
 	LastUpdated  utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
+	Deleted      bool               `json:"deleted" gorm:"column:deleted"`
 }
 
 type Npc struct {
@@ -93,6 +94,7 @@ type Npc struct {
 	IsQuestBoss  bool               `json:"isQuestBoss" gorm:"column:is_quest_boss;not null"`
 	Created      utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
 	LastUpdated  utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
+	Deleted      bool               `json:"deleted" gorm:"column:deleted"`
 }
 
 type Session struct {

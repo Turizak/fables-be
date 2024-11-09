@@ -121,6 +121,9 @@ func UpdateNpcByUuid(c *gin.Context) {
 	if updateNpc.IsQuestBoss != nil {
 		npc.IsQuestBoss = *updateNpc.IsQuestBoss
 	}
+	if updateNpc.Deleted != nil {
+		npc.Deleted = *updateNpc.Deleted
+	}
 
 	if err := UpdateNpcByUuidDB(npc, campaignUuid); err != nil {
 		utilities.ResponseMessage(c, "Could not update npc. Please try again.", http.StatusInternalServerError, nil)
