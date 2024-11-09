@@ -109,6 +109,9 @@ func UpdateLocationByUuid(c *gin.Context) {
 	if updateLocation.Description != nil {
 		location.Description = *updateLocation.Description
 	}
+	if updateLocation.Deleted != nil {
+		location.Deleted = *updateLocation.Deleted
+	}
 
 	if err := UpdateLocationByUuidDB(location, campaignUuid); err != nil {
 		utilities.ResponseMessage(c, "Could not update location. Please try again.", http.StatusInternalServerError, nil)
