@@ -1,0 +1,29 @@
+meta {
+  name: Patch Campaign
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{base_url}}/campaign/:uuid/update
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: 8335f613-ff58-496c-868d-3ab850ee949f
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "Updated Campaign RK",
+    "partyUUIDs": ["da306605-0cc4-4506-9177-c5a963043119"],
+    "completed": true,
+    "active": false,
+    "maxPlayers": 10
+  }
+}

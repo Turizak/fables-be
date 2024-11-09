@@ -22,6 +22,15 @@ type Campaign struct {
 	Deleted     bool               `json:"deleted" gorm:"column:deleted"`
 }
 
+type UpdateCampaign struct {
+	Name       *string         `json:"name"`
+	PartyUUIDs *pq.StringArray `json:"partyUuids"`
+	Completed  *bool           `json:"completed"`
+	Active     *bool           `json:"active"`
+	MaxPlayers *int            `json:"maxPlayers"`
+	Deleted    *bool           `json:"deleted"`
+}
+
 type CampaignResponse struct {
 	UUID        string             `json:"uuid"`
 	Name        string             `json:"name"`

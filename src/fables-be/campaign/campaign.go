@@ -107,6 +107,58 @@ func GetCampaignMonikerByUuid(c *gin.Context) {
 	utilities.ResponseMessage(c, "Campaign moniker retrieved successfully.", http.StatusOK, gin.H{"moniker": campaign.Moniker})
 }
 
+func UpdateCampaignByUuid(c *gin.Context) {
+	claims, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
+		return
+	}
+
+	uuid := c.Param("uuid")
+	campaign, err := GetCampaignByUuidDB(uuid)
+	if err != nil {
+		utilities.ResponseMessage(c, "Could not retrieve campaign. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	if campaign.CreatorUUID != claims.UUID {
+		utilities.ResponseMessage(c, "Unauthorized to update campaign.", http.StatusUnauthorized, nil)
+		return
+	}
+
+	var updateData UpdateCampaign
+	if err := c.BindJSON(&updateData); err != nil {
+		utilities.ResponseMessage(c, "Could not update campaign. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+
+	// Update only the allowed fields
+	if updateData.Name != nil {
+		campaign.Name = *updateData.Name
+	}
+	if updateData.PartyUUIDs != nil {
+		campaign.PartyUUIDs = *updateData.PartyUUIDs
+	}
+	if updateData.Completed != nil {
+		campaign.Completed = *updateData.Completed
+	}
+	if updateData.Active != nil {
+		campaign.Active = *updateData.Active
+	}
+	if updateData.MaxPlayers != nil {
+		campaign.MaxPlayers = *updateData.MaxPlayers
+	}
+	if updateData.Deleted != nil {
+		campaign.Deleted = *updateData.Deleted
+	}
+
+	if err := UpdateCampaignByUuidDB(uuid, campaign); err != nil {
+		utilities.ResponseMessage(c, "Could not update campaign. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	utilities.ResponseMessage(c, "Campaign updated successfully.", http.StatusOK, gin.H{"campaign": CreateCampaignResponse(*campaign)})
+}
+
 // Helper function to map multiple campaigns to response format
 func mapCampaignsToResponse(campaigns []Campaign) []CampaignResponse {
 	response := make([]CampaignResponse, len(campaigns))
