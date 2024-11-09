@@ -15,3 +15,13 @@ type NpcResponse struct {
 	Created      utilities.NullTime `json:"created"`
 	LastUpdated  utilities.NullTime `json:"lastUpdated"`
 }
+
+type UpdateNpc struct {
+	CampaignUUID *string `json:"campaignUuid"`
+	FirstName    *string `json:"firstName"`
+	LastName     *string `json:"lastName"`
+	Race         *string `json:"race"`
+	Class        *string `json:"class"`
+	Description  *string `json:"description"`
+	IsQuestBoss  *bool   `json:"isQuestBoss"`
+}
