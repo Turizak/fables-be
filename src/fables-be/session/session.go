@@ -109,7 +109,7 @@ func GetSessionsByCreatorUuid(c *gin.Context) {
 
 func CreateSessionResponse(session campaign.Session) SessionResponse {
 	return SessionResponse{
-		ID:           session.ID,
+		SessionID:    session.SessionID,
 		UUID:         utilities.ToPointer(session.UUID),
 		CampaignUUID: utilities.ToPointer(session.CampaignUUID),
 		CreatorUUID:  utilities.ToPointer(session.CreatorUUID),

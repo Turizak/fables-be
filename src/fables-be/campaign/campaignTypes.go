@@ -88,6 +88,7 @@ type Npc struct {
 
 type Session struct {
 	ID           uint               `json:"id" gorm:"primary_key"`
+	SessionID    uint               `json:"sessionId" gorm:"column:session_id;type:integer"`
 	CampaignUUID string             `json:"campaignUuid" gorm:"column:campaign_uuid;type:varchar;not null"`
 	CreatorUUID  string             `json:"creatorUuid" gorm:"column:creator_uuid;type:varchar;not null"`
 	UUID         string             `json:"uuid" gorm:"column:uuid;type:varchar;not null;unique"`

@@ -21,6 +21,12 @@ func CreateSessionDB(session *campaign.Session, campaignUuid string) error {
 		return err
 	}
 	tableName := fmt.Sprintf("%s_sessions", campaign.Moniker)
+
+	var rowCount int64
+	if err := database.DB.Table(tableName).Count(&rowCount).Error; err != nil {
+		return err
+	}
+	session.SessionID = uint(rowCount + 1)
 	if result := database.DB.Table(tableName).Create(session); result.Error != nil {
 		return result.Error
 	}

@@ -3,7 +3,7 @@ package session
 import "github.com/Turizak/fables-be/utilities"
 
 type SessionResponse struct {
-	ID           uint               `json:"id"`
+	SessionID    uint               `json:"sessionId"`
 	UUID         *string            `json:"uuid"`
 	CampaignUUID *string            `json:"campaignUuid"`
 	CreatorUUID  *string            `json:"creatorUuid"`
