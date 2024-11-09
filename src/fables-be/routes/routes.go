@@ -40,6 +40,8 @@ func Routes(router *gin.Engine) {
 	router.PATCH("/api/account/change-password", account.ChangePassword)
 
 	//Campaigns
+	//PATCH
+	router.PATCH("/api/campaign/:uuid/update", campaign.UpdateCampaignByUuid)
 	// POST
 	router.POST("/api/campaign/create", campaign.CreateCampaign)
 	// GET

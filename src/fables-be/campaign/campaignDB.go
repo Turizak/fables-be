@@ -64,3 +64,11 @@ func CreateCampaignNpcTable(moniker string) error {
 	err := database.DB.Table(tableName).AutoMigrate(&Npc{})
 	return err
 }
+
+func UpdateCampaignByUuidDB(uuid string, campaign *Campaign) error {
+	campaign.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
+	if result := database.DB.Model(&Campaign{}).Where("uuid = ?", uuid).Updates(campaign); result.Error != nil {
+		return result.Error
+	}
+	return nil
+}
