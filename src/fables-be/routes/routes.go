@@ -50,6 +50,8 @@ func Routes(router *gin.Engine) {
 	router.GET("/api/campaign/:uuid/all", collection.GetCampaignAllData)
 
 	// Campaign - Characters
+	//PATCH
+	router.PATCH("/api/campaign/:uuid/character/:characterUuid/update", character.UpdateCharacterByUuid)
 	// POST
 	router.POST("/api/campaign/:uuid/character/create", character.CreateCharacter)
 	// GET

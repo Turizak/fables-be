@@ -107,3 +107,29 @@ func GetCharactersByOwnerUuidDB(ownerUuid string) ([]campaign.Character, error) 
 
 	return allCharacters, nil
 }
+
+func UpdateCharacterByUuidDB(character *campaign.Character, campaignUuid string) error {
+	// Retrieve the campaign to determine the correct table
+	camp, err := campaign.GetCampaignByUuidDB(campaignUuid)
+	if err != nil {
+		return err
+	}
+
+	// Set the table name based on the campaign's moniker
+	tableName := fmt.Sprintf("%s_characters", camp.Moniker)
+
+	// Update the LastUpdated field to the current time in UTC
+	character.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
+
+	// Perform the update operation
+	result := database.DB.Table(tableName).Save(character)
+
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no character found with UUID %s in campaign %s", character.UUID, campaignUuid)
+	}
+
+	return nil
+}
