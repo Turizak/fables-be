@@ -80,6 +80,56 @@ func GetNpcsByCreatorUuid(c *gin.Context) {
 	utilities.ResponseMessage(c, "NPCs retrieved successfully.", http.StatusOK, gin.H{"npcs": mapNpcsToResponse(npcs)})
 }
 
+func UpdateNpcByUuid(c *gin.Context) {
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
+		return
+	}
+
+	campaignUuid := c.Param("uuid")
+	npcUuid := c.Param("npcUuid")
+	npc, err := GetNpcByUuidDB(npcUuid, campaignUuid)
+	if err != nil {
+		utilities.ResponseMessage(c, "Could not retrieve npc. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	var updateNpc UpdateNpc
+	if err := c.BindJSON(&updateNpc); err != nil {
+		utilities.ResponseMessage(c, "Could not update npc. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+
+	if updateNpc.CampaignUUID != nil {
+		npc.CampaignUUID = *updateNpc.CampaignUUID
+	}
+	if updateNpc.FirstName != nil {
+		npc.FirstName = *updateNpc.FirstName
+	}
+	if updateNpc.LastName != nil {
+		npc.LastName = *updateNpc.LastName
+	}
+	if updateNpc.Description != nil {
+		npc.Description = *updateNpc.Description
+	}
+	if updateNpc.Class != nil {
+		npc.Class = *updateNpc.Class
+	}
+	if updateNpc.Race != nil {
+		npc.Race = *updateNpc.Race
+	}
+	if updateNpc.IsQuestBoss != nil {
+		npc.IsQuestBoss = *updateNpc.IsQuestBoss
+	}
+
+	if err := UpdateNpcByUuidDB(npc, campaignUuid); err != nil {
+		utilities.ResponseMessage(c, "Could not update npc. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	utilities.ResponseMessage(c, "Npc updated successfully.", http.StatusOK, gin.H{"npc": CreateNpcResponse(*npc)})
+}
+
 // Helper functions to map NPCs to their response formats
 func CreateNpcResponse(npc campaign.Npc) NpcResponse {
 	return NpcResponse{

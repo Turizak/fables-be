@@ -1,0 +1,29 @@
+meta {
+  name: Patch Npc
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{base_url}}/campaign/:uuid/npc/:npcUuid/update
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: 6627d71d-9e26-477a-b08b-7b902d804597
+  npcUuid: a9e6486c-a865-4034-841c-c9106d5ca946
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "firstName": "Patched",
+    "lastName": "Updated",
+    "description": "A bitch",
+    "IsQuestBoss": true
+  }
+}
