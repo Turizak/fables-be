@@ -14,57 +14,53 @@ type DamageType struct {
 	URL         string `gorm:"type:varchar" json:"url"`
 }
 
+// GetAllDamageTypes5e retrieves all damage types for 5e
 func GetAllDamageTypes5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	damageTypes, err := GetAllDamageTypes5eDB()
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve damage types. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve damage types. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseDamageTypes := []DamageType{}
-	for _, damageType := range damageTypes {
-		responseDamageType := DamageType{
-			Index:       damageType.Index,
-			Name:        damageType.Name,
-			Description: damageType.Description,
-			URL:         damageType.URL,
-		}
-		responseDamageTypes = append(responseDamageTypes, responseDamageType)
-	}
-	utilities.ResponseMessage(c, "Damage types retrieved successfully.", http.StatusOK, gin.H{"damageTypes": responseDamageTypes})
+
+	utilities.ResponseMessage(c, "Damage types retrieved successfully.", http.StatusOK, gin.H{"damageTypes": mapDamageTypesToResponse(damageTypes)})
 }
 
+// GetDamageTypeByIndex5e retrieves a specific damage type by index for 5e
 func GetDamageTypeByIndex5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	index := c.Param("index")
 	damageType, err := GetDamageTypeByIndex5eDB(index)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve damage type. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve damage type. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseDamageType := DamageType{
+
+	utilities.ResponseMessage(c, "Damage type retrieved successfully.", http.StatusOK, gin.H{"damageType": mapDamageTypeToResponse(*damageType)})
+}
+
+// Helper functions to map damage types to their response formats
+func mapDamageTypesToResponse(damageTypes []DamageType) []DamageType {
+	response := make([]DamageType, len(damageTypes))
+	for i, damageType := range damageTypes {
+		response[i] = mapDamageTypeToResponse(damageType)
+	}
+	return response
+}
+
+func mapDamageTypeToResponse(damageType DamageType) DamageType {
+	return DamageType{
 		Index:       damageType.Index,
 		Name:        damageType.Name,
 		Description: damageType.Description,
 		URL:         damageType.URL,
 	}
-	utilities.ResponseMessage(c, "Damage type retrieved successfully.", http.StatusOK, gin.H{"damageType": responseDamageType})
 }

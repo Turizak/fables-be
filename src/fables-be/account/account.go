@@ -85,14 +85,8 @@ func AccountLogin(c *gin.Context) {
 }
 
 func ValidateAuthToken(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
 	utilities.ResponseMessage(c, "Token is valid.", http.StatusOK, nil)
@@ -131,14 +125,8 @@ func RefreshAuthToken(c *gin.Context) {
 }
 
 func GetAccount(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
-	claims, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	claims, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
 	account, err := GetAccountByEmailDB(claims.Email)
@@ -158,14 +146,8 @@ func GetAccount(c *gin.Context) {
 }
 
 func ChangePassword(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
-	claims, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	claims, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
 	var requestChangePassword UpdatePassword

@@ -21,59 +21,50 @@ type Subrace struct {
 	URL                   string         `gorm:"column:url" json:"url"`
 }
 
+// GetAllSubraces5e retrieves all subraces for 5e
 func GetAllSubraces5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	subraces, err := GetAllSubraces5eDB()
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve subraces. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve subraces. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseSubraces := []Subrace{}
-	for _, subrace := range subraces {
-		responseSubrace := Subrace{
-			Index:                 subrace.Index,
-			Name:                  subrace.Name,
-			Race:                  subrace.Race,
-			Description:           subrace.Description,
-			AbilityBonuses:        subrace.AbilityBonuses,
-			StartingProficiencies: subrace.StartingProficiencies,
-			Languages:             subrace.Languages,
-			LanguageOptions:       subrace.LanguageOptions,
-			RacialTraits:          subrace.RacialTraits,
-			URL:                   subrace.URL,
-		}
-		responseSubraces = append(responseSubraces, responseSubrace)
-	}
-	utilities.ResponseMessage(c, "Subraces retrieved successfully.", http.StatusOK, gin.H{"subraces": responseSubraces})
+
+	utilities.ResponseMessage(c, "Subraces retrieved successfully.", http.StatusOK, gin.H{"subraces": mapSubracesToResponse(subraces)})
 }
 
+// GetSubraceByIndex5e retrieves a specific subrace by index for 5e
 func GetSubraceByIndex5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	index := c.Param("index")
 	subrace, err := GetSubraceByIndex5eDB(index)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve subrace. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve subrace. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseSubrace := Subrace{
+
+	utilities.ResponseMessage(c, "Subrace retrieved successfully.", http.StatusOK, gin.H{"subrace": mapSubraceToResponse(*subrace)})
+}
+
+// Helper functions to map subraces to their response formats
+func mapSubracesToResponse(subraces []Subrace) []Subrace {
+	response := make([]Subrace, len(subraces))
+	for i, subrace := range subraces {
+		response[i] = mapSubraceToResponse(subrace)
+	}
+	return response
+}
+
+func mapSubraceToResponse(subrace Subrace) Subrace {
+	return Subrace{
 		Index:                 subrace.Index,
 		Name:                  subrace.Name,
 		Race:                  subrace.Race,
@@ -85,5 +76,4 @@ func GetSubraceByIndex5e(c *gin.Context) {
 		RacialTraits:          subrace.RacialTraits,
 		URL:                   subrace.URL,
 	}
-	utilities.ResponseMessage(c, "Subrace retrieved successfully.", http.StatusOK, gin.H{"subrace": responseSubrace})
 }

@@ -5,108 +5,82 @@ import (
 
 	"github.com/Turizak/fables-be/campaign"
 	"github.com/Turizak/fables-be/utilities"
-
 	"github.com/gin-gonic/gin"
 )
 
 func CreateLocation(c *gin.Context) {
 	var location campaign.Location
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	claims, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
+
+	location.CreatorUUID = claims.UUID
+
 	campaignUuid := c.Param("uuid")
-	claims, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
 	if err := c.BindJSON(&location); err != nil {
 		utilities.ResponseMessage(c, "Could not create location. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
-	location.CreatorUUID = claims.UUID
 	location.CampaignUUID = campaignUuid
+
 	if err := CreateLocationDB(&location, location.CampaignUUID); err != nil {
-		utilities.ResponseMessage(c, "Could not create location. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not create location. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseLocation := CreateLocationResponse(location)
-	utilities.ResponseMessage(c, "Location created successfully.", http.StatusCreated, gin.H{"location": responseLocation})
+
+	utilities.ResponseMessage(c, "Location created successfully.", http.StatusCreated, gin.H{"location": CreateLocationResponse(location)})
 }
 
 func GetLocationByUuid(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
+
 	campaignUuid := c.Param("uuid")
 	locationUuid := c.Param("locationUuid")
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
 	location, err := GetLocationByUuidDB(locationUuid, campaignUuid)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve location. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve location. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseLocation := CreateLocationResponse(*location)
-	utilities.ResponseMessage(c, "Location retrieved successfully.", http.StatusOK, gin.H{"location": responseLocation})
+
+	utilities.ResponseMessage(c, "Location retrieved successfully.", http.StatusOK, gin.H{"location": CreateLocationResponse(*location)})
 }
 
 func GetLocationsByCampaignUuid(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
+
 	campaignUuid := c.Param("uuid")
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
 	locations, err := GetLocationsByCampaignUuidDB(campaignUuid)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve locations. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve locations. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseLocations := make([]LocationResponse, 0)
-	for _, location := range locations {
-		responseLocation := CreateLocationResponse(location)
-		responseLocations = append(responseLocations, responseLocation)
-	}
-	utilities.ResponseMessage(c, "Locations retrieved successfully.", http.StatusOK, gin.H{"locations": responseLocations})
+
+	utilities.ResponseMessage(c, "Locations retrieved successfully.", http.StatusOK, gin.H{"locations": mapLocationsToResponse(locations)})
 }
 
 func GetLocationsByCreatorUuid(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	claims, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	claims, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	locations, err := GetLocationsByCreatorUuidDB(claims.UUID)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve locations. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve locations. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseLocations := make([]LocationResponse, 0)
-	for _, location := range locations {
-		responseLocation := CreateLocationResponse(location)
-		responseLocations = append(responseLocations, responseLocation)
-	}
-	utilities.ResponseMessage(c, "Locations retrieved successfully.", http.StatusOK, gin.H{"locations": responseLocations})
+
+	utilities.ResponseMessage(c, "Locations retrieved successfully.", http.StatusOK, gin.H{"locations": mapLocationsToResponse(locations)})
 }
 
+// Helper functions to map locations to their response formats
 func CreateLocationResponse(location campaign.Location) LocationResponse {
 	return LocationResponse{
 		UUID:         utilities.ToPointer(location.UUID),
@@ -117,4 +91,12 @@ func CreateLocationResponse(location campaign.Location) LocationResponse {
 		Created:      location.Created,
 		LastUpdated:  location.LastUpdated,
 	}
+}
+
+func mapLocationsToResponse(locations []campaign.Location) []LocationResponse {
+	response := make([]LocationResponse, len(locations))
+	for i, location := range locations {
+		response[i] = CreateLocationResponse(location)
+	}
+	return response
 }

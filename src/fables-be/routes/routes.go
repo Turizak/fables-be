@@ -18,6 +18,7 @@ import (
 	"github.com/Turizak/fables-be/ruleset/5e/skill"
 	"github.com/Turizak/fables-be/ruleset/5e/subrace"
 	"github.com/Turizak/fables-be/ruleset/5e/trait"
+	"github.com/Turizak/fables-be/session"
 	"github.com/gin-gonic/gin"
 )
 
@@ -65,6 +66,13 @@ func Routes(router *gin.Engine) {
 	// GET
 	router.GET("/api/campaign/:uuid/npc/:npcUuid", npc.GetNpcByUuid)
 	router.GET("/api/campaign/:uuid/npcs", npc.GetNpcsByCampaignUuid)
+
+	// Campaign - Sessions
+	// POST
+	router.POST("/api/campaign/:uuid/session/create", session.CreateSession)
+	// GET
+	router.GET("/api/campaign/:uuid/session/:sessionUuid", session.GetSessionByUuid)
+	router.GET("/api/campaign/:uuid/sessions", session.GetSessionsByCampaignUuid)
 
 	//Ruleset
 	// GET

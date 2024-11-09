@@ -1,0 +1,20 @@
+meta {
+  name: Get Campaign Session
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/campaign/:uuid/session/:sessionUuid
+  body: none
+  auth: bearer
+}
+
+params:path {
+  sessionUuid: 870951d0-227f-4f9f-891b-51ea69ec748e
+  uuid: 8335f613-ff58-496c-868d-3ab850ee949f
+}
+
+auth:bearer {
+  token: {{token}}
+}

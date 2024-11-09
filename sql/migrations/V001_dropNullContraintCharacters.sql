@@ -1,4 +1,5 @@
-DO $ $ DECLARE table_name TEXT;
+DO $$ 
+DECLARE table_name TEXT;
 
 BEGIN FOR table_name IN
 SELECT
@@ -22,4 +23,4 @@ EXECUTE 'ALTER TABLE ' || table_name || ' ADD COLUMN gender VARCHAR NULL;';
 
 END LOOP;
 
-END $ $;
+END $$;

@@ -1,4 +1,5 @@
-DO $ $ DECLARE table_name TEXT;
+DO $$ 
+DECLARE table_name TEXT;
 
 BEGIN FOR table_name IN
 SELECT
@@ -10,4 +11,4 @@ WHERE
 
 END LOOP;
 
-END $ $;
+END $$;

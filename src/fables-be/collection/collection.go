@@ -12,6 +12,10 @@ import (
 )
 
 func GetCampaignAllData(c *gin.Context) {
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
+		return
+	}
 	uuid := c.Param("uuid")
 	campaignData, err := campaign.GetCampaignByUuidDB(uuid)
 	if err != nil {

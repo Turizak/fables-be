@@ -16,59 +16,54 @@ type Skill struct {
 	URL          string         `gorm:"type:text;not null" json:"url"`
 }
 
+// GetAllSkills5e retrieves all skills for 5e
 func GetAllSkills5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	skills, err := GetAllSkills5eDB()
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve skills. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve skills. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseSkills := []Skill{}
-	for _, skill := range skills {
-		responseSkill := Skill{
-			Index:        skill.Index,
-			Name:         skill.Name,
-			Description:  skill.Description,
-			AbilityScore: skill.AbilityScore,
-			URL:          skill.URL,
-		}
-		responseSkills = append(responseSkills, responseSkill)
-	}
-	utilities.ResponseMessage(c, "Skills retrieved successfully.", http.StatusOK, gin.H{"skills": responseSkills})
+
+	utilities.ResponseMessage(c, "Skills retrieved successfully.", http.StatusOK, gin.H{"skills": mapSkillsToResponse(skills)})
 }
 
+// GetSkillByIndex5e retrieves a specific skill by index for 5e
 func GetSkillByIndex5e(c *gin.Context) {
-	authToken := c.GetHeader("Authorization")
-	if authToken == "" {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
 		return
 	}
-	_, validToken := utilities.ValidateAuthenticationToken(c, authToken)
-	if !validToken {
-		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
-		return
-	}
+
 	index := c.Param("index")
 	skill, err := GetSkillByIndex5eDB(index)
 	if err != nil {
-		utilities.ResponseMessage(c, "Could not retrieve skill. Please try again.", http.StatusBadRequest, nil)
+		utilities.ResponseMessage(c, "Could not retrieve skill. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	responseSkill := Skill{
+
+	utilities.ResponseMessage(c, "Skill retrieved successfully.", http.StatusOK, gin.H{"skill": mapSkillToResponse(*skill)})
+}
+
+// Helper functions to map skills to their response formats
+func mapSkillsToResponse(skills []Skill) []Skill {
+	response := make([]Skill, len(skills))
+	for i, skill := range skills {
+		response[i] = mapSkillToResponse(skill)
+	}
+	return response
+}
+
+func mapSkillToResponse(skill Skill) Skill {
+	return Skill{
 		Index:        skill.Index,
 		Name:         skill.Name,
 		Description:  skill.Description,
 		AbilityScore: skill.AbilityScore,
 		URL:          skill.URL,
 	}
-	utilities.ResponseMessage(c, "Skill retrieved successfully.", http.StatusOK, gin.H{"skill": responseSkill})
 }
