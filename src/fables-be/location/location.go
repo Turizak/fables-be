@@ -80,6 +80,44 @@ func GetLocationsByCreatorUuid(c *gin.Context) {
 	utilities.ResponseMessage(c, "Locations retrieved successfully.", http.StatusOK, gin.H{"locations": mapLocationsToResponse(locations)})
 }
 
+func UpdateLocationByUuid(c *gin.Context) {
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
+		return
+	}
+
+	campaignUuid := c.Param("uuid")
+	locationUuid := c.Param("locationUuid")
+	location, err := GetLocationByUuidDB(locationUuid, campaignUuid)
+	if err != nil {
+		utilities.ResponseMessage(c, "Could not retrieve location. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	var updateLocation UpdateLocation
+	if err := c.BindJSON(&updateLocation); err != nil {
+		utilities.ResponseMessage(c, "Could not update location. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+
+	if updateLocation.CampaignUUID != nil {
+		location.CampaignUUID = *updateLocation.CampaignUUID
+	}
+	if updateLocation.Name != nil {
+		location.Name = *updateLocation.Name
+	}
+	if updateLocation.Description != nil {
+		location.Description = *updateLocation.Description
+	}
+
+	if err := UpdateLocationByUuidDB(location, campaignUuid); err != nil {
+		utilities.ResponseMessage(c, "Could not update location. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	utilities.ResponseMessage(c, "Location updated successfully.", http.StatusOK, gin.H{"location": CreateLocationResponse(*location)})
+}
+
 // Helper functions to map locations to their response formats
 func CreateLocationResponse(location campaign.Location) LocationResponse {
 	return LocationResponse{

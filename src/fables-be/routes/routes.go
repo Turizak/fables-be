@@ -58,6 +58,8 @@ func Routes(router *gin.Engine) {
 	router.GET("/api/campaign/:uuid/character/:characterUuid", character.GetCharacterByUuid)
 
 	// Campaign - Locations
+	//PATCH
+	router.PATCH("/api/campaign/:uuid/location/:locationUuid/update", location.UpdateLocationByUuid)
 	// POST
 	router.POST("/api/campaign/:uuid/location/create", location.CreateLocation)
 	// GET

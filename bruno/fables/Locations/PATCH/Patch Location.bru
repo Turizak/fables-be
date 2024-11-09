@@ -1,0 +1,27 @@
+meta {
+  name: Patch Location
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{base_url}}/campaign/:uuid/location/:locationUuid/update
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: 506bdf8b-4906-48ea-ad18-4e65a8a02e59
+  locationUuid: 644ed712-4772-4b79-9fb7-a1716d0c0c68
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "The bar",
+    "description": "A place to get drunk"
+  }
+}
