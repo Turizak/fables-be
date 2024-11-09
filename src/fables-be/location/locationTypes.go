@@ -11,3 +11,9 @@ type LocationResponse struct {
 	Created      utilities.NullTime `json:"created"`
 	LastUpdated  utilities.NullTime `json:"lastUpdated"`
 }
+
+type UpdateLocation struct {
+	Name         *string `json:"name"`
+	Description  *string `json:"description"`
+	CampaignUUID *string `json:"campaignUuid"`
+}
