@@ -27,3 +27,14 @@ body:json {
     "maxPlayers": 10
   }
 }
+
+docs {
+  type UpdateCampaign struct {
+  	Name       *string         `json:"name"`
+  	PartyUUIDs *pq.StringArray `json:"partyUuids"`
+  	Completed  *bool           `json:"completed"`
+  	Active     *bool           `json:"active"`
+  	MaxPlayers *int            `json:"maxPlayers"`
+  	Deleted    *bool           `json:"deleted"`
+  }
+}

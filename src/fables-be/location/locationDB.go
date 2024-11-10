@@ -15,6 +15,7 @@ func CreateLocationDB(location *campaign.Location, campaignUuid string) error {
 	location.Created = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
 	location.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Time{}, Valid: false})
 	location.UUID = uuid.NewString()
+	location.Deleted = false
 	campaign, err := campaign.GetCampaignByUuidDB(campaignUuid)
 	if err != nil {
 		return err

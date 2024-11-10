@@ -15,6 +15,7 @@ func CreateNpcDB(npc *campaign.Npc, campaignUuid string) error {
 	npc.Created = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
 	npc.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Time{}, Valid: false})
 	npc.UUID = uuid.NewString()
+	npc.Deleted = false
 	campaign, err := campaign.GetCampaignByUuidDB(campaignUuid)
 	if err != nil {
 		return err

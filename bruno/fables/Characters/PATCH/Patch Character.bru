@@ -26,3 +26,23 @@ body:json {
     "age":36
   }
 }
+
+docs {
+  type UpdateCharacter struct {
+  	FirstName    *string `json:"firstName"`
+  	LastName     *string `json:"lastName"`
+  	OwnerUUID    *string `json:"ownerUuid"`
+  	CampaignUUID *string `json:"campaignUuid"`
+  	Race         *string `json:"race"`
+  	Class        *string `json:"class"`
+  	Age          *int    `json:"age"`
+  	Height       *int    `json:"height"`
+  	Weight       *int    `json:"weight"`
+  	EyeColor     *string `json:"eyeColor"`
+  	SkinColor    *string `json:"skinColor"`
+  	HairColor    *string `json:"hairColor"`
+  	Gender       *string `json:"gender"`
+  	Public       *bool   `json:"public"`
+  	Deleted      *bool   `json:"deleted"`
+  }
+}
