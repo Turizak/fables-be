@@ -68,10 +68,10 @@ func GetSessionsByCreatorUuidDB(creatorUuid string) ([]campaign.Session, error) 
 		return nil, err
 	}
 
-	// Iterate over each moniker and query the respective table for npcs
+	// Iterate over each moniker and query the respective table for sessions
 	for _, moniker := range monikers {
 		var sessions []campaign.Session
-		tableName := fmt.Sprintf("%s_npcs", moniker)
+		tableName := fmt.Sprintf("%s_sessions", moniker)
 
 		// Query each table using the generated table name
 		if result := database.DB.Table(tableName).Where("creator_uuid = ?", creatorUuid).Find(&sessions); result.Error != nil {
@@ -79,9 +79,35 @@ func GetSessionsByCreatorUuidDB(creatorUuid string) ([]campaign.Session, error) 
 			continue
 		}
 
-		// Append found npcs to the result
+		// Append found sessions to the result
 		allSessions = append(allSessions, sessions...)
 	}
 
 	return allSessions, nil
+}
+
+func UpdateSessionByUuidDB(session *campaign.Session, campaignUuid string) error {
+	// Retrieve the campaign to determine the correct table
+	camp, err := campaign.GetCampaignByUuidDB(campaignUuid)
+	if err != nil {
+		return err
+	}
+
+	// Set the table name based on the campaign's moniker
+	tableName := fmt.Sprintf("%s_sessions", camp.Moniker)
+
+	// Update the LastUpdated field to the current time in UTC
+	session.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
+
+	// Perform the update operation
+	result := database.DB.Table(tableName).Save(session)
+
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no session found with UUID %s in campaign %s", session.UUID, campaignUuid)
+	}
+
+	return nil
 }

@@ -88,6 +88,47 @@ func GetSessionsByCreatorUuid(c *gin.Context) {
 	})
 }
 
+func UpdateSessionByUuid(c *gin.Context) {
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
+		return
+	}
+
+	campaignUuid := c.Param("uuid")
+	sessionUuid := c.Param("sessionUuid")
+	session, err := GetSessionByUuidDB(sessionUuid, campaignUuid)
+	if err != nil {
+		utilities.ResponseMessage(c, "Could not retrieve session. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	var updateSession UpdateSession
+	if err := c.BindJSON(&updateSession); err != nil {
+		utilities.ResponseMessage(c, "Could not update session. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+
+	if updateSession.DateOccured.Valid {
+		session.DateOccured = updateSession.DateOccured
+	}
+	if updateSession.PartyUUIDs != nil {
+		session.PartyUUIDs = updateSession.PartyUUIDs
+	}
+	if updateSession.NpcUUIDs != nil {
+		session.NpcUUIDs = updateSession.NpcUUIDs
+	}
+	if updateSession.LocationUUIDs != nil {
+		session.LocationUUIDs = updateSession.LocationUUIDs
+	}
+
+	if err := UpdateSessionByUuidDB(session, campaignUuid); err != nil {
+		utilities.ResponseMessage(c, "Could not update session. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	utilities.ResponseMessage(c, "Session updated successfully.", http.StatusOK, gin.H{"session": CreateSessionResponse(*session)})
+}
+
 // CreateSessionResponse maps a session to a SessionResponse
 func CreateSessionResponse(session campaign.Session) SessionResponse {
 	return SessionResponse{

@@ -14,3 +14,10 @@ type SessionResponse struct {
 	Created       utilities.NullTime `json:"created"`
 	LastUpdated   utilities.NullTime `json:"lastUpdated"`
 }
+
+type UpdateSession struct {
+	PartyUUIDs    []string           `json:"partyUuids"`
+	LocationUUIDs []string           `json:"locationUuids"`
+	NpcUUIDs      []string           `json:"npcUuids"`
+	DateOccured   utilities.NullTime `json:"dateOccured"`
+}
