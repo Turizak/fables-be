@@ -76,11 +76,14 @@ func Routes(router *gin.Engine) {
 	router.GET("/api/campaign/:uuid/npcs", npc.GetNpcsByCampaignUuid)
 
 	// Campaign - Sessions
+	//PATCH
+	router.PATCH("/api/campaign/:uuid/session/:sessionUuid/update", session.UpdateSessionByUuid)
 	// POST
 	router.POST("/api/campaign/:uuid/session/create", session.CreateSession)
 	// GET
 	router.GET("/api/campaign/:uuid/session/:sessionUuid", session.GetSessionByUuid)
 	router.GET("/api/campaign/:uuid/sessions", session.GetSessionsByCampaignUuid)
+	router.GET("/api/campaign/:uuid/session/:sessionUuid/all", collection.GetAllSessionData)
 
 	//Ruleset
 	// GET

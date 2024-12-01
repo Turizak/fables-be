@@ -98,14 +98,16 @@ type Npc struct {
 }
 
 type Session struct {
-	ID           uint               `json:"id" gorm:"primary_key"`
-	SessionID    uint               `json:"sessionId" gorm:"column:session_id;type:integer"`
-	CampaignUUID string             `json:"campaignUuid" gorm:"column:campaign_uuid;type:varchar;not null"`
-	CreatorUUID  string             `json:"creatorUuid" gorm:"column:creator_uuid;type:varchar;not null"`
-	UUID         string             `json:"uuid" gorm:"column:uuid;type:varchar;not null;unique"`
-	PartyUUIDs   pq.StringArray     `json:"partyUuids" gorm:"column:party_uuids;type:varchar[]"`
-	DateOccured  utilities.NullTime `json:"dateOccured" gorm:"column:date_occured;type:timestamp with time zone;not null"`
-	Created      utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
-	LastUpdated  utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
-	Deleted      bool               `json:"deleted" gorm:"column:deleted"`
+	ID            uint               `json:"id" gorm:"primary_key"`
+	SessionID     uint               `json:"sessionId" gorm:"column:session_id;type:integer"`
+	CampaignUUID  string             `json:"campaignUuid" gorm:"column:campaign_uuid;type:varchar;not null"`
+	CreatorUUID   string             `json:"creatorUuid" gorm:"column:creator_uuid;type:varchar;not null"`
+	UUID          string             `json:"uuid" gorm:"column:uuid;type:varchar;not null;unique"`
+	PartyUUIDs    pq.StringArray     `json:"partyUuids" gorm:"column:party_uuids;type:varchar[]"`
+	LocationUUIDs pq.StringArray     `json:"locationUuids" gorm:"column:location_uuids;type:varchar[]"`
+	NpcUUIDs      pq.StringArray     `json:"npcUuids" gorm:"column:npc_uuids;type:varchar[]"`
+	DateOccured   utilities.NullTime `json:"dateOccured" gorm:"column:date_occured;type:timestamp with time zone;not null"`
+	Created       utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
+	LastUpdated   utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
+	Deleted       bool               `json:"deleted" gorm:"column:deleted"`
 }

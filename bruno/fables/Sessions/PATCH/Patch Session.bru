@@ -1,0 +1,42 @@
+meta {
+  name: Patch Session
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{base_url}}/campaign/:uuid/session/:sessionUuid/update
+  body: json
+  auth: bearer
+}
+
+params:path {
+  sessionUuid: 08974236-7c9b-4e17-a24b-93dc4cf401fa
+  uuid: 8335f613-ff58-496c-868d-3ab850ee949f
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "partyUuids":["a2a4d099-16bc-4276-b147-b07ccb8c334d"],
+    "locationUuids":["dd6f231c-f4d2-4a6f-b2a6-50272feaea68", "1b1ca5a3-df7c-4caa-9a9e-99a8b9cac0f5"],
+    "npcUuids":["a67cff56-a902-4404-b82b-b610b7d6174f"],
+    "dateOccured": "2024-11-30T00:00:00Z"
+  }
+}
+
+docs {
+  type UpdateNpc struct {
+  	CampaignUUID *string `json:"campaignUuid"`
+  	FirstName    *string `json:"firstName"`
+  	LastName     *string `json:"lastName"`
+  	Race         *string `json:"race"`
+  	Class        *string `json:"class"`
+  	Description  *string `json:"description"`
+  	IsQuestBoss  *bool   `json:"isQuestBoss"`
+  	Deleted      *bool   `json:"deleted"`
+  }
+}

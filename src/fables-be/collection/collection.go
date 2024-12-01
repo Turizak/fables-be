@@ -66,3 +66,49 @@ func GetCampaignAllData(c *gin.Context) {
 	}
 	utilities.ResponseMessage(c, "Campaign data retrieved successfully.", http.StatusOK, gin.H{"campaign": responseCampaign, "locations": responseLocations, "npcs": responseNpcs, "characters": responseCharacters, "sessions": responseSessions})
 }
+
+func GetAllSessionData(c *gin.Context) {
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
+		return
+	}
+	uuid := c.Param("uuid")
+	sessionUuid := c.Param("sessionUuid")
+
+	sessionData, err := session.GetSessionByUuidDB(sessionUuid, uuid)
+	if err != nil {
+		utilities.ResponseMessage(c, "Could not retrieve session. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	responseCharacters := []character.CharacterResponse{}
+	for _, characterUuid := range sessionData.PartyUUIDs {
+		characterData, err := character.GetCharacterByUuidDB(characterUuid, uuid)
+		if err != nil {
+			utilities.ResponseMessage(c, "Could not retrieve character. Please try again.", http.StatusBadRequest, nil)
+			return
+		}
+		responseCharacter := character.CreateCharacterResponse(*characterData)
+		responseCharacters = append(responseCharacters, responseCharacter)
+	}
+	responseLocations := []location.LocationResponse{}
+	for _, locationUuid := range sessionData.LocationUUIDs {
+		locationData, err := location.GetLocationByUuidDB(locationUuid, uuid)
+		if err != nil {
+			utilities.ResponseMessage(c, "Could not retrieve location. Please try again.", http.StatusBadRequest, nil)
+			return
+		}
+		responseLocation := location.CreateLocationResponse(*locationData)
+		responseLocations = append(responseLocations, responseLocation)
+	}
+	responseNpcs := []npc.NpcResponse{}
+	for _, npcUuid := range sessionData.NpcUUIDs {
+		npcData, err := npc.GetNpcByUuidDB(npcUuid, uuid)
+		if err != nil {
+			utilities.ResponseMessage(c, "Could not retrieve npc. Please try again.", http.StatusBadRequest, nil)
+			return
+		}
+		responseNpc := npc.CreateNpcResponse(*npcData)
+		responseNpcs = append(responseNpcs, responseNpc)
+	}
+	utilities.ResponseMessage(c, "Session data retrieved successfully.", http.StatusOK, gin.H{"session": session.CreateSessionResponse(*sessionData), "characters": responseCharacters, "locations": responseLocations, "npcs": responseNpcs})
+}

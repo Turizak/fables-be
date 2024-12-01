@@ -1,11 +1,11 @@
 meta {
-  name: Get Campaign Session
+  name: Session ALL-DATA
   type: http
-  seq: 1
+  seq: 3
 }
 
 get {
-  url: {{base_url}}/campaign/:uuid/session/:sessionUuid
+  url: {{base_url}}/campaign/:uuid/session/:sessionUuid/all
   body: none
   auth: bearer
 }
