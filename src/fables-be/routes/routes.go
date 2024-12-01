@@ -83,6 +83,7 @@ func Routes(router *gin.Engine) {
 	// GET
 	router.GET("/api/campaign/:uuid/session/:sessionUuid", session.GetSessionByUuid)
 	router.GET("/api/campaign/:uuid/sessions", session.GetSessionsByCampaignUuid)
+	router.GET("/api/campaign/:uuid/session/:sessionUuid/all", collection.GetAllSessionData)
 
 	//Ruleset
 	// GET
