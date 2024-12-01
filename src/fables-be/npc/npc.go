@@ -136,17 +136,18 @@ func UpdateNpcByUuid(c *gin.Context) {
 // Helper functions to map NPCs to their response formats
 func CreateNpcResponse(npc campaign.Npc) NpcResponse {
 	return NpcResponse{
-		UUID:         utilities.ToPointer(npc.UUID),
-		CampaignUUID: utilities.ToPointer(npc.CampaignUUID),
-		CreatorUUID:  utilities.ToPointer(npc.CreatorUUID),
-		FirstName:    utilities.ToPointer(npc.FirstName),
-		LastName:     utilities.ToPointer(npc.LastName),
-		Race:         utilities.ToPointer(npc.Race),
-		Class:        utilities.ToPointer(npc.Class),
-		Description:  utilities.ToPointer(npc.Description),
-		IsQuestBoss:  npc.IsQuestBoss,
-		Created:      npc.Created,
-		LastUpdated:  npc.LastUpdated,
+		UUID:          utilities.ToPointer(npc.UUID),
+		CampaignUUID:  utilities.ToPointer(npc.CampaignUUID),
+		CreatorUUID:   utilities.ToPointer(npc.CreatorUUID),
+		FirstName:     utilities.ToPointer(npc.FirstName),
+		LastName:      utilities.ToPointer(npc.LastName),
+		Race:          utilities.ToPointer(npc.Race),
+		Class:         utilities.ToPointer(npc.Class),
+		Description:   utilities.ToPointer(npc.Description),
+		IsQuestBoss:   npc.IsQuestBoss,
+		QuestBossUUID: utilities.ToPointer(npc.QuestBossUUID),
+		Created:       npc.Created,
+		LastUpdated:   npc.LastUpdated,
 	}
 }
 

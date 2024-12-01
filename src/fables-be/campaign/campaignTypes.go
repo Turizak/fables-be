@@ -82,19 +82,20 @@ type Location struct {
 }
 
 type Npc struct {
-	ID           uint               `json:"id" gorm:"primary_key"`
-	CampaignUUID string             `json:"campaignUuid" gorm:"column:campaign_uuid;type:varchar;not null"`
-	UUID         string             `json:"uuid" gorm:"column:uuid;type:varchar;not null;unique"`
-	CreatorUUID  string             `json:"creatorUuid" gorm:"column:creator_uuid;type:varchar;not null"`
-	FirstName    string             `json:"firstName" gorm:"column:first_name;type:varchar;not null"`
-	LastName     string             `json:"lastName" gorm:"column:last_name;type:varchar;not null"`
-	Race         string             `json:"race" gorm:"column:race;type:varchar;not null"`
-	Class        string             `json:"class" gorm:"column:class;type:varchar;not null"`
-	Description  string             `json:"description" gorm:"column:description;type:varchar;not null"`
-	IsQuestBoss  bool               `json:"isQuestBoss" gorm:"column:is_quest_boss;not null"`
-	Created      utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
-	LastUpdated  utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
-	Deleted      bool               `json:"deleted" gorm:"column:deleted"`
+	ID            uint               `json:"id" gorm:"primary_key"`
+	CampaignUUID  string             `json:"campaignUuid" gorm:"column:campaign_uuid;type:varchar;not null"`
+	UUID          string             `json:"uuid" gorm:"column:uuid;type:varchar;not null;unique"`
+	CreatorUUID   string             `json:"creatorUuid" gorm:"column:creator_uuid;type:varchar;not null"`
+	FirstName     string             `json:"firstName" gorm:"column:first_name;type:varchar;not null"`
+	LastName      string             `json:"lastName" gorm:"column:last_name;type:varchar;not null"`
+	Race          string             `json:"race" gorm:"column:race;type:varchar;not null"`
+	Class         string             `json:"class" gorm:"column:class;type:varchar;not null"`
+	Description   string             `json:"description" gorm:"column:description;type:varchar;not null"`
+	IsQuestBoss   bool               `json:"isQuestBoss" gorm:"column:is_quest_boss;not null"`
+	QuestBossUUID string             `json:"questBossUuid" gorm:"column:quest_boss_uuid;type:varchar"`
+	Created       utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
+	LastUpdated   utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
+	Deleted       bool               `json:"deleted" gorm:"column:deleted"`
 }
 
 type Session struct {
