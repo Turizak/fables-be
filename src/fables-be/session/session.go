@@ -91,14 +91,16 @@ func GetSessionsByCreatorUuid(c *gin.Context) {
 // CreateSessionResponse maps a session to a SessionResponse
 func CreateSessionResponse(session campaign.Session) SessionResponse {
 	return SessionResponse{
-		SessionID:    session.SessionID,
-		UUID:         utilities.ToPointer(session.UUID),
-		CampaignUUID: utilities.ToPointer(session.CampaignUUID),
-		CreatorUUID:  utilities.ToPointer(session.CreatorUUID),
-		PartyUUIDs:   session.PartyUUIDs,
-		DateOccured:  session.DateOccured,
-		Created:      session.Created,
-		LastUpdated:  session.LastUpdated,
+		SessionID:     session.SessionID,
+		UUID:          utilities.ToPointer(session.UUID),
+		CampaignUUID:  utilities.ToPointer(session.CampaignUUID),
+		CreatorUUID:   utilities.ToPointer(session.CreatorUUID),
+		PartyUUIDs:    session.PartyUUIDs,
+		LocationUUIDs: session.LocationUUIDs,
+		NpcUUIDs:      session.NpcUUIDs,
+		DateOccured:   session.DateOccured,
+		Created:       session.Created,
+		LastUpdated:   session.LastUpdated,
 	}
 }
 
