@@ -34,6 +34,34 @@ func CreateCharacter(c *gin.Context) {
 	utilities.ResponseMessage(c, "Character created successfully.", http.StatusCreated, gin.H{"character": CreateCharacterResponse(character)})
 }
 
+func CreateCharacterSession(c *gin.Context) {
+	var character campaign.Character
+	claims, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
+		return
+	}
+
+	character.CreatorUUID = claims.UUID
+	character.OwnerUUID = claims.UUID
+
+	campaignUuid := c.Param("uuid")
+	if err := c.BindJSON(&character); err != nil {
+		utilities.ResponseMessage(c, "Could not create character. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	character.CampaignUUID = campaignUuid
+	character.Public = true
+
+	sessionUuid := c.Param("sessionUuid")
+
+	if err := CreateCharacterSessionDB(&character, character.CampaignUUID, sessionUuid); err != nil {
+		utilities.ResponseMessage(c, "Could not create character. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	utilities.ResponseMessage(c, "Character created successfully.", http.StatusCreated, gin.H{"character": CreateCharacterResponse(character)})
+}
+
 func GetCharacterByUuid(c *gin.Context) {
 	claims, authorized := utilities.AuthorizeRequest(c)
 	if !authorized {

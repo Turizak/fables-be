@@ -1,0 +1,31 @@
+meta {
+  name: Create Npc Session
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/campaign/:uuid/session/:sessionUuid/npc/create
+  body: json
+  auth: bearer
+}
+
+params:path {
+  sessionUuid: 08974236-7c9b-4e17-a24b-93dc4cf401fa
+  uuid: 8335f613-ff58-496c-868d-3ab850ee949f
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "firstName": "Tim",
+    "lastName": "TheTatman",
+    "race": "human",
+    "class": "fat",
+    "description": "a bitch",
+    "isQuestBoss": true
+  }
+}

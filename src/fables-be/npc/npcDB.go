@@ -6,6 +6,7 @@ import (
 
 	"github.com/Turizak/fables-be/campaign"
 	"github.com/Turizak/fables-be/database"
+	"github.com/Turizak/fables-be/session"
 	"github.com/Turizak/fables-be/utilities"
 	"github.com/google/uuid"
 	"github.com/lib/pq"
@@ -23,6 +24,42 @@ func CreateNpcDB(npc *campaign.Npc, campaignUuid string) error {
 	tableName := fmt.Sprintf("%s_npcs", campaign.Moniker)
 	if result := database.DB.Table(tableName).Create(npc); result.Error != nil {
 		return result.Error
+	}
+	return nil
+}
+
+func CreateNpcSessionDB(npc *campaign.Npc, campaignUuid string, sessionUuid string) error {
+	npc.Created = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
+	npc.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Time{}, Valid: false})
+	npc.UUID = uuid.NewString()
+	npc.Deleted = false
+	campaign, err := campaign.GetCampaignByUuidDB(campaignUuid)
+	if err != nil {
+		return err
+	}
+	tableName := fmt.Sprintf("%s_npcs", campaign.Moniker)
+	if result := database.DB.Table(tableName).Create(npc); result.Error != nil {
+		return result.Error
+	}
+	ses, err := session.GetSessionByUuidDB(sessionUuid, campaignUuid)
+	if err != nil {
+		return err
+	}
+	sessionNpcUuids := false
+	for _, uuid := range ses.NpcUUIDs {
+		if uuid == npc.UUID {
+			sessionNpcUuids = true
+			break
+		}
+	}
+	// Append the UUID only if it doesn't already exist
+	if !sessionNpcUuids {
+		ses.NpcUUIDs = append(ses.NpcUUIDs, npc.UUID)
+	}
+	// Update the session
+	err = session.UpdateSessionByUuidDB(ses, campaignUuid)
+	if err != nil {
+		return err
 	}
 	return nil
 }

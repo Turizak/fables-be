@@ -32,6 +32,32 @@ func CreateNpc(c *gin.Context) {
 	utilities.ResponseMessage(c, "NPC created successfully.", http.StatusCreated, gin.H{"npc": CreateNpcResponse(npc)})
 }
 
+func CreateNpcSession(c *gin.Context) {
+	var npc campaign.Npc
+	claims, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
+		return
+	}
+
+	npc.CreatorUUID = claims.UUID
+
+	campaignUuid := c.Param("uuid")
+	if err := c.BindJSON(&npc); err != nil {
+		utilities.ResponseMessage(c, "Could not create NPC. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	npc.CampaignUUID = campaignUuid
+
+	sessionUuid := c.Param("sessionUuid")
+
+	if err := CreateNpcSessionDB(&npc, npc.CampaignUUID, sessionUuid); err != nil {
+		utilities.ResponseMessage(c, "Could not create NPC. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	utilities.ResponseMessage(c, "NPC created successfully.", http.StatusCreated, gin.H{"npc": CreateNpcResponse(npc)})
+}
+
 func GetNpcByUuid(c *gin.Context) {
 	_, authorized := utilities.AuthorizeRequest(c)
 	if !authorized {

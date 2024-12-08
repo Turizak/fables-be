@@ -54,6 +54,7 @@ func Routes(router *gin.Engine) {
 	router.PATCH("/api/campaign/:uuid/character/:characterUuid/update", character.UpdateCharacterByUuid)
 	// POST
 	router.POST("/api/campaign/:uuid/character/create", character.CreateCharacter)
+	router.POST("/api/campaign/:uuid/session/:sessionUuid/character/create", character.CreateCharacterSession)
 	// GET
 	router.GET("/api/campaign/:uuid/character/:characterUuid", character.GetCharacterByUuid)
 
@@ -62,6 +63,7 @@ func Routes(router *gin.Engine) {
 	router.PATCH("/api/campaign/:uuid/location/:locationUuid/update", location.UpdateLocationByUuid)
 	// POST
 	router.POST("/api/campaign/:uuid/location/create", location.CreateLocation)
+	router.POST("/api/campaign/:uuid/session/:sessionUuid/location/create", location.CreateLocationSession)
 	// GET
 	router.GET("/api/campaign/:uuid/location/:locationUuid", location.GetLocationByUuid)
 	router.GET("/api/campaign/:uuid/locations", location.GetLocationsByCampaignUuid)
@@ -71,6 +73,7 @@ func Routes(router *gin.Engine) {
 	router.PATCH("/api/campaign/:uuid/npc/:npcUuid/update", npc.UpdateNpcByUuid)
 	// POST
 	router.POST("/api/campaign/:uuid/npc/create", npc.CreateNpc)
+	router.POST("/api/campaign/:uuid/session/:sessionUuid/npc/create", npc.CreateNpcSession)
 	// GET
 	router.GET("/api/campaign/:uuid/npc/:npcUuid", npc.GetNpcByUuid)
 	router.GET("/api/campaign/:uuid/npcs", npc.GetNpcsByCampaignUuid)
