@@ -17,14 +17,33 @@ func CreateCharacterDB(character *campaign.Character, campaignUuid string) error
 	character.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Time{}, Valid: false})
 	character.UUID = uuid.NewString()
 	character.Deleted = false
-	campaign, err := campaign.GetCampaignByUuidDB(campaignUuid)
+	camp, err := campaign.GetCampaignByUuidDB(campaignUuid)
 	if err != nil {
 		return err
 	}
-	character.Ruleset = campaign.Ruleset
-	tableName := fmt.Sprintf("%s_characters", campaign.Moniker)
+	character.Ruleset = camp.Ruleset
+	tableName := fmt.Sprintf("%s_characters", camp.Moniker)
 	if result := database.DB.Table(tableName).Create(character); result.Error != nil {
 		return result.Error
+	}
+
+	// Add character to Campaign PartyUUIDs
+	// Check if the character.UUID is already in the Campaign PartyUUIDs array
+	campaignPartyExists := false
+	for _, uuid := range camp.PartyUUIDs {
+		if uuid == character.UUID {
+			campaignPartyExists = true
+			break
+		}
+	}
+	// Append the UUID only if it doesn't already exist
+	if !campaignPartyExists {
+		camp.PartyUUIDs = append(camp.PartyUUIDs, character.UUID)
+	}
+	// Update the campaign
+	err = campaign.UpdateCampaignByUuidDB(campaignUuid, camp)
+	if err != nil {
+		return err
 	}
 	return nil
 }
