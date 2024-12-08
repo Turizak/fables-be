@@ -6,6 +6,7 @@ import (
 
 	"github.com/Turizak/fables-be/campaign"
 	"github.com/Turizak/fables-be/database"
+	"github.com/Turizak/fables-be/session"
 	"github.com/Turizak/fables-be/utilities"
 	"github.com/google/uuid"
 	"github.com/lib/pq"
@@ -25,6 +26,69 @@ func CreateCharacterDB(character *campaign.Character, campaignUuid string) error
 	if result := database.DB.Table(tableName).Create(character); result.Error != nil {
 		return result.Error
 	}
+	return nil
+}
+
+func CreateCharacterSessionDB(character *campaign.Character, campaignUuid string, sessionUuid string) error {
+	character.Created = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
+	character.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Time{}, Valid: false})
+	character.UUID = uuid.NewString()
+	character.Deleted = false
+
+	camp, err := campaign.GetCampaignByUuidDB(campaignUuid)
+	if err != nil {
+		return err
+	}
+
+	character.Ruleset = camp.Ruleset
+
+	tableName := fmt.Sprintf("%s_characters", camp.Moniker)
+	if result := database.DB.Table(tableName).Create(character); result.Error != nil {
+		return result.Error
+	}
+
+	// Add character to Campaign PartyUUIDs
+	// Check if the character.UUID is already in the Campaign PartyUUIDs array
+	campaignPartyExists := false
+	for _, uuid := range camp.PartyUUIDs {
+		if uuid == character.UUID {
+			campaignPartyExists = true
+			break
+		}
+	}
+	// Append the UUID only if it doesn't already exist
+	if !campaignPartyExists {
+		camp.PartyUUIDs = append(camp.PartyUUIDs, character.UUID)
+	}
+	// Update the campaign
+	err = campaign.UpdateCampaignByUuidDB(campaignUuid, camp)
+	if err != nil {
+		return err
+	}
+
+	// add character to Session PartyUUIDs
+	ses, err := session.GetSessionByUuidDB(sessionUuid, campaignUuid)
+	if err != nil {
+		return err
+	}
+	// Check if the character.UUID is already in the Session PartyUUIDs array
+	sessionPartyExists := false
+	for _, uuid := range ses.PartyUUIDs {
+		if uuid == character.UUID {
+			sessionPartyExists = true
+			break
+		}
+	}
+	// Append the UUID only if it doesn't already exist
+	if !sessionPartyExists {
+		ses.PartyUUIDs = append(ses.PartyUUIDs, character.UUID)
+	}
+	// Update the session
+	err = session.UpdateSessionByUuidDB(ses, campaignUuid)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

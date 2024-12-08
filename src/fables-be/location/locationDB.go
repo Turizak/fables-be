@@ -6,6 +6,7 @@ import (
 
 	"github.com/Turizak/fables-be/campaign"
 	"github.com/Turizak/fables-be/database"
+	"github.com/Turizak/fables-be/session"
 	"github.com/Turizak/fables-be/utilities"
 	"github.com/google/uuid"
 	"github.com/lib/pq"
@@ -24,6 +25,43 @@ func CreateLocationDB(location *campaign.Location, campaignUuid string) error {
 	if result := database.DB.Table(tableName).Create(location); result.Error != nil {
 		return result.Error
 	}
+	return nil
+}
+
+func CreateLocationSessionDB(location *campaign.Location, campaignUuid string, sessionUuid string) error {
+	location.Created = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
+	location.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Time{}, Valid: false})
+	location.UUID = uuid.NewString()
+	location.Deleted = false
+	campaign, err := campaign.GetCampaignByUuidDB(campaignUuid)
+	if err != nil {
+		return err
+	}
+	tableName := fmt.Sprintf("%s_locations", campaign.Moniker)
+	if result := database.DB.Table(tableName).Create(location); result.Error != nil {
+		return result.Error
+	}
+	ses, err := session.GetSessionByUuidDB(sessionUuid, campaignUuid)
+	if err != nil {
+		return err
+	}
+	sessionLocationUuids := false
+	for _, uuid := range ses.LocationUUIDs {
+		if uuid == location.UUID {
+			sessionLocationUuids = true
+			break
+		}
+	}
+	// Append the UUID only if it doesn't already exist
+	if !sessionLocationUuids {
+		ses.LocationUUIDs = append(ses.LocationUUIDs, location.UUID)
+	}
+	// Update the session
+	err = session.UpdateSessionByUuidDB(ses, campaignUuid)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

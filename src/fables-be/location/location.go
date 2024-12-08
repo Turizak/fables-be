@@ -32,6 +32,32 @@ func CreateLocation(c *gin.Context) {
 	utilities.ResponseMessage(c, "Location created successfully.", http.StatusCreated, gin.H{"location": CreateLocationResponse(location)})
 }
 
+func CreateLocationSession(c *gin.Context) {
+	var location campaign.Location
+	claims, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
+		return
+	}
+
+	location.CreatorUUID = claims.UUID
+
+	campaignUuid := c.Param("uuid")
+	if err := c.BindJSON(&location); err != nil {
+		utilities.ResponseMessage(c, "Could not create location. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+	location.CampaignUUID = campaignUuid
+
+	sessionUuid := c.Param("sessionUuid")
+
+	if err := CreateLocationSessionDB(&location, location.CampaignUUID, sessionUuid); err != nil {
+		utilities.ResponseMessage(c, "Could not create location. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	utilities.ResponseMessage(c, "Location created successfully.", http.StatusCreated, gin.H{"location": CreateLocationResponse(location)})
+}
+
 func GetLocationByUuid(c *gin.Context) {
 	_, authorized := utilities.AuthorizeRequest(c)
 	if !authorized {
