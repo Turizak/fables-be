@@ -1,5 +1,7 @@
 # Fables
 
+[![Deployment](https://github.com/Turizak/fables-be/actions/workflows/fly.yml/badge.svg)](https://github.com/Turizak/fables-be/actions/workflows/fly.yml)
+
 Built with Golang, leveraging packages such and Gin and GORM.
 
 ## 📖 What is Fables?
