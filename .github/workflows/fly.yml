@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'src/fables-be/**'
 
 jobs:
   deploy:
