@@ -7,6 +7,7 @@ import (
 	"github.com/Turizak/fables-be/character"
 	"github.com/Turizak/fables-be/location"
 	"github.com/Turizak/fables-be/npc"
+	"github.com/Turizak/fables-be/quest"
 	"github.com/Turizak/fables-be/session"
 	"github.com/Turizak/fables-be/utilities"
 	"github.com/gin-gonic/gin"
@@ -43,6 +44,11 @@ func GetCampaignAllData(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not retrieve sessions. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
+	quests, err := quest.GetQuestsByCampaignUuidDB(uuid)
+	if err != nil {
+		utilities.ResponseMessage(c, "Could not retrieve quests. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
 	responseCampaign := campaign.CreateCampaignResponse(*campaignData)
 	responseLocations := []location.LocationResponse{}
 	for _, locationData := range locations {
@@ -64,7 +70,12 @@ func GetCampaignAllData(c *gin.Context) {
 		responseSession := session.CreateSessionResponse(sessionData)
 		responseSessions = append(responseSessions, responseSession)
 	}
-	utilities.ResponseMessage(c, "Campaign data retrieved successfully.", http.StatusOK, gin.H{"campaign": responseCampaign, "locations": responseLocations, "npcs": responseNpcs, "characters": responseCharacters, "sessions": responseSessions})
+	responseQuests := []quest.QuestResponse{}
+	for _, questData := range quests {
+		responseQuest := quest.CreateQuestResponse(questData)
+		responseQuests = append(responseQuests, responseQuest)
+	}
+	utilities.ResponseMessage(c, "Campaign data retrieved successfully.", http.StatusOK, gin.H{"campaign": responseCampaign, "locations": responseLocations, "npcs": responseNpcs, "characters": responseCharacters, "sessions": responseSessions, "quests": responseQuests})
 }
 
 func GetAllSessionData(c *gin.Context) {

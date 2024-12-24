@@ -112,3 +112,24 @@ type Session struct {
 	LastUpdated   utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
 	Deleted       bool               `json:"deleted" gorm:"column:deleted"`
 }
+
+type Quest struct {
+	ID                  uint               `json:"id" gorm:"primary_key"`
+	CampaignUUID        string             `json:"campaignUuid" gorm:"column:campaign_uuid;type:varchar;not null"`
+	UUID                string             `json:"uuid" gorm:"column:uuid;type:varchar;not null;unique"`
+	CreatorUUID         string             `json:"creatorUuid" gorm:"column:creator_uuid;type:varchar;not null"`
+	Name                string             `json:"name" gorm:"column:name;type:varchar;not null"`
+	Description         string             `json:"description" gorm:"column:description;type:varchar"`
+	QuestGiverUUID      string             `json:"questGiver" gorm:"column:quest_giver;type:varchar;not null"`
+	RewardUUIDs         pq.StringArray     `json:"rewardUuids" gorm:"column:reward_uuids;type:varchar[]"`
+	LocationUUIDs       pq.StringArray     `json:"locationUuids" gorm:"column:location_uuids;type:varchar[]"`
+	NpcUUIDs            pq.StringArray     `json:"npcUuids" gorm:"column:npc_uuids;type:varchar[]"`
+	PartyUUIDs          pq.StringArray     `json:"partyUuids" gorm:"column:party_uuids;type:varchar[]"`
+	BossUUIDs           pq.StringArray     `json:"bossUuids" gorm:"column:boss_uuids;type:varchar[]"`
+	StartingSessionUUID string             `json:"startingSessionUuid" gorm:"column:starting_session_uuid;type:varchar"`
+	EndingSessionUUID   string             `json:"endingSessionUuid" gorm:"column:ending_session_uuid;type:varchar"`
+	Status              string             `json:"status" gorm:"column:status;type:varchar;not null"`
+	Created             utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
+	LastUpdated         utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
+	Deleted             bool               `json:"deleted" gorm:"column:deleted"`
+}

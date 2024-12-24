@@ -142,3 +142,13 @@ func UpdateNpcByUuidDB(npc *campaign.Npc, campaignUuid string) error {
 
 	return nil
 }
+
+func MarkNpcAsBossDB(npcUuid string, campaignUuid string, questUuid string) error {
+	npc, err := GetNpcByUuidDB(npcUuid, campaignUuid)
+	if err != nil {
+		return err
+	}
+	npc.IsQuestBoss = true
+	npc.QuestBossUUID = questUuid
+	return UpdateNpcByUuidDB(npc, campaignUuid)
+}

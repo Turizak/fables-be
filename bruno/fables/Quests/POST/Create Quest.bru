@@ -1,0 +1,33 @@
+meta {
+  name: Create Quest
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/campaign/:uuid/quest/create
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: 
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "First Quest",
+    "description": "This is the first Quest",
+    "questGiver": "npcUuid",
+    "rewardUuids": [],
+    "locationUuids": [],
+    "npcUuids":[],
+    "partyUuids":[],
+    "bossUuids":[],
+    "startingSessionUuid": "sessionUuid"
+  }
+}
