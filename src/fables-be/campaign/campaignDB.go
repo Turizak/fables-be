@@ -31,6 +31,9 @@ func CreateCampaignDB(campaign *Campaign) error {
 	if err := CreateCampaignSessionTable(campaign.Moniker); err != nil {
 		return err
 	}
+	if err := CreateCampaignQuestTable(campaign.Moniker); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -71,6 +74,12 @@ func CreateCampaignNpcTable(moniker string) error {
 func CreateCampaignSessionTable(moniker string) error {
 	tableName := fmt.Sprintf("%s_sessions", moniker)
 	err := database.DB.Table(tableName).AutoMigrate(&Session{})
+	return err
+}
+
+func CreateCampaignQuestTable(monkier string) error {
+	tableName := fmt.Sprintf("%s_quests", monkier)
+	err := database.DB.Table(tableName).AutoMigrate(&Quest{})
 	return err
 }
 

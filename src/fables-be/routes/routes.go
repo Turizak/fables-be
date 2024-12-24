@@ -7,6 +7,7 @@ import (
 	"github.com/Turizak/fables-be/collection"
 	"github.com/Turizak/fables-be/location"
 	"github.com/Turizak/fables-be/npc"
+	"github.com/Turizak/fables-be/quest"
 	abilityscore "github.com/Turizak/fables-be/ruleset/5e/ability-score"
 	"github.com/Turizak/fables-be/ruleset/5e/alignment"
 	"github.com/Turizak/fables-be/ruleset/5e/class"
@@ -87,6 +88,13 @@ func Routes(router *gin.Engine) {
 	router.GET("/api/campaign/:uuid/session/:sessionUuid", session.GetSessionByUuid)
 	router.GET("/api/campaign/:uuid/sessions", session.GetSessionsByCampaignUuid)
 	router.GET("/api/campaign/:uuid/session/:sessionUuid/all", collection.GetAllSessionData)
+
+	// Campaign - Quests
+	// POST
+	router.POST("/api/campaign/:uuid/quest/create", quest.CreateQuest)
+	// GET
+	router.GET("/api/campaign/:uuid/quest/:questUuid", quest.GetQuestByUuid)
+	router.GET("/api/campaign/:uuid/quests", quest.GetQuestsByCampaignUuid)
 
 	//Ruleset
 	// GET
