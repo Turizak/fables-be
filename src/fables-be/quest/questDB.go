@@ -27,13 +27,8 @@ func CreateQuestDB(quest *campaign.Quest, campaignUuid string) error {
 	if result := database.DB.Table(tableName).Create(quest); result.Error != nil {
 		return result.Error
 	}
-	//check the bossUUIDs and if they are not empty, select the npc from the npc table and mark them as a boss
-	if len(quest.BossUUIDs) > 0 {
-		for _, bossUUID := range quest.BossUUIDs {
-			if err := npc.MarkNpcAsBossDB(bossUUID, campaignUuid, quest.UUID); err != nil {
-				return err
-			}
-		}
+	if err := markBossNpcs(quest, campaignUuid); err != nil {
+		return err
 	}
 	return nil
 }
@@ -62,4 +57,38 @@ func GetQuestsByCampaignUuidDB(campaignUuid string) ([]campaign.Quest, error) {
 		return quests, result.Error
 	}
 	return quests, nil
+}
+
+func UpdateQuestByUuidDB(quest *campaign.Quest, campaignUuid string) error {
+	camp, err := campaign.GetCampaignByUuidDB(campaignUuid)
+	if err != nil {
+		return err
+	}
+	tableName := fmt.Sprintf("%s_quests", camp.Moniker)
+	quest.LastUpdated = utilities.ToNullTime(pq.NullTime{Time: time.Now(), Valid: true})
+
+	result := database.DB.Table(tableName).Save(quest)
+
+	if result.Error != nil {
+		return result.Error
+	}
+	if result.RowsAffected == 0 {
+		return fmt.Errorf("no quest found with UUID %s in campaign %s", quest.UUID, campaignUuid)
+	}
+
+	if err := markBossNpcs(quest, campaignUuid); err != nil {
+		return err
+	}
+	return nil
+}
+
+func markBossNpcs(quest *campaign.Quest, campaignUuid string) error {
+	if len(quest.BossUUIDs) > 0 {
+		for _, bossUUID := range quest.BossUUIDs {
+			if err := npc.MarkNpcAsBossDB(bossUUID, campaignUuid, quest.UUID); err != nil {
+				return err
+			}
+		}
+	}
+	return nil
 }

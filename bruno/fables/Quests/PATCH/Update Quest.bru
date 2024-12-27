@@ -1,0 +1,30 @@
+meta {
+  name: Update Quest
+  type: http
+  seq: 1
+}
+
+patch {
+  url: {{base_url}}/campaign/:uuid/quest/:questUuid/update
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: 8335f613-ff58-496c-868d-3ab850ee949f
+  questUuid: 8e24f248-eedc-4ace-9829-05a51adc95e7
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "name": "First Quest Updated",
+    "partyUuids": [
+      "a2a4d099-16bc-4276-b147-b07ccb8c334d",
+      "2ede741c-4a2c-42cc-b174-45a2e18538e2"
+    ]
+  }
+}

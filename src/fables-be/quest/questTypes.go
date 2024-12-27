@@ -20,3 +20,18 @@ type QuestResponse struct {
 	Created             utilities.NullTime `json:"created"`
 	LastUpdated         utilities.NullTime `json:"lastUpdated"`
 }
+
+type UpdateQuest struct {
+	CampaignUUID        *string  `json:"campaignUuid"`
+	Name                *string  `json:"name"`
+	Description         *string  `json:"description"`
+	PartyUUIDs          []string `json:"partyUuids"`
+	NpcUUIDs            []string `json:"npcUuids"`
+	BossUUIDs           []string `json:"bossUuids"`
+	LocationUUIDs       []string `json:"locationUuids"`
+	RewardUUIDs         []string `json:"rewardUuids"`
+	StartingSessionUUID *string  `json:"startingSessionUuid"`
+	EndingSessionUUID   *string  `json:"endingSessionUuid"`
+	Status              *string  `json:"status"`
+	Deleted             *bool    `json:"deleted"`
+}

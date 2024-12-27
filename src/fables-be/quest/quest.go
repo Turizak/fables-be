@@ -68,6 +68,71 @@ func GetQuestsByCampaignUuid(c *gin.Context) {
 	utilities.ResponseMessage(c, "Quests retrieved successfully.", http.StatusOK, gin.H{"quests": mapQuestsToResponse(quests)})
 }
 
+func UpdateQuestByUuid(c *gin.Context) {
+	_, authorized := utilities.AuthorizeRequest(c)
+	if !authorized {
+		return
+	}
+
+	campaignUuid := c.Param("uuid")
+	questUuid := c.Param("questUuid")
+	quest, err := GetQuestByUuidDB(questUuid, campaignUuid)
+	if err != nil {
+		utilities.ResponseMessage(c, "Could not update Quest. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	var updatedQuest UpdateQuest
+	if err := c.BindJSON(&updatedQuest); err != nil {
+		utilities.ResponseMessage(c, "Could not update Quest. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
+
+	if updatedQuest.CampaignUUID != nil {
+		quest.CampaignUUID = *updatedQuest.CampaignUUID
+	}
+	if updatedQuest.Name != nil {
+		quest.Name = *updatedQuest.Name
+	}
+	if updatedQuest.Description != nil {
+		quest.Description = *updatedQuest.Description
+	}
+	if updatedQuest.PartyUUIDs != nil {
+		quest.PartyUUIDs = updatedQuest.PartyUUIDs
+	}
+	if updatedQuest.NpcUUIDs != nil {
+		quest.NpcUUIDs = updatedQuest.NpcUUIDs
+	}
+	if updatedQuest.BossUUIDs != nil {
+		quest.BossUUIDs = updatedQuest.BossUUIDs
+	}
+	if updatedQuest.LocationUUIDs != nil {
+		quest.LocationUUIDs = updatedQuest.LocationUUIDs
+	}
+	if updatedQuest.RewardUUIDs != nil {
+		quest.RewardUUIDs = updatedQuest.RewardUUIDs
+	}
+	if updatedQuest.StartingSessionUUID != nil {
+		quest.StartingSessionUUID = *updatedQuest.StartingSessionUUID
+	}
+	if updatedQuest.EndingSessionUUID != nil {
+		quest.EndingSessionUUID = *updatedQuest.EndingSessionUUID
+	}
+	if updatedQuest.Status != nil {
+		quest.Status = *updatedQuest.Status
+	}
+	if updatedQuest.Deleted != nil {
+		quest.Deleted = *updatedQuest.Deleted
+	}
+
+	if err := UpdateQuestByUuidDB(&quest, campaignUuid); err != nil {
+		utilities.ResponseMessage(c, "Could not update Quest. Please try again.", http.StatusInternalServerError, nil)
+		return
+	}
+
+	utilities.ResponseMessage(c, "Quest updated successfully.", http.StatusOK, gin.H{"quest": CreateQuestResponse(quest)})
+}
+
 func CreateQuestResponse(quest campaign.Quest) QuestResponse {
 	return QuestResponse{
 		UUID:                &quest.UUID,
