@@ -90,6 +90,8 @@ func Routes(router *gin.Engine) {
 	router.GET("/api/campaign/:uuid/session/:sessionUuid/all", collection.GetAllSessionData)
 
 	// Campaign - Quests
+	//PATCH
+	router.PATCH("/api/campaign/:uuid/quest/:questUuid/update", quest.UpdateQuestByUuid)
 	// POST
 	router.POST("/api/campaign/:uuid/quest/create", quest.CreateQuest)
 	// GET
