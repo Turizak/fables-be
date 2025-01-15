@@ -6,6 +6,7 @@ import (
 	"github.com/Turizak/fables-be/campaign"
 	"github.com/Turizak/fables-be/character"
 	"github.com/Turizak/fables-be/location"
+	"github.com/Turizak/fables-be/note"
 	"github.com/Turizak/fables-be/npc"
 	"github.com/Turizak/fables-be/quest"
 	"github.com/Turizak/fables-be/session"
@@ -49,6 +50,11 @@ func GetCampaignAllData(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not retrieve quests. Please try again.", http.StatusBadRequest, nil)
 		return
 	}
+	notes, err := note.GetNotesByCampaignUuidDB(uuid)
+	if err != nil {
+		utilities.ResponseMessage(c, "Could not retrieve notes. Please try again.", http.StatusBadRequest, nil)
+		return
+	}
 	responseCampaign := campaign.CreateCampaignResponse(*campaignData)
 	responseLocations := []location.LocationResponse{}
 	for _, locationData := range locations {
@@ -75,7 +81,12 @@ func GetCampaignAllData(c *gin.Context) {
 		responseQuest := quest.CreateQuestResponse(questData)
 		responseQuests = append(responseQuests, responseQuest)
 	}
-	utilities.ResponseMessage(c, "Campaign data retrieved successfully.", http.StatusOK, gin.H{"campaign": responseCampaign, "locations": responseLocations, "npcs": responseNpcs, "characters": responseCharacters, "sessions": responseSessions, "quests": responseQuests})
+	responseNotes := []note.NoteResponse{}
+	for _, noteData := range notes {
+		responseNote := note.CreateNoteResponse(noteData)
+		responseNotes = append(responseNotes, responseNote)
+	}
+	utilities.ResponseMessage(c, "Campaign data retrieved successfully.", http.StatusOK, gin.H{"campaign": responseCampaign, "locations": responseLocations, "npcs": responseNpcs, "notes": responseNotes, "characters": responseCharacters, "sessions": responseSessions, "quests": responseQuests})
 }
 
 func GetAllSessionData(c *gin.Context) {

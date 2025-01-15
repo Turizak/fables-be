@@ -6,6 +6,7 @@ import (
 	"github.com/Turizak/fables-be/character"
 	"github.com/Turizak/fables-be/collection"
 	"github.com/Turizak/fables-be/location"
+	"github.com/Turizak/fables-be/note"
 	"github.com/Turizak/fables-be/npc"
 	"github.com/Turizak/fables-be/quest"
 	abilityscore "github.com/Turizak/fables-be/ruleset/5e/ability-score"
@@ -37,6 +38,7 @@ func Routes(router *gin.Engine) {
 	router.GET("/api/account/campaigns", campaign.GetCampaignsByCreatorUuid)
 	router.GET("/api/account/created-locations", location.GetLocationsByCreatorUuid)
 	router.GET("/api/account/created-npcs", npc.GetNpcsByCreatorUuid)
+	router.GET("/api/account/created-notes", note.GetNotesByCreatorUuid)
 	// PATCH
 	router.PATCH("/api/account/change-password", account.ChangePassword)
 
@@ -97,6 +99,15 @@ func Routes(router *gin.Engine) {
 	// GET
 	router.GET("/api/campaign/:uuid/quest/:questUuid", quest.GetQuestByUuid)
 	router.GET("/api/campaign/:uuid/quests", quest.GetQuestsByCampaignUuid)
+
+	// Campaign - Notes
+	//PATCH
+	router.PATCH("/api/campaign/:uuid/note/:noteUuid/update", note.UpdateNoteByUuid)
+	// POST
+	router.POST("/api/campaign/:uuid/session/:sessionUuid/note/create", note.CreateNote)
+	// GET
+	router.GET("/api/campaign/:uuid/note/:noteUuid", note.GetNoteByUuid)
+	router.GET("/api/campaign/:uuid/notes", note.GetNotesByCampaignUuid)
 
 	//Ruleset
 	// GET

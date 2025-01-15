@@ -1,0 +1,27 @@
+meta {
+  name: Create Session Note
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/campaign/:uuid/session/:sessionUuid/note/create
+  body: json
+  auth: bearer
+}
+
+params:path {
+  uuid: 8335f613-ff58-496c-868d-3ab850ee949f
+  sessionUuid: 08974236-7c9b-4e17-a24b-93dc4cf401fa
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "title": "Session Note Test 2",
+    "content": "Session Test Note 2"
+  }
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Get Note By Uuid
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{base_url}}/campaign/:uuid/note/:noteUuid
+  body: none
+  auth: bearer
+}
+
+params:path {
+  noteUuid: 759a9e11-5b37-452e-9583-a6d678ee4297
+  uuid: 8335f613-ff58-496c-868d-3ab850ee949f
+}
+
+auth:bearer {
+  token: {{token}}
+}

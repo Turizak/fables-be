@@ -133,3 +133,16 @@ type Quest struct {
 	LastUpdated         utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
 	Deleted             bool               `json:"deleted" gorm:"column:deleted"`
 }
+
+type Note struct {
+	ID           uint               `json:"id" gorm:"primary_key"`
+	CampaignUUID string             `json:"campaignUuid" gorm:"column:campaign_uuid;type:varchar;not null"`
+	SessionUuid  string             `json:"SessionUuid" gorm:"column:session_uuid;type:varchar"`
+	UUID         string             `json:"uuid" gorm:"column:uuid;type:varchar;not null;unique"`
+	CreatorUUID  string             `json:"creatorUuid" gorm:"column:creator_uuid;type:varchar;not null"`
+	Title        string             `json:"title" gorm:"column:title;type:varchar;not null"`
+	Content      string             `json:"content" gorm:"column:content;type:varchar;not null"`
+	Created      utilities.NullTime `json:"created" gorm:"column:created;type:timestamp with time zone;not null"`
+	LastUpdated  utilities.NullTime `json:"lastUpdated" gorm:"column:last_updated;type:timestamp with time zone"`
+	Deleted      bool               `json:"deleted" gorm:"column:deleted"`
+}
