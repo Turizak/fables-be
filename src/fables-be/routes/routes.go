@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/Turizak/fables-be/account"
+	"github.com/Turizak/fables-be/auth"
 	"github.com/Turizak/fables-be/campaign"
 	"github.com/Turizak/fables-be/character"
 	"github.com/Turizak/fables-be/collection"
@@ -25,22 +26,25 @@ import (
 )
 
 func Routes(router *gin.Engine) {
-	// Accounts
-	// POST
-	router.POST("/api/account/create", account.CreateAccount)
-	router.POST("/api/account/login", account.AccountLogin)
-	router.POST("/api/account/token/refresh", account.RefreshAuthToken)
-	// GET
-	router.GET("/api/account/token/validate", account.ValidateAuthToken)
-	router.GET("/api/account", account.GetAccount)
-	router.GET("/api/account/created-characters", character.GetCharactersByCreatorUuid)
-	router.GET("/api/account/owned-characters", character.GetCharactersByOwnerUuid)
-	router.GET("/api/account/campaigns", campaign.GetCampaignsByCreatorUuid)
-	router.GET("/api/account/created-locations", location.GetLocationsByCreatorUuid)
-	router.GET("/api/account/created-npcs", npc.GetNpcsByCreatorUuid)
-	router.GET("/api/account/created-notes", note.GetNotesByCreatorUuid)
-	// PATCH
-	router.PATCH("/api/account/change-password", account.ChangePassword)
+	accountRoutes := router.Group("/api/account")
+	{
+		accountRoutes.POST("/create", account.CreateAccount)
+		accountRoutes.POST("/login", account.AccountLogin)
+		accountRoutes.POST("/token/refresh", account.RefreshAuthToken)
+	}
+	protectedAccountRoutes := router.Group("/api/account")
+	protectedAccountRoutes.Use(auth.AuthorizeMiddleware())
+	{
+		protectedAccountRoutes.GET("/token/validate", account.ValidateAuthToken)
+		protectedAccountRoutes.GET("/detail", account.GetAccount)
+		protectedAccountRoutes.GET("/created-characters", character.GetCharactersByCreatorUuid)
+		protectedAccountRoutes.GET("/owned-characters", character.GetCharactersByOwnerUuid)
+		protectedAccountRoutes.GET("/campaigns", campaign.GetCampaignsByCreatorUuid)
+		protectedAccountRoutes.GET("/created-locations", location.GetLocationsByCreatorUuid)
+		protectedAccountRoutes.GET("/created-npcs", npc.GetNpcsByCreatorUuid)
+		protectedAccountRoutes.GET("/created-notes", note.GetNotesByCreatorUuid)
+		protectedAccountRoutes.PATCH("/change-password", account.ChangePassword)
+	}
 
 	//Campaigns
 	//PATCH
