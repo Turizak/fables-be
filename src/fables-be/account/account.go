@@ -85,10 +85,6 @@ func AccountLogin(c *gin.Context) {
 }
 
 func ValidateAuthToken(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
 	utilities.ResponseMessage(c, "Token is valid.", http.StatusOK, nil)
 }
 
@@ -125,11 +121,8 @@ func RefreshAuthToken(c *gin.Context) {
 }
 
 func GetAccount(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-	account, err := GetAccountByEmailDB(claims.Email)
+	claims, _ := c.Get("claims")
+	account, err := GetAccountByEmailDB(claims.(*token.UserClaim).Email)
 	if err != nil {
 		utilities.ResponseMessage(c, "Account not found.", http.StatusNotFound, nil)
 		return
@@ -146,10 +139,7 @@ func GetAccount(c *gin.Context) {
 }
 
 func ChangePassword(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 	var requestChangePassword UpdatePassword
 	if err := c.BindJSON(&requestChangePassword); err != nil {
 		utilities.ResponseMessage(c, "Error: A error occurred. Please try again.", http.StatusBadRequest, nil)
@@ -160,7 +150,7 @@ func ChangePassword(c *gin.Context) {
 		utilities.ResponseMessage(c, "New Password does not meet complexity requirements.", http.StatusBadRequest, nil)
 		return
 	}
-	account, err := GetAccountByEmailDB(claims.Email)
+	account, err := GetAccountByEmailDB(claims.(*token.UserClaim).Email)
 	if err != nil {
 		utilities.ResponseMessage(c, "Account not found.", http.StatusNotFound, nil)
 		return

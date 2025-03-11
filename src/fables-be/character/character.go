@@ -4,19 +4,17 @@ import (
 	"net/http"
 
 	"github.com/Turizak/fables-be/campaign"
+	"github.com/Turizak/fables-be/token"
 	"github.com/Turizak/fables-be/utilities"
 	"github.com/gin-gonic/gin"
 )
 
 func CreateCharacter(c *gin.Context) {
 	var character campaign.Character
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	character.CreatorUUID = claims.UUID
-	character.OwnerUUID = claims.UUID
+	character.CreatorUUID = claims.(*token.UserClaim).UUID
+	character.OwnerUUID = claims.(*token.UserClaim).UUID
 
 	campaignUuid := c.Param("uuid")
 	if err := c.BindJSON(&character); err != nil {
@@ -36,13 +34,10 @@ func CreateCharacter(c *gin.Context) {
 
 func CreateCharacterSession(c *gin.Context) {
 	var character campaign.Character
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	character.CreatorUUID = claims.UUID
-	character.OwnerUUID = claims.UUID
+	character.CreatorUUID = claims.(*token.UserClaim).UUID
+	character.OwnerUUID = claims.(*token.UserClaim).UUID
 
 	campaignUuid := c.Param("uuid")
 	if err := c.BindJSON(&character); err != nil {
@@ -63,10 +58,7 @@ func CreateCharacterSession(c *gin.Context) {
 }
 
 func GetCharacterByUuid(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
 	campaignUuid := c.Param("uuid")
 	characterUuid := c.Param("characterUuid")
@@ -75,7 +67,7 @@ func GetCharacterByUuid(c *gin.Context) {
 		utilities.ResponseMessage(c, "Could not retrieve character. Please try again.", http.StatusInternalServerError, nil)
 		return
 	}
-	if character.CreatorUUID != claims.UUID {
+	if character.CreatorUUID != claims.(*token.UserClaim).UUID {
 		utilities.ResponseMessage(c, "Unauthorized.", http.StatusUnauthorized, nil)
 		return
 	}
@@ -84,12 +76,9 @@ func GetCharacterByUuid(c *gin.Context) {
 }
 
 func GetCharactersByCreatorUuid(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	characters, err := GetCharactersByCreatorUuidDB(claims.UUID)
+	characters, err := GetCharactersByCreatorUuidDB(claims.(*token.UserClaim).UUID)
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve characters. Please try again.", http.StatusInternalServerError, nil)
 		return
@@ -99,12 +88,9 @@ func GetCharactersByCreatorUuid(c *gin.Context) {
 }
 
 func GetCharactersByOwnerUuid(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	characters, err := GetCharactersByOwnerUuidDB(claims.UUID)
+	characters, err := GetCharactersByOwnerUuidDB(claims.(*token.UserClaim).UUID)
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve characters. Please try again.", http.StatusInternalServerError, nil)
 		return
@@ -114,11 +100,6 @@ func GetCharactersByOwnerUuid(c *gin.Context) {
 }
 
 func UpdateCharacterByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	characterUuid := c.Param("characterUuid")
 	character, err := GetCharacterByUuidDB(characterUuid, campaignUuid)

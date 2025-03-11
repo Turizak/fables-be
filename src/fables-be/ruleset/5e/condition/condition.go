@@ -22,11 +22,6 @@ type ConditionDescription struct {
 
 // GetAllConditionsWithDescriptions retrieves all conditions with descriptions
 func GetAllConditionsWithDescriptions(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	conditions, err := GetAllConditionsWithDescriptionsDB()
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve conditions. Please try again.", http.StatusInternalServerError, nil)
@@ -38,11 +33,6 @@ func GetAllConditionsWithDescriptions(c *gin.Context) {
 
 // GetConditionByIndex retrieves a specific condition by index
 func GetConditionByIndex(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	index := c.Param("index")
 	condition, err := GetConditionByIndexDB(index)
 	if err != nil {

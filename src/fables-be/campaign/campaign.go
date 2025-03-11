@@ -5,6 +5,7 @@ import (
 
 	"github.com/Turizak/fables-be/account"
 	"github.com/Turizak/fables-be/database"
+	"github.com/Turizak/fables-be/token"
 	"github.com/Turizak/fables-be/utilities"
 	"github.com/gin-gonic/gin"
 )
@@ -19,13 +20,10 @@ func GetAllMonikers() ([]string, error) {
 
 func CreateCampaign(c *gin.Context) {
 	var campaign Campaign
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	campaign.CreatorUUID = claims.UUID
-	campaign.DmUUID = claims.UUID
+	campaign.CreatorUUID = claims.(*token.UserClaim).UUID
+	campaign.DmUUID = claims.(*token.UserClaim).UUID
 
 	if err := c.BindJSON(&campaign); err != nil {
 		utilities.ResponseMessage(c, "Could not create campaign. Please try again.", http.StatusBadRequest, nil)
@@ -50,11 +48,6 @@ func CreateCampaign(c *gin.Context) {
 }
 
 func GetCampaignByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	uuid := c.Param("uuid")
 	campaign, err := GetCampaignByUuidDB(uuid)
 	if err != nil {
@@ -66,12 +59,9 @@ func GetCampaignByUuid(c *gin.Context) {
 }
 
 func GetCampaignsByCreatorUuid(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	account, err := account.GetAccountByEmailDB(claims.Email)
+	account, err := account.GetAccountByEmailDB(claims.(*token.UserClaim).Email)
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve account. Please try again.", http.StatusInternalServerError, nil)
 		return
@@ -93,10 +83,6 @@ func GetCampaignsByCreatorUuid(c *gin.Context) {
 }
 
 func GetCampaignMonikerByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
 	uuid := c.Param("uuid")
 	campaign, err := GetCampaignByUuidDB(uuid)
 	if err != nil {
@@ -108,10 +94,7 @@ func GetCampaignMonikerByUuid(c *gin.Context) {
 }
 
 func UpdateCampaignByUuid(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
 	uuid := c.Param("uuid")
 	campaign, err := GetCampaignByUuidDB(uuid)
@@ -120,7 +103,7 @@ func UpdateCampaignByUuid(c *gin.Context) {
 		return
 	}
 
-	if campaign.CreatorUUID != claims.UUID {
+	if campaign.CreatorUUID != claims.(*token.UserClaim).UUID {
 		utilities.ResponseMessage(c, "Unauthorized to update campaign.", http.StatusUnauthorized, nil)
 		return
 	}

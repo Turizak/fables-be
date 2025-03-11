@@ -20,11 +20,6 @@ type Language struct {
 
 // GetAllLanguages5e retrieves all languages for 5e
 func GetAllLanguages5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	languages, err := GetAllLanguages5eDB()
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve languages. Please try again.", http.StatusInternalServerError, nil)
@@ -36,11 +31,6 @@ func GetAllLanguages5e(c *gin.Context) {
 
 // GetLanguageByIndex5e retrieves a specific language by index for 5e
 func GetLanguageByIndex5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	index := c.Param("index")
 	language, err := GetLanguageByIndex5eDB(index)
 	if err != nil {

@@ -9,11 +9,6 @@ import (
 )
 
 func CreateQuest(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	var quest campaign.Quest
 	claims, authorized := utilities.AuthorizeRequest(c)
 	if !authorized {
@@ -38,10 +33,6 @@ func CreateQuest(c *gin.Context) {
 }
 
 func GetQuestByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
 	campaignUuid := c.Param("uuid")
 	questUuid := c.Param("questUuid")
 	quest, err := GetQuestByUuidDB(questUuid, campaignUuid)
@@ -54,10 +45,6 @@ func GetQuestByUuid(c *gin.Context) {
 }
 
 func GetQuestsByCampaignUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
 	campaignUuid := c.Param("uuid")
 	quests, err := GetQuestsByCampaignUuidDB(campaignUuid)
 	if err != nil {
@@ -69,11 +56,6 @@ func GetQuestsByCampaignUuid(c *gin.Context) {
 }
 
 func UpdateQuestByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	questUuid := c.Param("questUuid")
 	quest, err := GetQuestByUuidDB(questUuid, campaignUuid)

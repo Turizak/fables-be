@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/Turizak/fables-be/account"
+	"github.com/Turizak/fables-be/auth"
 	"github.com/Turizak/fables-be/campaign"
 	"github.com/Turizak/fables-be/character"
 	"github.com/Turizak/fables-be/collection"
@@ -25,124 +26,106 @@ import (
 )
 
 func Routes(router *gin.Engine) {
-	// Accounts
-	// POST
-	router.POST("/api/account/create", account.CreateAccount)
-	router.POST("/api/account/login", account.AccountLogin)
-	router.POST("/api/account/token/refresh", account.RefreshAuthToken)
-	// GET
-	router.GET("/api/account/token/validate", account.ValidateAuthToken)
-	router.GET("/api/account", account.GetAccount)
-	router.GET("/api/account/created-characters", character.GetCharactersByCreatorUuid)
-	router.GET("/api/account/owned-characters", character.GetCharactersByOwnerUuid)
-	router.GET("/api/account/campaigns", campaign.GetCampaignsByCreatorUuid)
-	router.GET("/api/account/created-locations", location.GetLocationsByCreatorUuid)
-	router.GET("/api/account/created-npcs", npc.GetNpcsByCreatorUuid)
-	router.GET("/api/account/created-notes", note.GetNotesByCreatorUuid)
-	// PATCH
-	router.PATCH("/api/account/change-password", account.ChangePassword)
+	unprotectedAccountRoutes := router.Group("/api/account")
+	{
+		unprotectedAccountRoutes.POST("/create", account.CreateAccount)
+		unprotectedAccountRoutes.POST("/login", account.AccountLogin)
+		unprotectedAccountRoutes.POST("/token/refresh", account.RefreshAuthToken)
+	}
 
-	//Campaigns
-	//PATCH
-	router.PATCH("/api/campaign/:uuid/update", campaign.UpdateCampaignByUuid)
-	// POST
-	router.POST("/api/campaign/create", campaign.CreateCampaign)
-	// GET
-	router.GET("/api/campaign/:uuid", campaign.GetCampaignByUuid)
-	router.GET("/api/campaign/:uuid/moniker", campaign.GetCampaignMonikerByUuid)
-	router.GET("/api/campaign/:uuid/all", collection.GetCampaignAllData)
+	protectedAccountRoutes := router.Group("/api/account")
+	protectedAccountRoutes.Use(auth.AuthorizeMiddleware())
+	{
+		protectedAccountRoutes.GET("/token/validate", account.ValidateAuthToken)
+		protectedAccountRoutes.GET("/detail", account.GetAccount)
+		protectedAccountRoutes.GET("/created-characters", character.GetCharactersByCreatorUuid)
+		protectedAccountRoutes.GET("/owned-characters", character.GetCharactersByOwnerUuid)
+		protectedAccountRoutes.GET("/campaigns", campaign.GetCampaignsByCreatorUuid)
+		protectedAccountRoutes.GET("/created-locations", location.GetLocationsByCreatorUuid)
+		protectedAccountRoutes.GET("/created-npcs", npc.GetNpcsByCreatorUuid)
+		protectedAccountRoutes.GET("/created-notes", note.GetNotesByCreatorUuid)
+		protectedAccountRoutes.PATCH("/change-password", account.ChangePassword)
+	}
 
-	// Campaign - Characters
-	//PATCH
-	router.PATCH("/api/campaign/:uuid/character/:characterUuid/update", character.UpdateCharacterByUuid)
-	// POST
-	router.POST("/api/campaign/:uuid/character/create", character.CreateCharacter)
-	router.POST("/api/campaign/:uuid/session/:sessionUuid/character/create", character.CreateCharacterSession)
-	// GET
-	router.GET("/api/campaign/:uuid/character/:characterUuid", character.GetCharacterByUuid)
+	protectedCampaignRoutes := router.Group("/api/campaign")
+	protectedCampaignRoutes.Use(auth.AuthorizeMiddleware())
+	{
+		protectedCampaignRoutes.PATCH("/:uuid/update", campaign.UpdateCampaignByUuid)
+		protectedCampaignRoutes.POST("/create", campaign.CreateCampaign)
+		protectedCampaignRoutes.GET("/:uuid", campaign.GetCampaignByUuid)
+		protectedCampaignRoutes.GET("/:uuid/moniker", campaign.GetCampaignMonikerByUuid)
+		protectedCampaignRoutes.GET("/:uuid/all", collection.GetCampaignAllData)
 
-	// Campaign - Locations
-	//PATCH
-	router.PATCH("/api/campaign/:uuid/location/:locationUuid/update", location.UpdateLocationByUuid)
-	// POST
-	router.POST("/api/campaign/:uuid/location/create", location.CreateLocation)
-	router.POST("/api/campaign/:uuid/session/:sessionUuid/location/create", location.CreateLocationSession)
-	// GET
-	router.GET("/api/campaign/:uuid/location/:locationUuid", location.GetLocationByUuid)
-	router.GET("/api/campaign/:uuid/locations", location.GetLocationsByCampaignUuid)
+		protectedCampaignRoutes.PATCH("/:uuid/character/:characterUuid/update", character.UpdateCharacterByUuid)
+		protectedCampaignRoutes.POST("/:uuid/character/create", character.CreateCharacter)
+		protectedCampaignRoutes.POST("/:uuid/session/:sessionUuid/character/create", character.CreateCharacterSession)
+		protectedCampaignRoutes.GET("/:uuid/character/:characterUuid", character.GetCharacterByUuid)
 
-	// Campaign - Npcs
-	//PATCH
-	router.PATCH("/api/campaign/:uuid/npc/:npcUuid/update", npc.UpdateNpcByUuid)
-	// POST
-	router.POST("/api/campaign/:uuid/npc/create", npc.CreateNpc)
-	router.POST("/api/campaign/:uuid/session/:sessionUuid/npc/create", npc.CreateNpcSession)
-	// GET
-	router.GET("/api/campaign/:uuid/npc/:npcUuid", npc.GetNpcByUuid)
-	router.GET("/api/campaign/:uuid/npcs", npc.GetNpcsByCampaignUuid)
+		protectedCampaignRoutes.PATCH("/:uuid/location/:locationUuid/update", location.UpdateLocationByUuid)
+		protectedCampaignRoutes.POST("/:uuid/location/create", location.CreateLocation)
+		protectedCampaignRoutes.POST("/:uuid/session/:sessionUuid/location/create", location.CreateLocationSession)
+		protectedCampaignRoutes.GET("/:uuid/location/:locationUuid", location.GetLocationByUuid)
+		protectedCampaignRoutes.GET("/:uuid/locations", location.GetLocationsByCampaignUuid)
 
-	// Campaign - Sessions
-	//PATCH
-	router.PATCH("/api/campaign/:uuid/session/:sessionUuid/update", session.UpdateSessionByUuid)
-	// POST
-	router.POST("/api/campaign/:uuid/session/create", session.CreateSession)
-	// GET
-	router.GET("/api/campaign/:uuid/session/:sessionUuid", session.GetSessionByUuid)
-	router.GET("/api/campaign/:uuid/sessions", session.GetSessionsByCampaignUuid)
-	router.GET("/api/campaign/:uuid/session/:sessionUuid/all", collection.GetAllSessionData)
+		protectedCampaignRoutes.PATCH("/:uuid/npc/:npcUuid/update", npc.UpdateNpcByUuid)
+		protectedCampaignRoutes.POST("/:uuid/npc/create", npc.CreateNpc)
+		protectedCampaignRoutes.POST("/:uuid/session/:sessionUuid/npc/create", npc.CreateNpcSession)
+		protectedCampaignRoutes.GET("/:uuid/npc/:npcUuid", npc.GetNpcByUuid)
+		protectedCampaignRoutes.GET("/:uuid/npcs", npc.GetNpcsByCampaignUuid)
 
-	// Campaign - Quests
-	//PATCH
-	router.PATCH("/api/campaign/:uuid/quest/:questUuid/update", quest.UpdateQuestByUuid)
-	// POST
-	router.POST("/api/campaign/:uuid/quest/create", quest.CreateQuest)
-	// GET
-	router.GET("/api/campaign/:uuid/quest/:questUuid", quest.GetQuestByUuid)
-	router.GET("/api/campaign/:uuid/quests", quest.GetQuestsByCampaignUuid)
+		protectedCampaignRoutes.PATCH("/:uuid/session/:sessionUuid/update", session.UpdateSessionByUuid)
+		protectedCampaignRoutes.POST("/:uuid/session/create", session.CreateSession)
+		protectedCampaignRoutes.GET("/:uuid/session/:sessionUuid", session.GetSessionByUuid)
+		protectedCampaignRoutes.GET("/:uuid/sessions", session.GetSessionsByCampaignUuid)
 
-	// Campaign - Notes
-	//PATCH
-	router.PATCH("/api/campaign/:uuid/note/:noteUuid/update", note.UpdateNoteByUuid)
-	// POST
-	router.POST("/api/campaign/:uuid/session/:sessionUuid/note/create", note.CreateNote)
-	// GET
-	router.GET("/api/campaign/:uuid/note/:noteUuid", note.GetNoteByUuid)
-	router.GET("/api/campaign/:uuid/notes", note.GetNotesByCampaignUuid)
+		protectedCampaignRoutes.GET("/:uuid/session/:sessionUuid/all", collection.GetAllSessionData)
+		//Quest
+		protectedCampaignRoutes.PATCH("/:uuid/quest/:questUuid/update", quest.UpdateQuestByUuid)
+		protectedCampaignRoutes.POST("/:uuid/quest/create", quest.CreateQuest)
+		protectedCampaignRoutes.GET("/:uuid/quest/:questUuid", quest.GetQuestByUuid)
+		protectedCampaignRoutes.GET("/:uuid/quests", quest.GetQuestsByCampaignUuid)
+		// Note
+		protectedCampaignRoutes.PATCH("/:uuid/note/:noteUuid/update", note.UpdateNoteByUuid)
+		protectedCampaignRoutes.POST("/:uuid/session/:sessionUuid/note/create", note.CreateNote)
+		protectedCampaignRoutes.GET("/:uuid/note/:noteUuid", note.GetNoteByUuid)
+		protectedCampaignRoutes.GET("/:uuid/notes", note.GetNotesByCampaignUuid)
+	}
 
-	//Ruleset
-	// GET
-	// 5e
-	// Races
-	router.GET("/api/ruleset/5e/races", race.GetAllRaces5e)
-	router.GET("/api/ruleset/5e/races/:index", race.GetRaceByIndex5e)
-	// Languages
-	router.GET("/api/ruleset/5e/languages", language.GetAllLanguages5e)
-	router.GET("/api/ruleset/5e/languages/:index", language.GetLanguageByIndex5e)
-	// Traits
-	router.GET("/api/ruleset/5e/traits", trait.GetAllTraits5e)
-	router.GET("/api/ruleset/5e/traits/:index", trait.GetTraitByIndex5e)
-	// Skills
-	router.GET("/api/ruleset/5e/skills", skill.GetAllSkills5e)
-	router.GET("/api/ruleset/5e/skills/:index", skill.GetSkillByIndex5e)
-	// Proficiencies
-	router.GET("/api/ruleset/5e/proficiencies", proficiencies.GetAllProficiencies5e)
-	router.GET("/api/ruleset/5e/proficiencies/:index", proficiencies.GetProficiencyByIndex5e)
-	// Damage Types
-	router.GET("/api/ruleset/5e/damage-types", damagetype.GetAllDamageTypes5e)
-	router.GET("/api/ruleset/5e/damage-types/:index", damagetype.GetDamageTypeByIndex5e)
-	// Ability Scores
-	router.GET("/api/ruleset/5e/ability-scores", abilityscore.GetAllAbilityScores5e)
-	router.GET("/api/ruleset/5e/ability-scores/:index", abilityscore.GetAbilityScoreByIndex5e)
-	// Alignment
-	router.GET("/api/ruleset/5e/alignments", alignment.GetAllAlignments5e)
-	router.GET("/api/ruleset/5e/alignments/:index", alignment.GetAlignmentByIndex5e)
-	// Conditions
-	router.GET("/api/ruleset/5e/conditions", condition.GetAllConditionsWithDescriptions)
-	router.GET("/api/ruleset/5e/conditions/:index", condition.GetConditionByIndex)
-	// Classes
-	router.GET("/api/ruleset/5e/classes", class.GetAllClasses5e)
-	router.GET("/api/ruleset/5e/classes/:index", class.GetClassByIndex5e)
-	// Subraces
-	router.GET("/api/ruleset/5e/subraces", subrace.GetAllSubraces5e)
-	router.GET("/api/ruleset/5e/subraces/:index", subrace.GetSubraceByIndex5e)
+	protectedRulesetRoutes := router.Group("/api/ruleset")
+	protectedRulesetRoutes.Use(auth.AuthorizeMiddleware())
+	{
+		// Races
+		protectedRulesetRoutes.GET("/5e/races", race.GetAllRaces5e)
+		protectedRulesetRoutes.GET("/5e/races/:index", race.GetRaceByIndex5e)
+		// Languages
+		protectedRulesetRoutes.GET("/5e/languages", language.GetAllLanguages5e)
+		protectedRulesetRoutes.GET("/5e/languages/:index", language.GetLanguageByIndex5e)
+		// Traits
+		protectedRulesetRoutes.GET("/5e/traits", trait.GetAllTraits5e)
+		protectedRulesetRoutes.GET("/5e/traits/:index", trait.GetTraitByIndex5e)
+		// Skills
+		protectedRulesetRoutes.GET("/5e/skills", skill.GetAllSkills5e)
+		protectedRulesetRoutes.GET("/5e/skills/:index", skill.GetSkillByIndex5e)
+		// Proficiencies
+		protectedRulesetRoutes.GET("/5e/proficiencies", proficiencies.GetAllProficiencies5e)
+		protectedRulesetRoutes.GET("/5e/proficiencies/:index", proficiencies.GetProficiencyByIndex5e)
+		// Damage Types
+		protectedRulesetRoutes.GET("/5e/damage-types", damagetype.GetAllDamageTypes5e)
+		protectedRulesetRoutes.GET("/5e/damage-types/:index", damagetype.GetDamageTypeByIndex5e)
+		// Ability Scores
+		protectedRulesetRoutes.GET("/5e/ability-scores", abilityscore.GetAllAbilityScores5e)
+		protectedRulesetRoutes.GET("/5e/ability-scores/:index", abilityscore.GetAbilityScoreByIndex5e)
+		// Alignment
+		protectedRulesetRoutes.GET("/5e/alignments", alignment.GetAllAlignments5e)
+		protectedRulesetRoutes.GET("/5e/alignments/:index", alignment.GetAlignmentByIndex5e)
+		// Conditions
+		protectedRulesetRoutes.GET("/5e/conditions", condition.GetAllConditionsWithDescriptions)
+		protectedRulesetRoutes.GET("/5e/conditions/:index", condition.GetConditionByIndex)
+		// Classes
+		protectedRulesetRoutes.GET("/5e/classes", class.GetAllClasses5e)
+		protectedRulesetRoutes.GET("/5e/classes/:index", class.GetClassByIndex5e)
+		// Subraces
+		protectedRulesetRoutes.GET("/5e/subraces", subrace.GetAllSubraces5e)
+		protectedRulesetRoutes.GET("/5e/subraces/:index", subrace.GetSubraceByIndex5e)
+	}
 }

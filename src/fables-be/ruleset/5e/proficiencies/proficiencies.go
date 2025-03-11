@@ -20,11 +20,6 @@ type Proficiencie struct {
 
 // GetAllProficiencies5e retrieves all proficiencies for 5e
 func GetAllProficiencies5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	proficiencies, err := GetAllProficiencies5eDB()
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve proficiencies. Please try again.", http.StatusInternalServerError, nil)
@@ -36,11 +31,6 @@ func GetAllProficiencies5e(c *gin.Context) {
 
 // GetProficiencyByIndex5e retrieves a specific proficiency by index for 5e
 func GetProficiencyByIndex5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	index := c.Param("index")
 	proficiency, err := GetProficiencyByIndex5eDB(index)
 	if err != nil {

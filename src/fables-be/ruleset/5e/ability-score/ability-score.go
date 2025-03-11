@@ -18,11 +18,6 @@ type AbilityScore struct {
 
 // GetAllAbilityScores5e retrieves all ability scores for 5e
 func GetAllAbilityScores5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	abilityScores, err := GetAllAbilityScores5eDB()
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve ability scores. Please try again.", http.StatusInternalServerError, nil)
@@ -35,11 +30,6 @@ func GetAllAbilityScores5e(c *gin.Context) {
 
 // GetAbilityScoreByIndex5e retrieves a specific ability score by index for 5e
 func GetAbilityScoreByIndex5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	index := c.Param("index")
 	abilityScore, err := GetAbilityScoreByIndex5eDB(index)
 	if err != nil {

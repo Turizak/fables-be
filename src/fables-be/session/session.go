@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/Turizak/fables-be/campaign"
+	"github.com/Turizak/fables-be/token"
 	"github.com/Turizak/fables-be/utilities"
 	"github.com/gin-gonic/gin"
 )
@@ -12,10 +13,7 @@ import (
 func CreateSession(c *gin.Context) {
 	var session campaign.Session
 
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
 	if err := c.BindJSON(&session); err != nil {
 		utilities.ResponseMessage(c, "Could not create session. Please try again.", http.StatusBadRequest, nil)
@@ -23,7 +21,7 @@ func CreateSession(c *gin.Context) {
 	}
 
 	session.CampaignUUID = c.Param("uuid")
-	session.CreatorUUID = claims.UUID
+	session.CreatorUUID = claims.(*token.UserClaim).UUID
 
 	if err := CreateSessionDB(&session, session.CampaignUUID); err != nil {
 		utilities.ResponseMessage(c, "Could not create session. Please try again.", http.StatusInternalServerError, nil)
@@ -37,10 +35,6 @@ func CreateSession(c *gin.Context) {
 
 // GetSessionByUuid retrieves a session by its UUID
 func GetSessionByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
 	session, err := GetSessionByUuidDB(c.Param("sessionUuid"), c.Param("uuid"))
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve session. Please try again.", http.StatusInternalServerError, nil)
@@ -54,11 +48,6 @@ func GetSessionByUuid(c *gin.Context) {
 
 // GetSessionsByCampaignUuid retrieves sessions by campaign UUID
 func GetSessionsByCampaignUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	sessions, err := GetSessionsByCampaignUuidDB(c.Param("uuid"))
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve sessions. Please try again.", http.StatusInternalServerError, nil)
@@ -72,12 +61,9 @@ func GetSessionsByCampaignUuid(c *gin.Context) {
 
 // GetSessionsByCreatorUuid retrieves sessions by creator UUID
 func GetSessionsByCreatorUuid(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	sessions, err := GetSessionsByCreatorUuidDB(claims.UUID)
+	sessions, err := GetSessionsByCreatorUuidDB(claims.(*token.UserClaim).UUID)
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve sessions. Please try again.", http.StatusInternalServerError, nil)
 		return
@@ -89,11 +75,6 @@ func GetSessionsByCreatorUuid(c *gin.Context) {
 }
 
 func UpdateSessionByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	sessionUuid := c.Param("sessionUuid")
 	session, err := GetSessionByUuidDB(sessionUuid, campaignUuid)
