@@ -15,10 +15,6 @@ import (
 )
 
 func GetCampaignAllData(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
 	uuid := c.Param("uuid")
 	campaignData, err := campaign.GetCampaignByUuidDB(uuid)
 	if err != nil {
@@ -90,10 +86,6 @@ func GetCampaignAllData(c *gin.Context) {
 }
 
 func GetAllSessionData(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
 	uuid := c.Param("uuid")
 	sessionUuid := c.Param("sessionUuid")
 

@@ -30,11 +30,6 @@ type Race struct {
 
 // GetAllRaces5e retrieves all races for 5e
 func GetAllRaces5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	races, err := GetAllRaces5eDB()
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve races. Please try again.", http.StatusInternalServerError, nil)
@@ -51,11 +46,6 @@ func GetAllRaces5e(c *gin.Context) {
 
 // GetRaceByIndex5e retrieves a specific race by index for 5e
 func GetRaceByIndex5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	index := c.Param("index")
 	race, err := GetRaceByIndex5eDB(index)
 	if err != nil {

@@ -16,11 +16,6 @@ type DamageType struct {
 
 // GetAllDamageTypes5e retrieves all damage types for 5e
 func GetAllDamageTypes5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	damageTypes, err := GetAllDamageTypes5eDB()
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve damage types. Please try again.", http.StatusInternalServerError, nil)
@@ -32,11 +27,6 @@ func GetAllDamageTypes5e(c *gin.Context) {
 
 // GetDamageTypeByIndex5e retrieves a specific damage type by index for 5e
 func GetDamageTypeByIndex5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	index := c.Param("index")
 	damageType, err := GetDamageTypeByIndex5eDB(index)
 	if err != nil {

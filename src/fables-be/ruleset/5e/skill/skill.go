@@ -18,11 +18,6 @@ type Skill struct {
 
 // GetAllSkills5e retrieves all skills for 5e
 func GetAllSkills5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	skills, err := GetAllSkills5eDB()
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve skills. Please try again.", http.StatusInternalServerError, nil)
@@ -34,11 +29,6 @@ func GetAllSkills5e(c *gin.Context) {
 
 // GetSkillByIndex5e retrieves a specific skill by index for 5e
 func GetSkillByIndex5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	index := c.Param("index")
 	skill, err := GetSkillByIndex5eDB(index)
 	if err != nil {

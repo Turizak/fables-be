@@ -4,18 +4,16 @@ import (
 	"net/http"
 
 	"github.com/Turizak/fables-be/campaign"
+	"github.com/Turizak/fables-be/token"
 	"github.com/Turizak/fables-be/utilities"
 	"github.com/gin-gonic/gin"
 )
 
 func CreateLocation(c *gin.Context) {
 	var location campaign.Location
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	location.CreatorUUID = claims.UUID
+	location.CreatorUUID = claims.(*token.UserClaim).UUID
 
 	campaignUuid := c.Param("uuid")
 	if err := c.BindJSON(&location); err != nil {
@@ -34,12 +32,9 @@ func CreateLocation(c *gin.Context) {
 
 func CreateLocationSession(c *gin.Context) {
 	var location campaign.Location
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	location.CreatorUUID = claims.UUID
+	location.CreatorUUID = claims.(*token.UserClaim).UUID
 
 	campaignUuid := c.Param("uuid")
 	if err := c.BindJSON(&location); err != nil {
@@ -59,11 +54,6 @@ func CreateLocationSession(c *gin.Context) {
 }
 
 func GetLocationByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	locationUuid := c.Param("locationUuid")
 	location, err := GetLocationByUuidDB(locationUuid, campaignUuid)
@@ -76,11 +66,6 @@ func GetLocationByUuid(c *gin.Context) {
 }
 
 func GetLocationsByCampaignUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	locations, err := GetLocationsByCampaignUuidDB(campaignUuid)
 	if err != nil {
@@ -92,12 +77,9 @@ func GetLocationsByCampaignUuid(c *gin.Context) {
 }
 
 func GetLocationsByCreatorUuid(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	locations, err := GetLocationsByCreatorUuidDB(claims.UUID)
+	locations, err := GetLocationsByCreatorUuidDB(claims.(*token.UserClaim).UUID)
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve locations. Please try again.", http.StatusInternalServerError, nil)
 		return
@@ -107,11 +89,6 @@ func GetLocationsByCreatorUuid(c *gin.Context) {
 }
 
 func UpdateLocationByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	locationUuid := c.Param("locationUuid")
 	location, err := GetLocationByUuidDB(locationUuid, campaignUuid)

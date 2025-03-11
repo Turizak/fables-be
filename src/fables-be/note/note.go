@@ -4,18 +4,16 @@ import (
 	"net/http"
 
 	"github.com/Turizak/fables-be/campaign"
+	"github.com/Turizak/fables-be/token"
 	"github.com/Turizak/fables-be/utilities"
 	"github.com/gin-gonic/gin"
 )
 
 func CreateNote(c *gin.Context) {
 	var note campaign.Note
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	note.CreatorUUID = claims.UUID
+	note.CreatorUUID = claims.(*token.UserClaim).UUID
 
 	campaignUuid := c.Param("uuid")
 	sessionUuid := c.Param("sessionUuid")
@@ -40,11 +38,6 @@ func CreateNote(c *gin.Context) {
 }
 
 func GetNoteByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	noteUuid := c.Param("noteUuid")
 	note, err := GetNoteByUuidDB(noteUuid, campaignUuid)
@@ -57,11 +50,6 @@ func GetNoteByUuid(c *gin.Context) {
 }
 
 func GetNotesByCampaignUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	notes, err := GetNotesByCampaignUuidDB(campaignUuid)
 	if err != nil {
@@ -73,12 +61,9 @@ func GetNotesByCampaignUuid(c *gin.Context) {
 }
 
 func GetNotesByCreatorUuid(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	notes, err := GetNotesByCreatorUuidDB(claims.UUID)
+	notes, err := GetNotesByCreatorUuidDB(claims.(*token.UserClaim).UUID)
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve Notes. Please try again.", http.StatusInternalServerError, nil)
 		return
@@ -88,11 +73,6 @@ func GetNotesByCreatorUuid(c *gin.Context) {
 }
 
 func UpdateNoteByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	noteUuid := c.Param("noteUuid")
 	note, err := GetNoteByUuidDB(noteUuid, campaignUuid)

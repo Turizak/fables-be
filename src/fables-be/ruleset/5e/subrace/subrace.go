@@ -23,11 +23,6 @@ type Subrace struct {
 
 // GetAllSubraces5e retrieves all subraces for 5e
 func GetAllSubraces5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	subraces, err := GetAllSubraces5eDB()
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve subraces. Please try again.", http.StatusInternalServerError, nil)
@@ -39,11 +34,6 @@ func GetAllSubraces5e(c *gin.Context) {
 
 // GetSubraceByIndex5e retrieves a specific subrace by index for 5e
 func GetSubraceByIndex5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	index := c.Param("index")
 	subrace, err := GetSubraceByIndex5eDB(index)
 	if err != nil {

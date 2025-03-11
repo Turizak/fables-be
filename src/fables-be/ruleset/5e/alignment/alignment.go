@@ -17,11 +17,6 @@ type Alignment struct {
 
 // GetAllAlignments5e retrieves all alignments for 5e
 func GetAllAlignments5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	alignments, err := GetAllAlignments5eDB()
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve alignments. Please try again.", http.StatusInternalServerError, nil)
@@ -34,11 +29,6 @@ func GetAllAlignments5e(c *gin.Context) {
 
 // GetAlignmentByIndex5e retrieves a specific alignment by index for 5e
 func GetAlignmentByIndex5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	index := c.Param("index")
 	alignment, err := GetAlignmentByIndex5eDB(index)
 	if err != nil {

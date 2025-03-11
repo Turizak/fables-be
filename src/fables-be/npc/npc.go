@@ -4,18 +4,16 @@ import (
 	"net/http"
 
 	"github.com/Turizak/fables-be/campaign"
+	"github.com/Turizak/fables-be/token"
 	"github.com/Turizak/fables-be/utilities"
 	"github.com/gin-gonic/gin"
 )
 
 func CreateNpc(c *gin.Context) {
 	var npc campaign.Npc
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	npc.CreatorUUID = claims.UUID
+	npc.CreatorUUID = claims.(*token.UserClaim).UUID
 
 	campaignUuid := c.Param("uuid")
 	if err := c.BindJSON(&npc); err != nil {
@@ -34,12 +32,9 @@ func CreateNpc(c *gin.Context) {
 
 func CreateNpcSession(c *gin.Context) {
 	var npc campaign.Npc
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	npc.CreatorUUID = claims.UUID
+	npc.CreatorUUID = claims.(*token.UserClaim).UUID
 
 	campaignUuid := c.Param("uuid")
 	if err := c.BindJSON(&npc); err != nil {
@@ -59,11 +54,6 @@ func CreateNpcSession(c *gin.Context) {
 }
 
 func GetNpcByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	npcUuid := c.Param("npcUuid")
 	npc, err := GetNpcByUuidDB(npcUuid, campaignUuid)
@@ -76,11 +66,6 @@ func GetNpcByUuid(c *gin.Context) {
 }
 
 func GetNpcsByCampaignUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	npcs, err := GetNpcsByCampaignUuidDB(campaignUuid)
 	if err != nil {
@@ -92,12 +77,9 @@ func GetNpcsByCampaignUuid(c *gin.Context) {
 }
 
 func GetNpcsByCreatorUuid(c *gin.Context) {
-	claims, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
+	claims, _ := c.Get("claims")
 
-	npcs, err := GetNpcsByCreatorUuidDB(claims.UUID)
+	npcs, err := GetNpcsByCreatorUuidDB(claims.(*token.UserClaim).UUID)
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve NPCs. Please try again.", http.StatusInternalServerError, nil)
 		return
@@ -107,11 +89,6 @@ func GetNpcsByCreatorUuid(c *gin.Context) {
 }
 
 func UpdateNpcByUuid(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	campaignUuid := c.Param("uuid")
 	npcUuid := c.Param("npcUuid")
 	npc, err := GetNpcByUuidDB(npcUuid, campaignUuid)

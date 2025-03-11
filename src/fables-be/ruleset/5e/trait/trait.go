@@ -22,11 +22,6 @@ type Trait struct {
 
 // GetAllTraits5e retrieves all traits for 5e
 func GetAllTraits5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	traits, err := GetAllTraits5eDB()
 	if err != nil {
 		utilities.ResponseMessage(c, "Could not retrieve traits. Please try again.", http.StatusInternalServerError, nil)
@@ -38,11 +33,6 @@ func GetAllTraits5e(c *gin.Context) {
 
 // GetTraitByIndex5e retrieves a specific trait by index for 5e
 func GetTraitByIndex5e(c *gin.Context) {
-	_, authorized := utilities.AuthorizeRequest(c)
-	if !authorized {
-		return
-	}
-
 	traitIndex := c.Param("index")
 	trait, err := GetTraitByIndex5eDB(traitIndex)
 	if err != nil {
